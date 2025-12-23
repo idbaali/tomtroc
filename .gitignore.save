@@ -1,0 +1,13 @@
+.DS_Store
+/vendor
+/node_modules
+.env
+.idea
+.vscode
+
+git branch -M main
+git push -f origin main
+
+.gitignore
+
+

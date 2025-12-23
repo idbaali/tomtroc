@@ -1,0 +1,6 @@
+RewriteEngine On
+
+# Rediriger tout vers le dossier public
+RewriteCond %{REQUEST_URI} !^/tomtroc/public/
+RewriteRule ^(.*)$ /tomtroc/public/$1 [L]
+

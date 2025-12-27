@@ -1,14 +1,15 @@
 <!-- ================= FOOTER ================= -->
-<footer class="footer" role="contentinfo">
-    <p>L’équipe Tom Troc</p>
-
-    <nav aria-label="Liens légaux">
-        <a href="#privacy">Politique de confidentialité</a> |
-        <a href="#legal">Mentions légales</a>
+<footer class="footer" role="contentinfo" aria-label="Pied de page">
+    <nav class="footer-legal" role="navigation" aria-label="Liens légaux">
+        <ul>
+            <li><a href="#">Politique de confidentialité</a></li>
+            <li><a href="#">Mentions légales</a></li>
+            <li><a href="#">Tom Troc ©</a></li>
+            <li><a href="#"><img src="images/tt.png" alt="tt" class="tt-image"></a></li>
+        </ul>
     </nav>
-
-    <p>© Tom Troc</p>
 </footer>
 
 </body>
+
 </html>

@@ -39,12 +39,12 @@
             <div class="nav-right">
                 <ul class="nav-list">
                     <li>
-                        <a href="#messages">
-                            Messagerie
+                        <a href="#messages"> 
+                           <i class="fa fa-thin fa-comment"></i> Messagerie
                             <span class="badge" aria-label="1 nouveau message">1</span>
                         </a>
                     </li>
-                    <li><a href="#account">Mon compte</a></li>
+                    <li><a href="#account">Mon compte <i class="fas fa-circle-user me-2"></i></a></li>
                     <li><a href="#login" class="btn">Connexion</a></li>
                 </ul>
             </div>

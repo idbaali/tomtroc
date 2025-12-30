@@ -52,10 +52,10 @@
         <h2>Comment ça marche ?</h2>
         <p>Échanger des livres avec <strong>TomTroc</strong>, c’est simple et amusant ! Suivez ces étapes :</p>
         <ol class="steps-list">
-            <li><i class="fa fa-user-plus"></i> Inscrivez-vous gratuitement sur notre plateforme.</li>
-            <li><i class="fa fa-book"></i> Ajoutez les livres que vous souhaitez échanger à votre profil.</li>
-            <li><i class="fa fa-search"></i> Parcourez les livres disponibles chez d'autres membres.</li>
-            <li><i class="fa fa-comments"></i> Proposez un échange et discutez avec des passionnés de lecture.</li>
+            <li><i class=""></i> Inscrivez-vous gratuitement sur notre plateforme.</li>
+            <li><i class=""></i> Ajoutez les livres que vous souhaitez échanger à votre profil.</li>
+            <li><i class=""></i> Parcourez les livres disponibles chez d'autres membres.</li>
+            <li><i class=""></i> Proposez un échange et discutez avec des passionnés de lecture.</li>
         </ol>
         <!-- <a href="#all-books" class="btn-primary">Voir tous les livres</a> -->
          <div class="see-all-books2">

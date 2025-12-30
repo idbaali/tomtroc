@@ -132,40 +132,56 @@ button:focus {
     margin: 0 60px 0 20px;
 }
 
+.fa {
+    margin-right: 6px;
+}
+
+.fas {
+    margin-right: 6px;
+}
+
 /* =========================
    HERO
 ========================= */
 
+
+
+.hero {
+    background: #F5F3EF;
+    padding: 70px 40px;
+}
+
 /* HERO en deux colonnes */
 .hero-split {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    flex-direction: row;
     align-items: center;
-    gap: 40px;
-    /* padding: 60px 30px; */
+    text-align: center;
+    gap: 10px;
+    padding: 60px 80px;
     background-color: #F5F3EF;
+    margin: 0 auto;
+
 
 }
 
 /* Texte gauche */
 .hero-text h1 {
     font-size: 36px;
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
 }
 
 .hero-text p {
-    max-width: 520px;
-}
-
-/* Image droite */
-.hero-image-wrapper {
-    display: flex;
-    justify-content: center;
+    max-width: 320px;
+    margin: 0 auto;
+    color: #444;
 }
 
 .hero-image {
-    width: 100%;
-    max-width: 420px;
+    width: 404px;
+    max-width: 539px;
+    top: 160px;
+    left: 726px;
     border-radius: 12px;
     object-fit: cover;
 }
@@ -191,21 +207,26 @@ button:focus {
 ========================= */
 
 .books h2 {
-    margin-bottom: 20px;
+    text-align: center;
+    margin-top: 60px;
+    margin-bottom: 40px;
 }
 
 .book-list {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
+
+
 }
 
 .book {
     width: 250px;
     padding: 20px;
-    border: 1px solid #ddd;
     border-radius: 5px;
     background: #fff;
+    display: inline-block;
+
 }
 
 .book h3 {
@@ -217,48 +238,41 @@ button:focus {
     height: 180px;
     object-fit: cover;
     border-radius: 6px;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .see-all-books {
-    text-align: center;   /* centrer le bouton */
-    margin-top: 25px;     /* espace au-dessus */
+    text-align: center;
+    margin-bottom: 50px;
 }
 
-.see-all-books .btn-primary {
-    display: inline-block;
-    padding: 12px 25px;
-    background: #00AC66;      /* couleur bleu TomTroc */
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-    border-radius: 6px;
-    transition: background 0.3s;
-}
+
 
 .see-all-books .btn-primary:hover {
-    background: #2a64bd;      /* effet au survol */
+    background: #2a64bd;
 }
 
 .see-all-books2 {
-    text-align: center;   /* centrer le bouton */
-    margin-top: 25px;     /* espace au-dessus */
+    text-align: center;
+    margin-top: 35px;
 }
 
 .see-all-books2 .btn-primary {
     display: inline-block;
     padding: 12px 25px;
-    background: #F5F3EF;      /* couleur bleu TomTroc */
+    background: #F5F3EF;
     color: #00AC66;
     text-decoration: none;
     font-weight: bold;
     border-radius: 6px;
     transition: background 0.3s;
     border: 1px solid #00AC66;
+
 }
 
 .see-all-books2 .btn-primary:hover {
-    background: #2a64bd;      /* effet au survol */
+    background: #2a64bd;
+    /* effet au survol */
 }
 
 /* =========================
@@ -267,30 +281,33 @@ button:focus {
 
 .steps {
     background-color: #F5F3EF;
+    padding-top: 30px;
 }
 
 .steps-list {
-    max-width: 700px;
-    margin: 20px auto;
-    padding-left: 0;
+    display: flex;
+    justify-content: space-between;
 }
 
 .steps-list li {
+    display: inline-block;
+    color: black;
+    background-color: #FFFFFF;
     display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 12px;
+    flex-wrap: wrap;
+    padding: 15px;
+    height: 130px;
+    width: 200px;
+
 }
 
-.steps-list i {
-    font-size: 18px;
-}
 
 .steps-image-wrapper img {
-    margin-top: 20px;
+    margin-top: 50px;
     width: 1440px;
     height: 330px;
     top: 2084px;
+    object-fit: cover;
 }
 
 
@@ -310,14 +327,14 @@ button:focus {
     padding-bottom: 10px;
 }
 
-.values p {  
+.values p {
     width: 392px;
     height: 304;
     margin: auto;
 }
 
 .Team {
-    padding-top: 15px;
+    padding-top: 25px;
 }
 
 .Vector-image {
@@ -336,13 +353,10 @@ button:focus {
 /* FOOTER */
 .footer {
     background: #FFFFFF;
-    /* couleur de fond sombre */
     color: #292929;
-    /* texte blanc */
     padding: 10px 30px;
     text-align: center;
     padding-right: 100px;
-    /* font-family: 'Qwitcher Grypen', Arial, sans-serif; */
 }
 
 .footer a {
@@ -354,7 +368,6 @@ button:focus {
 
 .footer a:hover {
     color: #3498db;
-    /* couleur au survol */
 }
 
 .footer-legal ul {
@@ -364,7 +377,6 @@ button:focus {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-end;
-    /* aligné à gauche */
     align-items: center;
     gap: 15px;
 }
@@ -376,7 +388,6 @@ button:focus {
 /* Image tt dans le footer */
 .tt-image {
     width: 30px;
-    /* taille de l'image */
     height: auto;
     vertical-align: middle;
 }

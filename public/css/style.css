@@ -13,42 +13,11 @@ body {
     font-family: Arial, sans-serif;
     color: #333;
     line-height: 1.6;
+    overflow-x: hidden;
+
 }
 
-/* Lien "aller au contenu" */
-.skip-link {
-    position: absolute;
-    top: -40px;
-    left: 10px;
-    background: #000;
-    color: #fff;
-    padding: 8px 12px;
-    z-index: 1000;
-    text-decoration: none;
-}
 
-.skip-link:focus {
-    top: 10px;
-}
-
-/* Focus clavier */
-a:focus,
-button:focus {
-    outline: 3px solid #f39c12;
-    outline-offset: 3px;
-}
-
-/* Texte lecteurs d’écran */
-.sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-}
 
 /* =========================
    HEADER / NAVIGATION
@@ -83,7 +52,12 @@ button:focus {
     display: flex;
     margin: 0;
     padding: 0;
-    gap: 15px;
+    gap: 25px;
+}
+
+.debut {
+    padding-right: 20px;
+    padding-left: 15px;
 }
 
 .nav-list li {
@@ -94,7 +68,7 @@ button:focus {
 .nav-right a {
     color: #292929;
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 500px;
 }
 
 .nav-left a:hover,
@@ -140,53 +114,61 @@ button:focus {
     margin-right: 6px;
 }
 
+
 /* =========================
-   HERO
+   HERO ACCUEIL
 ========================= */
-
-
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
 
 .hero {
-    background: #F5F3EF;
-    padding: 70px 40px;
+    background-color: #F5F3EF;
 }
 
-/* HERO en deux colonnes */
 .hero-split {
     display: flex;
-    flex-direction: row;
     align-items: center;
-    text-align: center;
-    gap: 10px;
-    padding: 60px 80px;
-    background-color: #F5F3EF;
-    margin: 0 auto;
-
-
+    justify-content: space-between;
+    padding: 180px;
+    /* gap: 30px; */
 }
 
-/* Texte gauche */
+.hero-text {
+    max-width: 380px;
+    color: #444;
+}
+
 .hero-text h1 {
     font-size: 36px;
-    /* margin-bottom: 10px; */
+    margin-bottom: 15px;
 }
 
 .hero-text p {
     max-width: 320px;
-    margin: 0 auto;
+    margin-bottom: 20px;
     color: #444;
 }
 
+/* .hero-image-wrapper {
+    flex: 1;
+} */
+
 .hero-image {
-    width: 404px;
-    max-width: 539px;
-    top: 160px;
-    left: 726px;
-    border-radius: 12px;
+    width: 100%;
+    max-width: 404px;
     object-fit: cover;
 }
 
-/* Bouton principal */
+/* Boutons */
 .btn-primary {
     display: inline-block;
     margin-top: 20px;
@@ -198,66 +180,145 @@ button:focus {
     font-weight: bold;
 }
 
-.btn-primary:hover {
-    background: #2980b9;
-}
 
-/* =========================
-   LIVRES
-========================= */
+/* ====================
+  LES DERNIERS LIVRES 
+===================== */
+.books {
+    padding: 60px 120px;
+    background: #f7f7f7;
+}
 
 .books h2 {
     text-align: center;
-    margin-top: 60px;
-    margin-bottom: 40px;
+    margin-bottom: 50px;
+    font-size: 28px;
 }
 
 .book-list {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 20px;
-
-
+    list-style: none;
+    margin-right: 40px;
 }
 
 .book {
-    width: 250px;
-    padding: 20px;
-    border-radius: 5px;
-    background: #fff;
-    display: inline-block;
+    background: #ffffff;
+    text-align: center;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease;
+}
 
+
+.book h3,
+.book p {
+    text-align: left;
+    padding-left: 20px;
+}
+
+.book:hover {
+    transform: translateY(-5px);
+}
+
+.book img {
+    width: 100%;
+    height: 210px;
+    object-fit: cover;
+    /* border-radius: 6px;
+    margin-bottom: 15px; */
 }
 
 .book h3 {
-    margin-top: 0;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
 }
 
-.book-cover {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-    border-radius: 6px;
-    margin-bottom: 5px;
+.book .author {
+    font-size: 14px;
+    color: #555;
+}
+
+.book .seller {
+    font-size: 13px;
+    color: #777;
+}
+
+.book .seller span {
+    font-weight: bold;
+    color: #00AC66;
 }
 
 .see-all-books {
     text-align: center;
-    margin-bottom: 50px;
+    margin-top: 50px;
 }
 
-
-
-.see-all-books .btn-primary:hover {
-    background: #2a64bd;
+.btn-secondary {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 25px;
+    background: #00AC66;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
 }
 
-.see-all-books2 {
+.btn-secondary:hover {
+    background: #00AC66;
+    /* effet au survol */
+}
+
+/* =========================
+   STEPS
+========================= */
+.steps h2 {
+    display: flex;
+    justify-content: center;
+}
+
+.steps p {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 20px;
+}
+
+.steps {
+    background-color: #F5F3EF;
+    padding-top: 30px;
+}
+
+.steps-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    margin-right: 60px;
+}
+
+.steps-list li {
+    display: inline-block;
+    color: black;
+    background-color: #FFFFFF;
+    padding: 15px;
+    height: 130px;
+    width: 200px;
+    display: flex;
     text-align: center;
-    margin-top: 35px;
+    align-items: center;
 }
 
-.see-all-books2 .btn-primary {
+.steps-image-wrapper img {
+    margin-top: 50px;
+    width: 100%;
+    max-width: 100%;
+    height: 330px;
+    object-fit: cover;
+}
+
+.btn-third {
     display: inline-block;
     padding: 12px 25px;
     background: #F5F3EF;
@@ -270,67 +331,28 @@ button:focus {
 
 }
 
-.see-all-books2 .btn-primary:hover {
+.btn-third:hover {
     background: #2a64bd;
     /* effet au survol */
 }
 
 /* =========================
-   STEPS
-========================= */
-
-.steps {
-    background-color: #F5F3EF;
-    padding-top: 30px;
-}
-
-.steps-list {
-    display: flex;
-    justify-content: space-between;
-}
-
-.steps-list li {
-    display: inline-block;
-    color: black;
-    background-color: #FFFFFF;
-    display: flex;
-    flex-wrap: wrap;
-    padding: 15px;
-    height: 130px;
-    width: 200px;
-
-}
-
-
-.steps-image-wrapper img {
-    margin-top: 50px;
-    width: 1440px;
-    height: 330px;
-    top: 2084px;
-    object-fit: cover;
-}
-
-
-
-/* =========================
    VALUES
 ========================= */
-
 .values {
-    padding: 40px 30px;
+    background: #F5F3EF;
+    ;
+    /* ← choisis ta couleur */
+    width: 100%;
+    padding: 60px 40px;
 }
 
-.values h2 {
-    width: 392px;
-    height: 304;
-    margin: auto;
-    padding-bottom: 10px;
-}
-
+.values h2,
 .values p {
-    width: 392px;
+    width: 372px;
     height: 304;
     margin: auto;
+    margin: 0 auto 15px auto;
 }
 
 .Team {
@@ -344,7 +366,993 @@ button:focus {
     align-items: center;
     height: 102px;
     width: 120px;
+    margin-top: -40px;
+    padding-bottom: 10px;
 }
+
+/* HERO responsive */
+@media (max-width: 1024px) {
+    .hero-split {
+        flex-direction: column;
+        padding: 80px 20px;
+        text-align: center;
+    }
+
+    .hero-text {
+        max-width: 100%;
+    }
+
+    .hero-image {
+        max-width: 80%;
+        margin: 30px auto 0 auto;
+    }
+}
+
+/* DERNIERS LIVRES responsive */
+@media (max-width: 768px) {
+    .book-list {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+        padding: 0 10px;
+    }
+
+    .book img {
+        height: 180px;
+    }
+
+    .book h3 {
+        font-size: 14px;
+    }
+
+    .book .author, .book .seller {
+        font-size: 12px;
+    }
+}
+
+/* STEPS responsive */
+@media (max-width: 768px) {
+    .steps-list {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .steps-list li {
+        width: 100%;
+        height: auto;
+        padding: 20px;
+    }
+
+    .steps-image-wrapper img {
+        height: auto;
+        max-width: 90%;
+        margin: 20px auto;
+    }
+}
+
+/* VALUES responsive */
+@media (max-width: 768px) {
+    .values h2, .values p {
+        width: 90%;
+        margin: 0 auto 15px auto;
+    }
+
+    .Vector-image {
+        max-width: 80px;
+        height: auto;
+        margin-top: 0;
+    }
+}
+
+
+/* ==========================
+   PAGE NOS LIVRES (books.php)
+=========================== */
+
+.books-page {
+    background: #f6f6f6;
+    padding-bottom: 70px;
+    padding-top: 5px;
+}
+
+/* HEADER */
+.books-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1000px;
+    margin: 40px auto 30px;
+    padding: 0 20px;
+}
+
+.books-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.books-search {
+    padding: 12px 15px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 240px;
+}
+
+/* GRID */
+.exchange-list {
+    list-style: none;
+    padding: 0 20px;
+    margin: 0 auto;
+    max-width: 1000px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+}
+
+.exchange-card {
+    background: #fff;
+    border-radius: 8px;
+    text-align: center;
+    position: relative;
+    height: 360px;
+    /* 🔒 hauteur fixe */
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.exchange-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* IMAGE */
+.exchange-card img {
+    width: 100%;
+    height: 200px;
+    /* 🔒 hauteur UNIQUE */
+    object-fit: cover;
+    /* 🔥 coupe proprement */
+    background: #f2f2f2;
+}
+
+
+.exchange-card h3 {
+    font-size: 13px;
+    margin: 10px 0 4px;
+}
+
+.exchange-card .author {
+    font-size: 13px;
+    color: #555;
+}
+
+.exchange-card .seller {
+    font-size: 11px;
+    font-weight: bold;
+    padding-top: 10px;
+}
+
+.exchange-card h3,
+.exchange-card p {
+    text-align: left;
+    padding-left: 20px;
+}
+
+.unavailable {
+    opacity: 0.5;
+}
+
+.status {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #ccc;
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 4px;
+}
+
+
+.exchange-card .seller::before {
+    content: "Vendu par : ";
+    font-weight: normal;
+    color: #777;
+}
+
+/* NON DISPONIBLE */
+.exchange-card.unavailable {
+    opacity: 0.45;
+    pointer-events: none;
+}
+
+.exchange-card .status {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #d0d0d0;
+    color: #333;
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+
+
+/* =========================
+   PAGE LIVRE (book.php)
+========================= */
+
+.breadcrumb {
+    background-color: #F5F3EF;
+
+}
+
+.bread {
+    margin-left: 15px;
+}
+
+.breadcrumb a,
+span {
+    font-size: 10px;
+}
+
+.book-page {
+    min-height: 100vh;
+}
+
+/* Layout 50 / 50 */
+.book-detail {
+    display: flex;
+    min-height: calc(100vh - 120px);
+}
+
+/* GAUCHE : image plein écran */
+.book-cover {
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.book-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* 🔥 clé du plein écran */
+    display: block;
+}
+
+/* DROITE : contenu */
+.book-content {
+    width: 50%;
+    padding: 80px;
+    overflow-y: auto;
+    background-color: #FAF9F7;
+}
+
+.book-content h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.book-author {
+    color: #555;
+    margin-bottom: 30px;
+}
+
+.book-content h2 {
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+.book-owner {
+    margin-top: 40px;
+}
+
+.book-owner .btn-book {
+    display: inline-block;
+    margin-top: 50px;
+    padding: 12px 100px;
+    background-color: #00AC66;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+    padding: 15px 30px;
+    font-size: 14px;
+}
+
+
+
+
+/* =========================
+   PAGE LOGIN
+========================= */
+
+
+.login-page {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+}
+
+/* GAUCHE – FORMULAIRE */
+.login-left {
+    width: 50%;
+    padding: 60px;
+    background-color: #F5F3EF;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login-left h2 {
+    font-size: 32px;
+    margin-bottom: 30px;
+    color: #292929;
+}
+
+/* FORMULAIRE */
+.form {
+    max-width: 400px;
+}
+
+.form label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+.form input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 16px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.form input:focus {
+    border-color: #00AC66;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 172, 102, 0.3);
+}
+
+.form-link {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.form-link a {
+    color: #00AC66;
+    text-decoration: none;
+}
+
+.form-link a:hover {
+    text-decoration: underline;
+}
+
+/* BOUTON */
+.login-page .btn-primary {
+    margin-top: 10px;
+    padding: 12px;
+    width: 100%;
+    background-color: #00AC66;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: #008f55;
+}
+
+/* DROITE – IMAGE */
+.login-right {
+    width: 50%;
+}
+
+.login-right img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+/* =========================
+   AUTH (LOGIN / REGISTER)
+========================= */
+
+.auth-page {
+    display: flex;
+    min-height: calc(100vh - 120px);
+}
+
+/* Colonne gauche – formulaire (40%) */
+.auth-left {
+    width: 45%;
+    padding: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Colonne droite – image (60%) */
+.auth-right {
+    width: 55%;
+}
+
+.auth-right img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Formulaire */
+.form {
+    max-width: 400px;
+}
+
+.form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.form input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+}
+
+.auth-link {
+    margin-top: 20px;
+}
+
+/* Colonne droite (image) */
+/* .auth-right {
+    width: 50%;
+} */
+
+.auth-right img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* =========================
+   ESPACE PERSONNEL
+========================= */
+
+.account-page {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* ---------- INFOS ---------- */
+
+.account-info {
+    background: #F5F3EF;
+    padding: 30px;
+    border-radius: 10px;
+    margin-bottom: 50px;
+}
+
+.account-info h1 {
+    margin-bottom: 25px;
+}
+
+.info-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.label {
+    width: 160px;
+    font-weight: bold;
+}
+
+.value {
+    flex: 1;
+}
+
+.link-edit {
+    color: #00AC66;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.link-edit:hover {
+    text-decoration: underline;
+}
+
+.info-meta {
+    margin: 20px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+/* ---------- BIBLIOTHÈQUE ---------- */
+
+.account-library h2 {
+    margin-bottom: 10px;
+}
+
+.library-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.library-count {
+    font-weight: bold;
+}
+
+.library-table {
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* En-tête */
+.table-head {
+    display: grid;
+    grid-template-columns: 80px 150px 140px 1fr 120px 120px;
+    padding: 15px;
+    background: #F5F3EF;
+    font-weight: bold;
+}
+
+/* Ligne */
+.table-row {
+    display: grid;
+    grid-template-columns: 80px 150px 140px 1fr 120px 120px;
+    padding: 15px;
+    border-top: 1px solid #eee;
+    align-items: center;
+}
+
+.table-row img {
+    width: 60px;
+    border-radius: 6px;
+}
+
+.desc {
+    font-size: 14px;
+    color: #444;
+}
+
+.status {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.available {
+    color: #00AC66;
+}
+
+.unavailable {
+    color: #e74c3c;
+}
+
+.actions a {
+    display: block;
+    font-size: 14px;
+    text-decoration: none;
+    color: #00AC66;
+}
+
+.actions .danger {
+    color: #e74c3c;
+}
+
+
+/* =========================
+   PROFIL PUBLIC / profile.php
+========================= */
+
+.public-profile {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.public-user-header {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    margin-bottom: 20px;
+}
+
+.public-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #00AC66;
+}
+
+.public-user-header h1 {
+    font-size: 28px;
+    margin: 0;
+    color: #292929;
+}
+
+.member-since {
+    font-size: 14px;
+    color: #666;
+}
+
+.public-bio {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #444;
+    margin-bottom: 20px;
+}
+
+.public-user .btn-primary {
+    padding: 12px 25px;
+    background-color: #00AC66;
+    color: #fff;
+    border-radius: 6px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.public-user .btn-primary:hover {
+    background-color: #008f55;
+}
+
+.public-library-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.public-library-header h2 {
+    font-size: 24px;
+    color: #292929;
+    margin: 0;
+}
+
+.public-library-header span {
+    font-size: 14px;
+    color: #666;
+}
+
+.public-books {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.public-book {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+}
+
+.public-book img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.public-book-content {
+    padding: 15px;
+}
+
+.public-book-content h3 {
+    margin: 0 0 5px 0;
+    font-size: 18px;
+    color: #292929;
+}
+
+.public-book-content .author {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.public-book-content .description {
+    font-size: 14px;
+    color: #444;
+    line-height: 1.5;
+}
+
+
+/* =========================
+   PAGE ÉDITION LIVRE
+========================= */
+/* FOND GÉNÉRAL */
+.edit-book-principal {
+    background: #FAF9F7;
+    padding-bottom: 120px; /* espace avant footer */
+}
+
+/* CARTE BLANCHE */
+.edit-book-page {
+    max-width: 1140px;
+    margin: 80px auto 0;
+    padding: 60px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.05);
+}
+
+/* RETOUR */
+.bread-retour {
+    margin-bottom: 15px;
+}
+
+.bread-retour a {
+    color: #00AC66;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+/* TITRE */
+.edit-book-page h2 {
+    margin-bottom: 30px;
+}
+
+/* LAYOUT */
+.edit-book-detail {
+    display: flex;
+    align-items: flex-start; /* même niveau en haut */
+    gap: 40px;
+}
+
+/* PHOTO : forcer structure verticale */
+.edit-book-photo {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* IMAGE = BLOC */
+.edit-book-photo img {
+    display: block;          /* ✅ TRÈS IMPORTANT */
+    width: 100%;
+    max-width: 420px;
+    height: auto;
+    margin-bottom: 15px;
+}
+
+/* LIEN sous l'image */
+.edit-book-photo a {
+    display: inline-block;
+    margin-top: 5px;
+    color: #00AC66;
+    font-size: 14px;
+}
+
+
+/* FORMULAIRE */
+.edit-book-form {
+    width: 60%;
+}
+
+.edit-book-form label {
+    display: block;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+.edit-book-form input,
+.edit-book-form textarea,
+.edit-book-form select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.btn-edit {
+    margin-top: 25px;
+    padding: 12px 40px;
+    background: #00AC66;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+
+
+
+/* =========================
+   PAGE MESSAGERIE
+========================= */
+
+.messages-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px;
+}
+
+.page-title {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+/* Conteneur principal */
+.messages-container {
+    display: flex;
+    height: 70vh;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* Liste conversations */
+.conversations {
+    width: 35%;
+    border-right: 1px solid #e0e0e0;
+    background-color: #fafafa;
+    overflow-y: auto;
+}
+
+.conversations ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.conversation {
+    padding: 15px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+}
+
+.conversation:hover,
+.conversation.active {
+    background-color: #e9f7f1;
+}
+
+.conversation strong {
+    display: block;
+    font-size: 15px;
+}
+
+.conversation .time {
+    font-size: 12px;
+    color: #888;
+}
+
+.conversation p {
+    font-size: 13px;
+    color: #555;
+    margin-top: 5px;
+}
+
+/* Chat */
+.chat {
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header chat */
+.chat-header {
+    padding: 15px;
+    border-bottom: 1px solid #e0e0e0;
+    background-color: #fff;
+}
+
+.chat-header h2 {
+    font-size: 18px;
+}
+
+/* Messages */
+.chat-messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background-color: #fdfdfd;
+}
+
+.message {
+    max-width: 70%;
+    margin-bottom: 15px;
+    padding: 12px 15px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.message time {
+    display: block;
+    font-size: 11px;
+    color: #777;
+    margin-bottom: 5px;
+}
+
+/* Message reçu */
+.message.received {
+    background-color: #f1f1f1;
+    align-self: flex-start;
+}
+
+/* Message envoyé */
+.message.sent {
+    background-color: #00AC66;
+    color: #fff;
+    align-self: flex-end;
+}
+
+/* Formulaire */
+.chat-form {
+    display: flex;
+    padding: 15px;
+    border-top: 1px solid #e0e0e0;
+    gap: 10px;
+    background-color: #fff;
+}
+
+.chat-form textarea {
+    flex: 1;
+    resize: none;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    height: 50px;
+}
+
+.chat-form button {
+    padding: 0 20px;
+    background-color: #00AC66;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.chat-form button:hover {
+    background-color: #008f55;
+}
+
+/* Accessibilité */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+}
+
+
+
+
+
+
+
+
 
 /* =========================
    FOOTER

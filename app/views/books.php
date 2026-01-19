@@ -1,46 +1,56 @@
-<?php include __DIR__.'/layout/header.php'; ?>
+<?php require __DIR__ . '/layout/header.php'; ?>
 
-<main class="page">
+<main class="books-page">
 
-    <h1 class="page-title">Nos livres à l’échange</h1>
+    <!-- =========================
+         HEADER DE LA PAGE LIVRES
+    ========================= -->
+    <div class="books-header">
+        <h1 class="visually-hidden">
+            <?= htmlspecialchars($title ?? 'Nos livres à l’échange') ?>
+        </h1>
+        <h2 class="books-title">Nos livres à l’échange</h2>
 
-    <div class="search-bar">
-        <input type="search" placeholder="Rechercher un livre…">
+        <!-- Barre de recherche accessible -->
+        <input type="search"
+            placeholder="Rechercher un livre"
+            class="books-search"
+            aria-label="Rechercher un livre">
     </div>
 
-    <section class="books-grid">
+    <!-- =========================
+         LISTE DES LIVRES
+    ========================= -->
+    <section class="book-grid">
+        <ul class="exchange-list">
 
-        <article class="book-card">
-            <img src="../assets/images/kinfolk.png" alt="The Kinfolk Table">
-            <h3>The Kinfolk Table</h3>
-            <p class="author">Esther</p>
-            <p class="seller">Vendu par : CamilleClubLit</p>
-        </article>
+            <?php if (!empty($books)): ?>
+                <?php foreach ($books as $book): ?>
+                    <?php
+                    // Sécurisation des données (évite les Deprecated)
+                    $id     = (int) ($book['id'] ?? 0);
+                    $title  = htmlspecialchars($book['title'] ?? 'Titre inconnu');
+                    $author = htmlspecialchars($book['author'] ?? 'Auteur inconnu');
+                    $seller = htmlspecialchars($book['seller'] ?? 'Utilisateur inconnu');
+                    $image  = htmlspecialchars($book['image'] ?? 'default.png');
+                    ?>
 
-        <article class="book-card">
-            <img src="../assets/images/wabi-sabi.png" alt="Wabi Sabi">
-            <h3>Wabi Sabi</h3>
-            <p class="author">Beth Kempton</p>
-            <p class="seller">Vendu par : Alexlecture</p>
-        </article>
+                    <!-- Carte cliquable sans lien -->
+                    <a href="/livre/<?= htmlspecialchars($book['slug']) ?>" class="exchange-card">
+                        <img src="/images/<?= $image ?>" alt="Couverture du livre <?= $title ?>">
+                        <h3><?= $title ?></h3>
+                        <p class="author"><?= $author ?></p>
+                        <p class="seller">Vendu par : <?= $seller ?></p>
+                    </a>
 
-        <article class="book-card">
-            <img src="../assets/images/milk-honey.png" alt="Milk & Honey">
-            <h3>Milk & Honey</h3>
-            <p class="author">Rupi Kaur</p>
-            <p class="seller">Vendu par : Hugo1990_12</p>
-            <span class="badge indispo">non dispo.</span>
-        </article>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <li>Aucun livre disponible pour le moment.</li>
+            <?php endif; ?>
 
-        <article class="book-card">
-            <img src="../assets/images/alabaster.png" alt="Alabaster">
-            <h3>Alabaster</h3>
-            <p class="author">Nathan Williams</p>
-            <p class="seller">Vendu par : Nathalire</p>
-        </article>
-
+        </ul>
     </section>
 
 </main>
 
-<?php include __DIR__.'/layout/footer.php'; ?>
+<?php require_once __DIR__ . '/layout/footer.php'; ?>

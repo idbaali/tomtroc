@@ -1,11 +1,22 @@
 <?php
+namespace Core;
 
-class Controller
+use PDO;
+
+abstract class Controller
 {
-    protected function render($view)
+    protected PDO $db;
+
+    public function __construct()
     {
-        require_once '../app/views/layout/header.php';
-        require_once "../app/views/$view.php";
-        require_once '../app/views/layout/footer.php';
+        $this->db = Database::getInstance();
+    }
+
+    protected function render(string $view, array $data = [])
+    {
+        extract($data);
+        require __DIR__ . '/../app/views/' . $view . '.php';
     }
 }
+
+

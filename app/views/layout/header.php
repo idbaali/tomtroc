@@ -30,10 +30,10 @@
 </head>
 
 <html>
-
+<script src="/js/main.js" defer></script>
 <body>
 
-<?php showFlash(); ?>
+    <?php showFlash(); ?>
 
     <!-- ================= HEADER ================= -->
     <header class="header">

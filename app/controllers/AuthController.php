@@ -54,13 +54,14 @@ class AuthController extends Controller
             $user = $this->userModel->findByEmail($email);
 
             if (!$user) {
-                $error = "Email incorrect";
+                setFlash('error', "Email incorrect");
             } elseif ($password !== $user['password']) {
-                $error = "Mot de passe incorrect";
+                setFlash('error', "Mot de passe incorrect");
             } else {
                 unset($user['password']);
                 $_SESSION['user'] = $user;
 
+                setFlash('success', "Connexion réussie !");
                 header('Location: /compte');
                 exit;
             }
@@ -72,6 +73,10 @@ class AuthController extends Controller
     public function logout()
     {
         session_destroy();
+
+        session_start();
+        setFlash('info', "Vous êtes déconnecté.");
+
         header('Location: /');
         exit;
     }

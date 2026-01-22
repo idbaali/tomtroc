@@ -56,7 +56,7 @@ function showFlash(): void
 
     $flash = $_SESSION['flash'];
 
-    echo "<div class='flash {$flash['type']}'>{$flash['message']}</div>";
+    echo "<div id='flash-message' class='flash {$flash['type']}'>{$flash['message']}</div>";
 
     unset($_SESSION['flash']);
 }

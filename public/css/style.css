@@ -18,19 +18,35 @@ body {
 }
 
 .flash {
-    padding: 10px 15px;
-    margin: 10px auto;
-    width: 90%;
-    border-radius: 8px;
-    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 15px 0;
     font-weight: bold;
 }
 
-.flash.success {
-    background: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
+/* Rouge = erreur */
+.flash.error {
+    background: #ffdddd;
+    color: #b20000;
 }
+
+/* Vert = succès */
+.flash.success {
+    background: #ddffdd;
+    color: #1b6f1b;
+}
+
+/* Bleu/orange = info */
+.flash.info {
+    background: #e6f2ff;
+    color: #004a8f;
+}
+
+#flash-message {
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
 
 
 

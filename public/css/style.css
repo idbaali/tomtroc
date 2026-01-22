@@ -17,6 +17,21 @@ body {
 
 }
 
+.flash {
+    padding: 10px 15px;
+    margin: 10px auto;
+    width: 90%;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.flash.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
 
 
 /* =========================
@@ -158,10 +173,6 @@ body {
     color: #444;
 }
 
-/* .hero-image-wrapper {
-    flex: 1;
-} */
-
 .hero-image {
     width: 100%;
     max-width: 404px;
@@ -200,7 +211,7 @@ body {
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 20px;
     list-style: none;
-    margin-right: 40px;
+    /* margin-right: 40px; */
 }
 
 .book {
@@ -370,78 +381,6 @@ body {
     padding-bottom: 10px;
 }
 
-/* HERO responsive */
-@media (max-width: 1024px) {
-    .hero-split {
-        flex-direction: column;
-        padding: 80px 20px;
-        text-align: center;
-    }
-
-    .hero-text {
-        max-width: 100%;
-    }
-
-    .hero-image {
-        max-width: 80%;
-        margin: 30px auto 0 auto;
-    }
-}
-
-/* DERNIERS LIVRES responsive */
-@media (max-width: 768px) {
-    .book-list {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 15px;
-        padding: 0 10px;
-    }
-
-    .book img {
-        height: 180px;
-    }
-
-    .book h3 {
-        font-size: 14px;
-    }
-
-    .book .author, .book .seller {
-        font-size: 12px;
-    }
-}
-
-/* STEPS responsive */
-@media (max-width: 768px) {
-    .steps-list {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .steps-list li {
-        width: 100%;
-        height: auto;
-        padding: 20px;
-    }
-
-    .steps-image-wrapper img {
-        height: auto;
-        max-width: 90%;
-        margin: 20px auto;
-    }
-}
-
-/* VALUES responsive */
-@media (max-width: 768px) {
-    .values h2, .values p {
-        width: 90%;
-        margin: 0 auto 15px auto;
-    }
-
-    .Vector-image {
-        max-width: 80px;
-        height: auto;
-        margin-top: 0;
-    }
-}
 
 
 /* ==========================
@@ -783,7 +722,7 @@ span {
     justify-content: center;
 }
 
-/* Colonne droite – image (60%) */
+/* Colonne droite – image (55%) */
 .auth-right {
     width: 55%;
 }
@@ -816,11 +755,6 @@ span {
 .auth-link {
     margin-top: 20px;
 }
-
-/* Colonne droite (image) */
-/* .auth-right {
-    width: 50%;
-} */
 
 .auth-right img {
     width: 100%;
@@ -1091,45 +1025,81 @@ span {
     padding-bottom: 120px; /* espace avant footer */
 }
 
+
 /* CARTE BLANCHE */
 .edit-book-page {
     max-width: 1140px;
-    margin: 80px auto 0;
-    padding: 60px;
+    /* margin: 40px auto 0; */
+    margin-left: 45px;
+    padding: 60px 40px;
     background: #fff;
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0,0,0,.05);
 }
+.edit-book-principal nav.bread-retour a,
+.edit-book-principal .bread-title{
+    padding-left: 45px;
 
+}
 /* RETOUR */
 .bread-retour {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+    padding-top: 10px;
+
 }
 
 .bread-retour a {
+    display: flex;
+    align-items: center;
+    gap: 5px;
     color: #00AC66;
+    /* color: #F5F3EF; */
     font-size: 14px;
     text-decoration: none;
 }
 
-/* TITRE */
-.edit-book-page h2 {
-    margin-bottom: 30px;
+/* TITRE H2 et label Titre */
+.edit-book-header {
+    display: flex;
+    align-items: flex-end;
+    gap: 40px;
+    margin-bottom: 5px;
 }
+.edit-book-header h2 {
+    width: 40%;
+    font-weight: bold;
+    font-size: 17px;
+    margin: 0;
+}
+
+.edit-book-header label {
+    width: 60%;
+    font-weight: bold;
+    font-size: 17px;
+    margin: 0;
+}
+
+/* .edit-book-principal .edit-book-page .edit-book-photo h2 {
+    margin-top: 15px; Même valeur que la marge haute de tes labels de formulaire
+    margin-bottom: 15px
+} */
 
 /* LAYOUT */
 .edit-book-detail {
     display: flex;
-    align-items: flex-start; /* même niveau en haut */
+    /* align-items: center;  */
+    justify-content: center;
     gap: 40px;
 }
 
 /* PHOTO : forcer structure verticale */
-.edit-book-photo {
-    width: 40%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+ /* text-align: left; */
+
+.edit-book-detail .edit-book-photo{
+    width: 40%; 
+    /* display: flex; */
+    /* flex-direction: column;
+    align-items: center; */
 }
 
 /* IMAGE = BLOC */
@@ -1139,14 +1109,17 @@ span {
     max-width: 420px;
     height: auto;
     margin-bottom: 15px;
+    object-fit: cover;
 }
 
 /* LIEN sous l'image */
 .edit-book-photo a {
-    display: inline-block;
+    /* display: inline-block; */
     margin-top: 5px;
     color: #00AC66;
     font-size: 14px;
+     position: relative;
+    float: right;
 }
 
 
@@ -1155,12 +1128,18 @@ span {
     width: 60%;
 }
 
+.edit-book-detail .edit-book-photo h2,
 .edit-book-form label {
     display: block;
     font-weight: bold;
     margin-top: 15px;
+    font-size: 17px;
 }
 
+.edit-book-form input:nth-child(1){
+    margin-top: 0px;
+
+}
 .edit-book-form input,
 .edit-book-form textarea,
 .edit-book-form select {
@@ -1179,9 +1158,8 @@ span {
     border: none;
     border-radius: 6px;
     cursor: pointer;
+   
 }
-
-
 
 
 /* =========================
@@ -1345,11 +1323,6 @@ span {
     overflow: hidden;
     clip: rect(0, 0, 0, 0);
 }
-
-
-
-
-
 
 
 

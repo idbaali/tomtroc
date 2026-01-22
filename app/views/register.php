@@ -5,13 +5,17 @@
     <section class="auth-left">
         <h1>Inscription</h1>
 
-        <form class="form" aria-label="Formulaire d’inscription">
+        <?php if (!empty($error)): ?>
+            <p class="error"><?= htmlspecialchars($error) ?></p>
+        <?php endif; ?>
+
+        <form class="form" aria-label="Formulaire d’inscription" method="POST" action="/inscription">
 
             <label for="pseudo">Pseudo</label>
-            <input id="pseudo" type="text" name="pseudo" required>
+            <input id="pseudo" type="text" name="pseudo" required value="<?= htmlspecialchars($_POST['pseudo'] ?? '') ?>">
 
             <label for="email">Adresse email</label>
-            <input id="email" type="email" name="email" required>
+            <input id="email" type="email" name="email" required value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
 
             <label for="password">Mot de passe</label>
             <input id="password" type="password" name="password" required>

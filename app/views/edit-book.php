@@ -3,9 +3,12 @@
 <main class="edit-book-principal">
     <!-- Fil d’Ariane -->
     <nav class="bread-retour" aria-label="Fil d’ariane">
-        <a href="/books">retour</a>
+        <a href="/livres">
+            <i class="fa-solid fa-arrow-left"></i>
+            <span>retour</span>
+        </a>
     </nav>
-    <h2>Modifier les informations</h2>
+    <h2 class="bread-title">Modifier les informations</h2>
 
     <section class="edit-book-page">
 

@@ -1,5 +1,4 @@
 <?php
-
 namespace Core;
 
 use App\Controllers\HomeController;
@@ -12,6 +11,14 @@ class Router
 {
     public function run()
     {
+        // 🔐 Session (OBLIGATOIRE ici)
+        // if (session_status() === PHP_SESSION_NONE) {
+        //     session_start();
+        // }
+
+
+
+
         // 1. Récupération de l’URL sans les paramètres GET (?page=...)
         // Exemple :
         //   /livre/wabi-sabi?test=1  →  livre/wabi-sabi
@@ -30,10 +37,21 @@ class Router
         $page  = $segments[0] ?? '';
         $param = $segments[1] ?? null;
 
+
+         // 3. Routes publiques (ACCESSIBLES SANS CONNEXION)
+        $publicRoutes = ['', 'connexion', 'inscription'];
+    
+
+        // 🔐 Protection des routes
+        if (!isset($_SESSION['user']) && !in_array($page, $publicRoutes)) {
+            header('Location: /connexion');
+            exit;
+        }
+
         // 4. Analyse de la route demandée
         switch ($page) {
 
-                // 5. Accueil → /
+            // 5. Accueil → /
             case '':
                 $controller = new \App\Controllers\HomeController();
                 $controller->index();
@@ -49,9 +67,14 @@ class Router
                 $controller->show($param);
                 break;
 
-            case 'connexion': // au lieu de 'login'
+            case 'connexion':
                 $controller = new \App\Controllers\AuthController();
                 $controller->login();
+                break;
+
+            case 'deconnexion':
+                $controller = new \App\Controllers\AuthController();
+                $controller->logout();
                 break;
 
             case 'inscription': // au lieu de 'register'
@@ -86,6 +109,7 @@ class Router
                 $controller = new \App\Controllers\BookController();
                 $controller->edit($param);
                 break;
+
 
             default:
                 http_response_code(404);

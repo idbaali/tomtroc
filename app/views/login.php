@@ -4,20 +4,37 @@
     <section class="login-left" aria-labelledby="login-title">
         <h2 id="login-title">Connexion</h2>
 
-        <form class="form" aria-label="Formulaire de connexion">
+        <!-- 🔴 Affichage des erreurs -->
+        <?php if (!empty($error)): ?>
+            <p class="error"><?= htmlspecialchars($error) ?></p>
+        <?php endif; ?>
+
+        <form class="form" method="POST" action="/connexion" aria-label="Formulaire de connexion">
             <label for="email">Adresse email</label>
-            <input type="email" id="email" name="email" required>
+            <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                value="<?= htmlspecialchars($_POST['email'] ?? '') ?>"
+            >
 
             <label for="password">Mot de passe</label>
-            <input type="password" id="password" name="password" required>
+            <input
+                type="password"
+                id="password"
+                name="password"
+                required
+            >
 
-            <button type="submit" class="btn btn-primary">Connexion</button>
+            <button type="submit" class="btn btn-primary">
+                Connexion
+            </button>
 
             <p class="auth-link">
                 Pas de compte ?
                 <a href="/inscription">Inscrivez-vous</a>
             </p>
-
         </form>
     </section>
 

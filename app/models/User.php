@@ -29,6 +29,19 @@ class User
         return $stmt->fetch() ?: null;
     }
 
+    public function create($username, $email, $password)
+    {
+        $stmt = $this->db->prepare("
+        INSERT INTO users (username, email, password, created_at)
+        VALUES (:username, :email, :password, NOW())
+    ");
+        return $stmt->execute([
+            'username' => $username,
+            'email' => $email,
+            'password' => $password
+        ]);
+    }
+
     /**
      * Récupère un utilisateur par son email
      */
@@ -37,5 +50,14 @@ class User
         $stmt = $this->db->prepare("SELECT * FROM users WHERE email = ?");
         $stmt->execute([$email]);
         return $stmt->fetch() ?: null;
+    }
+
+    public function findByEmail(string $email)
+    {
+        $stmt = $this->db->prepare(
+            "SELECT * FROM users WHERE email = :email"
+        );
+        $stmt->execute(['email' => $email]);
+        return $stmt->fetch();
     }
 }

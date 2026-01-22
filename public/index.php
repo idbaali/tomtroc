@@ -1,4 +1,8 @@
 <?php
+session_start();
+
+// require_once __DIR__ . '/../vendor/autoload.php';
+
 /**
  * FRONT CONTROLLER
  * ----------------
@@ -13,7 +17,7 @@ require_once __DIR__ . '/../config/config.php';
 // 2. Autoloader simple (sans Composer)
 // Permet de charger automatiquement les classes PHP
 spl_autoload_register(function ($class) {
-     // Préfixes de namespaces utilisés dans le projet
+    // Préfixes de namespaces utilisés dans le projet
     $prefixApp = 'App\\';
     $prefixCore = 'Core\\';
 
@@ -52,8 +56,10 @@ spl_autoload_register(function ($class) {
     }
 });
 
+use Core\Router;
+
 // 3. Création du routeur
-$router = new Core\Router();
+$router = new Router();
 
 // 4. Lancement du routage
 $router->run();

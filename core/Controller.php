@@ -3,6 +3,9 @@ namespace Core;
 
 use PDO;
 
+// ✅ Chargement des helpers une seule fois
+require_once __DIR__ . '/../app/helpers.php';
+
 abstract class Controller
 {
     protected PDO $db;

@@ -3,19 +3,76 @@
 namespace App\Controllers;
 
 use Core\Controller;
+use App\Models\User;
 
 class AuthController extends Controller
 {
-    public function login()
+    private User $userModel;
+
+    public function __construct()
     {
-        // Page connexion
-        $this->render('login');
+        parent::__construct();
+        $this->userModel = new User();
     }
 
     public function register()
     {
-        // Page inscription
-        $this->render('register');
+        $error = '';
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            $username = trim($_POST['pseudo'] ?? '');
+            $email = trim($_POST['email'] ?? '');
+            $password = trim($_POST['password'] ?? '');
+
+            if (empty($username) || empty($email) || empty($password)) {
+                $error = "Tous les champs sont obligatoires.";
+            } else {
+
+                // 🔒 Hash du mot de passe
+                $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+
+                // Enregistrer en base
+                $this->userModel->create($username, $email, $passwordHash);
+
+                header('Location: /connexion');
+                exit;
+            }
+        }
+
+        require __DIR__ . '/../views/register.php';
+    }
+    public function login()
+    {
+        $error = ''; // ✅ IMPORTANT : définir $error
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            $email = trim($_POST['email'] ?? '');
+            $password = trim($_POST['password'] ?? '');
+
+            $user = $this->userModel->findByEmail($email);
+
+            if (!$user) {
+                $error = "Email incorrect";
+            } elseif ($password !== $user['password']) {
+                $error = "Mot de passe incorrect";
+            } else {
+                unset($user['password']);
+                $_SESSION['user'] = $user;
+
+                header('Location: /compte');
+                exit;
+            }
+        }
+
+        require __DIR__ . '/../views/login.php';
+    }
+
+    public function logout()
+    {
+        session_destroy();
+        header('Location: /');
+        exit;
     }
 }
-

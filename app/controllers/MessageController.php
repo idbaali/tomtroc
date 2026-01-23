@@ -27,5 +27,10 @@ class MessageController extends Controller
     {
         $messages = $this->messageModel->getByUser(1); // Exemple : utilisateur connecté = 1
         $this->render('messages', ['messages' => $messages]);
+
+        if (!isset($_SESSION['user'])) {
+            header('Location: /connexion');
+            exit;
+        }
     }
 }

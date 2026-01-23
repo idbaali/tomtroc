@@ -39,7 +39,7 @@ class Router
 
 
          // 3. Routes publiques (ACCESSIBLES SANS CONNEXION)
-        $publicRoutes = ['', 'connexion', 'inscription'];
+        $publicRoutes = ['', 'connexion', 'inscription', 'livres'];
     
 
         // 🔐 Protection des routes

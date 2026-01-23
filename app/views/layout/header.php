@@ -31,12 +31,17 @@
 
 <html>
 <script src="/js/main.js" defer></script>
-<body>
 
-    <?php showFlash(); ?>
+<body>
+    <?php
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    ?>
 
     <!-- ================= HEADER ================= -->
     <header class="header">
+
         <nav class="nav" aria-label="Navigation principale">
 
             <!-- GAUCHE -->
@@ -52,33 +57,40 @@
             </div>
 
             <!-- CENTRE -->
-            <div class="nav-center" aria-hidden="true"></div>
+            <!-- <div class="nav-center" aria-hidden="true"></div> -->
 
             <!-- DROITE -->
             <div class="nav-right">
                 <ul class="nav-list">
 
-                    <!-- MESSAGERIE : toujours visible -->
-                    <li>
-                        <a href="<?= isset($_SESSION['user']) ? '/messages' : '/connexion' ?>">
-                            <i class="fa fa-thin fa-comment"></i> Messagerie
-                            <span class="badge" aria-label="1 nouveau message">1</span>
-                        </a>
-                    </li>
+                    <!-- MESSAGERIE : non visible -->
+                    <?php if (isset($_SESSION['user'])) : ?>
 
-                    <!-- MON COMPTE : toujours visible -->
-                    <li>
-                        <a href="<?= isset($_SESSION['user']) ? '/compte' : '/connexion' ?>">
-                            <i class="fas fa-circle-user me-2"></i> Mon compte
-                        </a>
-                    </li>
+                        <li>
+                            <a href="/bibliotheque">Bibliothèque</a>
 
-                    <!-- CONNEXION / DÉCONNEXION -->
-                    <?php if (isset($_SESSION['user'])): ?>
+                        </li>
+
+                        <li>
+                            <a href="/messages">
+                                <img src="/images/icon-messagerie.png" alt="TomTroc" class="icon-messagerie"> Messagerie
+                                <img src="/images/messagerie.png" alt="TomTroc" class="messagerie">
+                            </a>
+                        </li>
+
+                        <!-- MON COMPTE : non visible -->
+                        <li>
+                            <a href="/compte">
+                                <img src="/images/icon-compte.png" alt="TomTroc" class="compte"> Mon compte
+                            </a>
+                        </li>
+
+                        <!-- DÉCONNEXION non visible-->
                         <li>
                             <a href="/deconnexion" class="btn">Déconnexion</a>
                         </li>
                     <?php else: ?>
+                        <!-- MESSAGERIE : toujours visible -->
                         <li>
                             <a href="/connexion" class="btn">Connexion</a>
                         </li>
@@ -86,7 +98,7 @@
 
                 </ul>
             </div>
-
-
         </nav>
+    <?php showFlash(); ?>
+
     </header>

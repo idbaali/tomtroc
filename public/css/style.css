@@ -73,9 +73,9 @@ body {
     align-items: center;
 }
 
-.nav-center {
+/* .nav-center {
     flex: 2;
-}
+} */
 
 /* Listes */
 .nav-list {
@@ -83,7 +83,7 @@ body {
     display: flex;
     margin: 0;
     padding: 0;
-    gap: 25px;
+    gap: 10px;
 }
 
 .debut {
@@ -227,7 +227,7 @@ body {
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 20px;
     list-style: none;
-    /* margin-right: 40px; */
+    margin-right: 40px;
 }
 
 .book {
@@ -339,9 +339,9 @@ body {
 
 .steps-image-wrapper img {
     margin-top: 50px;
-    width: 100%;
-    max-width: 100%;
-    height: 330px;
+    width: 1440px;
+    /* max-width: 100%; */
+    height: 230px;
     object-fit: cover;
 }
 
@@ -449,7 +449,7 @@ body {
     border-radius: 8px;
     text-align: center;
     position: relative;
-    height: 360px;
+    height: 330px;
     /* 🔒 hauteur fixe */
     display: flex;
     flex-direction: column;
@@ -470,11 +470,17 @@ body {
     /* 🔥 coupe proprement */
     background: #f2f2f2;
 }
+.exchange-card {
+    text-decoration: none;
+    color: inherit;
+}
 
 
 .exchange-card h3 {
     font-size: 13px;
-    margin: 10px 0 4px;
+    margin: 15px 0 0;
+    text-decoration: none;
+
 }
 
 .exchange-card .author {
@@ -485,7 +491,8 @@ body {
 .exchange-card .seller {
     font-size: 11px;
     font-weight: bold;
-    padding-top: 10px;
+    padding-top: 2px;
+    color: #777;
 }
 
 .exchange-card h3,
@@ -498,39 +505,10 @@ body {
     opacity: 0.5;
 }
 
-.status {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: #ccc;
-    padding: 4px 8px;
-    font-size: 12px;
-    border-radius: 4px;
-}
-
-
-.exchange-card .seller::before {
-    content: "Vendu par : ";
-    font-weight: normal;
-    color: #777;
-}
-
 /* NON DISPONIBLE */
 .exchange-card.unavailable {
     opacity: 0.45;
     pointer-events: none;
-}
-
-.exchange-card .status {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: #d0d0d0;
-    color: #333;
-    padding: 4px 8px;
-    font-size: 12px;
-    border-radius: 4px;
-    font-weight: bold;
 }
 
 
@@ -541,15 +519,20 @@ body {
 
 .breadcrumb {
     background-color: #F5F3EF;
-
+    padding: 15px 30px;
+    font-size: 14px;
 }
 
 .bread {
     margin-left: 15px;
 }
 
-.breadcrumb a,
-span {
+.breadcrumb a {
+    text-decoration: none; /* <-- SUPPRIME SOULIGNEMENT */
+    color: inherit;
+}
+
+.breadcrumb span {
     font-size: 10px;
 }
 
@@ -566,16 +549,15 @@ span {
 /* GAUCHE : image plein écran */
 .book-cover {
     width: 50%;
-    height: 100%;
+    height: 120vh; /* <-- FIXE la hauteur */
     overflow: hidden;
+    
 }
 
 .book-cover img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    /* 🔥 clé du plein écran */
-    display: block;
 }
 
 /* DROITE : contenu */
@@ -613,12 +595,6 @@ span {
     color: #fff;
     text-decoration: none;
     border-radius: 6px;
-}
-
-/* Breadcrumb */
-.breadcrumb {
-    padding: 15px 30px;
-    font-size: 14px;
 }
 
 

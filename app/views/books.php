@@ -26,26 +26,10 @@
 
             <?php if (!empty($books)): ?>
                 <?php foreach ($books as $book): ?>
-                    <?php
-                    // Sécurisation des données (évite les Deprecated)
-                    $id     = (int) ($book['id'] ?? 0);
-                    $title  = htmlspecialchars($book['title'] ?? 'Titre inconnu');
-                    $author = htmlspecialchars($book['author'] ?? 'Auteur inconnu');
-                    $seller = htmlspecialchars($book['seller'] ?? 'Utilisateur inconnu');
-                    $image  = htmlspecialchars($book['image'] ?? 'default.png');
-                    ?>
-
-                    <!-- Carte cliquable sans lien -->
-                    <a href="/livre/<?= htmlspecialchars($book['slug']) ?>" class="exchange-card">
-                        <img src="/images/<?= $image ?>" alt="Couverture du livre <?= $title ?>">
-                        <h3><?= $title ?></h3>
-                        <p class="author"><?= $author ?></p>
-                        <p class="seller">Vendu par : <?= $seller ?></p>
-                    </a>
-
+                    <?php include __DIR__ . '/components/_book_component.php'; ?>
                 <?php endforeach; ?>
             <?php else: ?>
-                <li>Aucun livre disponible pour le moment.</li>
+                <li>Aucun livre disponible</li>
             <?php endif; ?>
 
         </ul>

@@ -16,7 +16,7 @@
     <section class="hero hero-split">
         <div class="hero-text">
             <!-- Titre visible du hero -->
-            <h2>Rejoignez nos lecteurs passionnés</h2>
+            <h2>Rejoignez nos <br> lecteurs passionnés</h2>
             <p>Donnez une nouvelle vie à vos livres en les échangeant avec d'autres amoureux de la lecture. Nous croyons en la magie du partage de connaissances et d'histoires à travers les livres.</p>
             <a href="/livres" class="btn-primary">Découvrir</a>
         </div>
@@ -32,29 +32,17 @@
     <section class="books" id="books">
         <h2>Les derniers livres ajoutés</h2>
 
-        <ul class="book-list">
-            <?php if (!empty($latestBooks)): ?>
-                <?php foreach ($latestBooks as $book): ?>
-                    <?php
-                        // Définir les valeurs sécurisées pour htmlspecialchars
-                        $bookTitle = htmlspecialchars($book['title'] ?? 'Titre inconnu');
-                        $bookAuthor = htmlspecialchars($book['author'] ?? 'Auteur inconnu');
-                        $bookImage = htmlspecialchars($book['image'] ?? 'default.png');
-                        $bookSeller = htmlspecialchars($book['seller'] ?? 'Utilisateur inconnu');
-                    ?>
-                    <li class="book" style="cursor: pointer;" onclick="location.href='/livre/<?= $book['slug'] ?>'">
-                        <img src="/images/<?= $bookImage ?>"
-                            alt="Couverture du livre <?= $bookTitle ?>">
-                        <h3><?= $bookTitle ?></h3>
-                        <p class="author">Auteur : <?= $bookAuthor ?></p>
-                        <p class="seller">Vendu par : <?= $bookSeller ?></p>
-                    </li>
+        <!-- <ul class="book-list"> -->
+        <?php if (!empty($books)): ?>
+            <ul class="exchange-list">
+                <?php foreach ($books as $book): ?>
+                    <?php include __DIR__ . '/components/_book_component.php'; ?>
                 <?php endforeach; ?>
+            </ul>
+        <?php else: ?>
+            <p>Aucun livre pour le moment.</p>
+        <?php endif; ?>
 
-            <?php else: ?>
-                <li>Aucun livre disponible pour le moment.</li>
-            <?php endif; ?>
-        </ul>
 
         <div class="see-all-books">
             <a href="/livres" class="btn-secondary">Voir tous les livres</a>
@@ -66,7 +54,7 @@
     ========================= -->
     <section class="steps">
         <h2>Comment ça marche ?</h2>
-        <p>Échanger des livres avec TomTroc, c’est simple et amusant ! Suivez ces étapes :</p>
+        <p>Échanger des livres avec TomTroc c’est simple et amusant ! Suivez ces étapes pour commencer :</p>
         <ol class="steps-list">
             <li>Inscrivez-vous gratuitement sur notre plateforme.</li>
             <li>Ajoutez les livres que vous souhaitez échanger à votre profil.</li>

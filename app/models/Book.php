@@ -99,18 +99,26 @@ class Book
      */
     public function getLatest(int $limit = 4): array
     {
-        $limit = (int)$limit;
+        $stmt = $this->db->prepare("
+        SELECT 
+            b.id,
+            b.title,
+            b.author,
+            b.image,
+            b.slug,
+            u.username AS seller
+        FROM books b
+        JOIN users u ON u.id = b.owner_id
+        ORDER BY b.created_at DESC
+        LIMIT :limit
+    ");
 
-        $stmt = $this->db->query("
-            SELECT b.*, u.username AS seller
-            FROM books b
-            JOIN users u ON u.id = b.owner_id
-            ORDER BY b.created_at DESC
-            LIMIT $limit
-        ");
+        $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
+        $stmt->execute();
 
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll();
     }
+
 
     /**
      * Récupère les livres d’un utilisateur par user_id

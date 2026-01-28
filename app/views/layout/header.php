@@ -99,6 +99,6 @@
                 </ul>
             </div>
         </nav>
-    <?php showFlash(); ?>
+        <?php showFlash(); ?>
 
     </header>

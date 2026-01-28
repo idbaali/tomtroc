@@ -23,11 +23,12 @@ class HomeController extends Controller
      */
     public function index(): void
     {
-        $bookModel = new Book();
-        $latestBooks = $bookModel->getLatest(4); // 4 derniers livres
-        $this->render('home', [
-            'latestBooks' => $latestBooks,
-            'title' => 'Accueil - TomTroc'
-        ]);
+         $bookModel = new Book();
+
+        // 🔥 Derniers livres ajoutés
+        $books = $bookModel->getLatest(4);
+
+        require __DIR__ . '/../views/home.php';
     }
 }
+

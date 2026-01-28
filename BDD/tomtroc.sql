@@ -4,15 +4,22 @@ COLLATE utf8mb4_unicode_ci;
 
 USE tomtroc;
 
+-- =========================
+-- TABLE USERS
+-- =========================
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     description TEXT DEFAULT NULL,
+    avatar VARCHAR(255) DEFAULT 'default-user.png',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
+-- =========================
+-- TABLE BOOKS
+-- =========================
 CREATE TABLE IF NOT EXISTS books (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(150) NOT NULL,
@@ -25,17 +32,23 @@ CREATE TABLE IF NOT EXISTS books (
     FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
+-- =========================
+-- TABLE MESSAGES
+-- =========================
 CREATE TABLE IF NOT EXISTS messages (
     id INT AUTO_INCREMENT PRIMARY KEY,
     sender_id INT NOT NULL,
     receiver_id INT NOT NULL,
     content TEXT NOT NULL,
-    is_read BOOLEAN DEFAULT 0,
+    is_read TINYINT(1) DEFAULT 0,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (sender_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (receiver_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
+-- =========================
+-- TABLE EXCHANGES
+-- =========================
 CREATE TABLE IF NOT EXISTS exchanges (
     id INT AUTO_INCREMENT PRIMARY KEY,
     book_id INT NOT NULL,
@@ -46,11 +59,12 @@ CREATE TABLE IF NOT EXISTS exchanges (
     FOREIGN KEY (requester_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
-INSERT INTO users (username, email, password, description) VALUES
-('Nathalire', 'nathalire@example.com', 'password1', 'Passionnée de romans et d’échanges de livres.'),
-('CamilleClubLit', 'camille@example.com', 'password2', 'Bibliophile et organisatrice de club de lecture.'),
-('Alexlecture', 'alex@example.com', 'password3', 'Toujours à la recherche de nouvelles histoires.'),
-('Hugo1990_12', 'hugo@example.com', 'password4', 'Fan de poésie et récits inspirants.');
+
+INSERT INTO users (username, email, password, description, avatar) VALUES
+('Nathalire', 'nathalire@example.com', 'password1', 'Passionnée de romans.', 'nathalire.png'),
+('CamilleClubLit', 'camille@example.com', 'password2', 'Bibliophile et organisatrice.', 'camille.png'),
+('Alexlecture', 'alex@example.com', 'password3', 'Toujours à la recherche de nouvelles histoires.', 'alexlecture.png'),
+('Hugo1990_12', 'hugo@example.com', 'password4', 'Fan de poésie.', 'hugo.png');
 
 INSERT INTO books (title, author, description, image, owner_id, slug) VALUES
 ('Alabaster', 'Nathan Williams', 'Un roman captivant sur la famille et les secrets.', 'esther-alabaster.png', 1, 'alabaster'),

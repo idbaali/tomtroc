@@ -1,88 +1,100 @@
 <?php require __DIR__ . '/layout/header.php'; ?>
 
-<h1>Profil de l'utilisateur</h1>
+<main class="profile-page">
 
-<?php if ($user): ?>
-    <p>Nom : <?= htmlspecialchars($user['username']) ?></p>
-    <p>Email : <?= htmlspecialchars($user['email']) ?></p>
-    <p>Date d'inscription : <?= htmlspecialchars($user['created_at']) ?></p>
-<?php else: ?>
-    <p>Profil introuvable.</p>
-<?php endif; ?>
+    <!-- ===========================
+         COLONNE GAUCHE
+    ============================ -->
+    <aside class="profile-left">
 
-<?php require __DIR__ . '/layout/footer.php'; ?>
-
-
-<?php require __DIR__ . '/layout/header.php'; ?>
-
-<main class="public-profile" aria-labelledby="profile-title">
-
-    <!-- PROFIL PUBLIC -->
-    <section class="public-user">
-
-        <header class="public-user-header">
-            <img
-                src="/images/avatar.png"
-                alt="Photo de profil de Alexlecture"
-                class="public-avatar"
-            >
-
-            <div>
-                <h1 id="profile-title">Alexlecture</h1>
-                <p class="member-since">Membre depuis 1 an</p>
-            </div>
-        </header>
-
-        <p class="public-bio">
-            J'ai récemment plongé dans les pages de
-            <em>The Kinfolk Table</em> et j'ai été enchanté par cette œuvre
-            captivante. Ce livre célèbre l'art de partager des moments
-            authentiques autour de la table et de la convivialité.
-        </p>
-
-        <a
-            href="/messages"
-            class="btn-primary"
-            aria-label="Écrire un message à Alexlecture"
-        >
-            Écrire un message
-        </a>
-
-    </section>
-
-    <!-- BIBLIOTHÈQUE PUBLIQUE -->
-    <section class="public-library" aria-labelledby="library-title">
-
-        <header class="public-library-header">
-            <h2 id="library-title">Bibliothèque</h2>
-            <span aria-label="Nombre de livres">4 livres</span>
-        </header>
-
-        <div class="public-books">
-
-            <!-- LIVRE -->
-            <article class="public-book">
-                <img
-                    src="/images/kinfolk.png"
-                    alt="Couverture du livre The Kinfolk Table"
-                >
-
-                <div class="public-book-content">
-                    <h3>The Kinfolk Table</h3>
-                    <p class="author">Nathan Williams</p>
-
-                    <p class="description">
-                        J'ai récemment plongé dans les pages de
-                        <em>'The Kinfolk Table'</em> et j'ai été enchanté par
-                        cette œuvre captivante. Ce livre va bien au-delà
-                        d'une simple collection de recettes.
-                    </p>
-                </div>
-            </article>
-
-            <!-- Dupliquer ce bloc pour d'autres livres -->
-
+        <div class="avatar-wrapper">
+            <img src="/images/avatars/default-user.png" alt="Photo de Alexlecture" class="avatar">
+            <span class="status-online">En ligne</span>
         </div>
+
+        <h2 class="username">Alexlecture</h2>
+        <p class="member-since">Membre depuis 1 an</p>
+
+        <div class="library-summary">
+            <h3>BIBLIOTHÈQUE</h3>
+            <p class="book-count">4 livres</p>
+        </div>
+
+        <a href="#" class="btn-primary-profile">Écrire un message</a>
+
+    </aside>
+
+
+    <!-- ===========================
+         COLONNE DROITE
+    ============================ -->
+    <section class="profile-right">
+
+        <!-- Bibliothèque -->
+        <section class="profile-library">
+            <h2>Bibliothèque</h2>
+
+            <div class="library-books">
+
+                <!-- EN-TÊTES row -->
+                <div class="library-header">
+                    <div>PHOTO</div>
+                    <div>TITRE</div>
+                    <div>AUTEUR</div>
+                    <div>DESCRIPTION</div>
+                </div>
+
+                <!-- ROW 1 -->
+                <article class="library-book">
+                    <div class="library-photo">
+                        <img src="/images/books/kinfolk.png" alt="The Kinfolk Table">
+                    </div>
+                    <div class="library-title">The Kinfolk Table</div>
+                    <div class="library-author">Nathan Williams</div>
+                    <div class="library-description">
+                        J'ai récemment plongé dans les pages de 'The Kinfolk Table' et j'ai été enchanté par cette œuvre captivante...
+                    </div>
+                </article>
+
+                <!-- ROW 2 -->
+                <article class="library-book">
+                    <div class="library-photo">
+                        <img src="/images/books/alabaster.png" alt="Alabaster">
+                    </div>
+                    <div class="library-title">Alabaster</div>
+                    <div class="library-author">Esther</div>
+                    <div class="library-description">
+                        Une lecture captivante qui explore la résilience et la beauté dans les petites choses de la vie...
+                    </div>
+                </article>
+
+                <!-- ROW 3 -->
+                <article class="library-book">
+                    <div class="library-photo">
+                        <img src="/images/books/wabisabi.png" alt="Wabi Sabi">
+                    </div>
+                    <div class="library-title">Wabi Sabi</div>
+                    <div class="library-author">Beth Kempton</div>
+                    <div class="library-description">
+                        Une invitation à découvrir la beauté de l’imperfection et à vivre plus sereinement...
+                    </div>
+                </article>
+
+                <!-- ROW 4 -->
+                <article class="library-book">
+                    <div class="library-photo">
+                        <img src="/images/books/milkhoney.png" alt="Milk & Honey">
+                    </div>
+                    <div class="library-title">Milk & Honey</div>
+                    <div class="library-author">Rupi Kaur</div>
+                    <div class="library-description">
+                        Une poésie moderne qui touche le cœur, explorant l’amour, la douleur et la guérison...
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
 
     </section>
 

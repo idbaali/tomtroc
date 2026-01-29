@@ -14,7 +14,7 @@ class AuthController extends Controller
         parent::__construct();
         $this->userModel = new User();
     }
- 
+
     public function register()
     {
         $error = '';
@@ -80,5 +80,4 @@ class AuthController extends Controller
         header('Location: /');
         exit;
     }
-    
 }

@@ -673,17 +673,28 @@ body {
 }
 
 .book-owner {
-    margin-top: 40px;
+    margin-top: 50px;
 }
 
-.book-owner .btn-book {
-    display: inline-block;
-    margin-top: 50px;
-    padding: 12px 100px;
-    background-color: #00AC66;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 6px;
+.owner-box {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.owner-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #00AC66;
+}
+
+.owner-name {
+    font-weight: 600;
+    font-size: 16px;
+    color: #333;
 }
 
 
@@ -976,125 +987,138 @@ body {
 
 
 /* =========================
-   PROFIL PUBLIC / profile.php
+   COMPTE PUBLIC / profile.php
 ========================= */
 
-.public-profile {
-    max-width: 1100px;
+/* Layout global : séparation gauche / droite */
+.profile-page {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    /* gauche fixe, droite fluide */
+    gap: 30px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 40px 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 50px;
+    align-items: start;
 }
 
-.public-user-header {
-    display: flex;
-    align-items: center;
-    gap: 25px;
-    margin-bottom: 20px;
+/* COLONNE GAUCHE */
+
+.profile-left {
+    width: 280px;
+    background: #fff;
+    padding: 25px 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
-.public-avatar {
-    width: 120px;
-    height: 120px;
+/* AVATAR – COLONNE GAUCHE */
+
+.profile-left .avatar {
+    display: block;
+    margin: 0 auto 15px auto;
+    /* centrage horizontal */
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
     object-fit: cover;
     border: 3px solid #00AC66;
+    background: #f5f5f5;
 }
 
-.public-user-header h1 {
-    font-size: 28px;
-    margin: 0;
-    color: #292929;
+
+.btn-primary-profile {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 15px;
+    background: #F5F3EF;
+    color: #00AC66;
+    text-decoration: none;
+    border-radius: 6px;
+    border: 1px solid #00AC66;
+}
+
+   /* COLONNE DROITE */
+.profile-right {
+    width: 100%;
+    overflow: hidden;
+    /* empêche tout débordement */
+}
+
+   /* BIBLIOTHÈQUE */
+.profile-library {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* En-têtes */
+.library-header {
+    display: grid;
+    grid-template-columns: 120px 200px 150px 1fr;
+    gap: 10px;
+    font-weight: bold;
+    padding: 10px 0;
+    border-bottom: 2px solid #ccc;
+}
+
+
+/* Chaque ROW */
+.library-book {
+    display: grid;
+    grid-template-columns: 120px 200px 150px 1fr;
+    gap: 10px;
+    align-items: start;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+
+/* Image livre */
+.library-photo img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+
+
+.username {
+    margin: 15px 0 5px;
+    font-size: 20px;
+    font-weight: 600;
 }
 
 .member-since {
     font-size: 14px;
-    color: #666;
-}
-
-.public-bio {
-    font-size: 16px;
-    line-height: 1.7;
-    color: #444;
+    color: #777;
     margin-bottom: 20px;
 }
 
-.public-user .btn-primary {
-    padding: 12px 25px;
-    background-color: #00AC66;
-    color: #fff;
-    border-radius: 6px;
-    font-weight: bold;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
+.library-summary {
+    margin: 20px 0;
 }
 
-.public-user .btn-primary:hover {
-    background-color: #008f55;
-}
-
-.public-library-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.public-library-header h2 {
-    font-size: 24px;
-    color: #292929;
-    margin: 0;
-}
-
-.public-library-header span {
+.library-summary h3 {
     font-size: 14px;
-    color: #666;
+    letter-spacing: 1px;
+    color: #333;
 }
 
-.public-books {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 25px;
-}
-
-.public-book {
-    background: #fff;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-    display: flex;
-    flex-direction: column;
-}
-
-.public-book img {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-}
-
-.public-book-content {
-    padding: 15px;
-}
-
-.public-book-content h3 {
-    margin: 0 0 5px 0;
+.book-count {
     font-size: 18px;
-    color: #292929;
+    font-weight: bold;
+    color: #00AC66;
+    margin-top: 5px;
 }
 
-.public-book-content .author {
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 10px;
-}
 
-.public-book-content .description {
-    font-size: 14px;
-    color: #444;
-    line-height: 1.5;
-}
+
+
+
+
+
 
 
 /* =========================

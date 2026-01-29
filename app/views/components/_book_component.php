@@ -14,7 +14,7 @@ $slug   = htmlspecialchars($book['slug']   ?? '#');
 <a href="/livre/<?= $slug ?>" class="exchange-card">
 
     <img
-        src="/images/<?= $image ?>"
+        src="/images/books/<?= $image ?>"
         alt="Couverture du livre <?= $title ?>"
         loading="lazy"
     >

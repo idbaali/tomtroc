@@ -36,21 +36,28 @@ class Book
     }
 
     /**
-     * Récupère un livre par son slug
-     *
-     * @param string $slug
-     * @return array|null
+     * Récupérer un livre par son slug
      */
-    public function getBySlug(?string $slug): ?array
+    public function getBySlug(string $slug)
     {
-        if (!$slug) return null;
+        $sql = "
+            SELECT 
+                b.*,
+                u.username AS owner_name,
+                u.avatar AS owner_avatar
+            FROM books b
+            JOIN users u ON b.owner_id = u.id
+            WHERE b.slug = :slug
+            LIMIT 1
+        ";
 
-        $stmt = $this->db->prepare("SELECT * FROM books WHERE slug = :slug");
+        $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':slug', $slug);
         $stmt->execute();
 
-        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
 
     /**
      * Récupère un livre par son ID

@@ -12,9 +12,9 @@ class Router
     public function run()
     {
         // 🔐 Session (OBLIGATOIRE ici)
-        // if (session_status() === PHP_SESSION_NONE) {
-        //     session_start();
-        // }
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
 
 
 
@@ -39,7 +39,7 @@ class Router
 
 
          // 3. Routes publiques (ACCESSIBLES SANS CONNEXION)
-        $publicRoutes = ['', 'connexion', 'inscription', 'livres'];
+        $publicRoutes = ['', 'connexion', 'inscription', 'livres', 'livre', 'compte-public'];
     
 
         // 🔐 Protection des routes

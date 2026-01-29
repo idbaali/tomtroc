@@ -20,8 +20,8 @@
 
             <!-- GAUCHE : IMAGE DU LIVRE -->
             <div class="book-cover">
-                <img src="/images/<?= htmlspecialchars($book['image'] ?? 'default.png') ?>"
-                     alt="Couverture du livre <?= htmlspecialchars($book['title'] ?? 'Titre inconnu') ?>">
+                <img src="/images/books/<?= htmlspecialchars($book['image'] ?? 'default.png') ?>"
+                    alt="Couverture du livre <?= htmlspecialchars($book['title'] ?? 'Titre inconnu') ?>">
             </div>
 
             <!-- DROITE : CONTENU -->
@@ -36,13 +36,38 @@
                 <p><?= nl2br(htmlspecialchars($book['description'] ?? 'Pas de description')) ?></p>
 
                 <!-- PROPRIETAIRE -->
+                <!-- ================= PROPRIÉTAIRE ================= -->
                 <div class="book-owner">
-                    <h2>Propriétaire</h2>
-                    <p class="owner-name"><?= htmlspecialchars($book['owner_name'] ?? 'Utilisateur inconnu') ?></p>
 
-                    <a href="#" class="btn-book">
-                        Envoyer un message
-                    </a>
+                    <h2>Propriétaire</h2>
+
+                    <div class="owner-box">
+                        <!-- Avatar du propriétaire -->
+                        <img
+                            src="/images/avatars/<?= htmlspecialchars($book['owner_avatar'] ?? 'default-user.png') ?>"
+                            alt="Photo de <?= htmlspecialchars($book['owner_name'] ?? 'Utilisateur inconnu') ?>"
+                            class="owner-avatar"
+                            loading="lazy">
+
+                        <!-- Nom + lien vers profil -->
+                        <div class="owner-info">
+                            <p class="owner-name">
+                                <?= htmlspecialchars($book['owner_name'] ?? 'Utilisateur inconnu') ?>
+                            </p>
+
+                            <a href="/compte-public/<?= (int)($book['owner_id'] ?? 0) ?>">
+                                Voir le profil
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Bouton "Envoyer un message" uniquement si l'utilisateur est connecté et n'est pas le propriétaire -->
+                    <?php if (!empty($_SESSION['user']) && $_SESSION['user']['id'] !== ($book['owner_id'] ?? 0)) : ?>
+                        <a href="/messages/nouveau/<?= (int)$book['owner_id'] ?>" class="btn-book">
+                            Envoyer un message
+                        </a>
+                    <?php endif; ?>
+
                 </div>
 
             </div>

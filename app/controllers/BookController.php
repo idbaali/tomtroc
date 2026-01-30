@@ -37,36 +37,36 @@ class BookController extends Controller
         ]);
     }
 
- public function show($param)
-{
-    // Si aucun paramètre reçu → erreur
-    if (!$param) {
-        http_response_code(404);
-        echo "Livre introuvable";
-        return;
-    }
+    public function show($param)
+    {
+        // Si aucun paramètre reçu → erreur
+        if (!$param) {
+            http_response_code(404);
+            echo "Livre introuvable";
+            return;
+        }
 
-    // Si le paramètre est numérique → recherche par ID
-    if (ctype_digit($param)) {
-        $book = $this->bookModel->getById((int)$param);
-    } else {
-        // Sinon → recherche par slug
-        $book = $this->bookModel->getBySlug($param);
-    }
+        // Si le paramètre est numérique → recherche par ID
+        if (ctype_digit($param)) {
+            $book = $this->bookModel->getById((int)$param);
+        } else {
+            // Sinon → recherche par slug
+            $book = $this->bookModel->getBySlug($param);
+        }
 
-    // Si aucun livre trouvé
-    if (!$book) {
-        http_response_code(404);
-        echo "Livre introuvable";
-        return;
-    }
+        // Si aucun livre trouvé
+        if (!$book) {
+            http_response_code(404);
+            echo "Livre introuvable";
+            return;
+        }
 
-    // Affichage de la vue book.php
-    $this->render('book', [
-        'title' => $book['title'],
-        'book'  => $book
-    ]);
-}
+        // Affichage de la vue book.php
+        $this->render('book', [
+            'title' => $book['title'],
+            'book'  => $book
+        ]);
+    }
 
     /**
      * Enregistre un nouveau livre dans la base de données
@@ -136,5 +136,8 @@ class BookController extends Controller
         $slug = trim($slug, '-');
 
         return $slug;
+        
     }
+    
+    
 }

@@ -89,13 +89,9 @@ class Router
 
             case 'compte-public':    // au lieu de 'profile'
                 $controller = new \App\Controllers\UserController();
-                $controller->profile();
+                $controller->profile((int) $param);
                 break;
 
-            case 'bibliotheque': // au lieu de 'library'
-                $controller = new \App\Controllers\UserController();
-                $controller->library();
-                break;
 
             case 'messages':
                 $controller = new \App\Controllers\MessageController();

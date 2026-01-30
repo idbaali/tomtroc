@@ -26,27 +26,49 @@ class UserController extends Controller
     /**
      * Page Mon compte
      */
-    public function account()
+    public function account(): void
     {
-        $user = $this->userModel->getById(1); // Remplacer par l'utilisateur connecté
-        $this->render('account', ['user' => $user]);
+        // 1️⃣ Vérifier si l'utilisateur est connecté
+        if (empty($_SESSION['user']['id'])) {
+            header('Location: /connexion');
+            exit;
+        }
+
+        // 2️⃣ Récupérer l'utilisateur connecté
+        $userId = (int) $_SESSION['user']['id'];
+        $user   = $this->userModel->getById($userId);
+
+        // 3️⃣ Récupérer ses livres
+        $books = $this->bookModel->getByOwner($userId);
+
+        // 4️⃣ Afficher la vue
+        $this->render('account', [
+            'user'  => $user,
+            'books' => $books
+        ]);
     }
 
     /**
      * Page Profil
      */
-    public function profile()
+    public function profile(int $id): void
     {
-        $user = $this->userModel->getById(1); // Exemple temporaire
-        $this->render('profile', ['user' => $user]);
-    }
+        // 1️⃣ Récupérer l'utilisateur demandé
+        $user = $this->userModel->getById($id);
 
-    /**
-     * Bibliothèque personnelle de l'utilisateur
-     */
-    public function library()
-    {
-        $books = $this->bookModel->getByOwner(1); // Exemple : id utilisateur = 1
-        $this->render('library', ['books' => $books]);
+        if (!$user) {
+            http_response_code(404);
+            $this->render('404');
+            return;
+        }
+
+        // 2️⃣ Récupérer les livres de cet utilisateur
+        $books = $this->bookModel->getByOwner($id);
+
+        // 3️⃣ Affichage
+        $this->render('profile', [
+            'user'  => $user,
+            'books' => $books
+        ]);
     }
 }

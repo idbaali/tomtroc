@@ -86,17 +86,15 @@ class Book
      * @param int $userId
      * @return array
      */
-    public function getByOwner(int $userId): array
+    public function getByOwner(int $ownerId): array
     {
-        $stmt = $this->db->prepare("
-            SELECT * FROM books
-            WHERE owner_id = ?
-            ORDER BY created_at DESC
-        ");
-        $stmt->execute([$userId]);
+        $sql = "SELECT * FROM books WHERE owner_id = :owner_id ORDER BY created_at DESC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(['owner_id' => $ownerId]);
 
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll();
     }
+
 
     /**
      * Récupère les derniers livres ajoutés

@@ -6,9 +6,11 @@
 
 $title  = htmlspecialchars($book['title']  ?? '');
 $author = htmlspecialchars($book['author'] ?? '');
-$seller = htmlspecialchars($book['seller'] ?? '');
+// $seller = htmlspecialchars($book['seller'] ?? '');
+$seller = htmlspecialchars($book['owner_name'] ?? 'Utilisateur');
 $image  = htmlspecialchars($book['image']  ?? 'default.png');
 $slug   = htmlspecialchars($book['slug']   ?? '#');
+
 ?>
 
 <a href="/livre/<?= $slug ?>" class="exchange-card">
@@ -26,5 +28,6 @@ $slug   = htmlspecialchars($book['slug']   ?? '#');
     <p class="seller">
         Vendu par : <?= $seller ?>
     </p>
+    
 
 </a>

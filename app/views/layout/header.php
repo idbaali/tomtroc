@@ -67,11 +67,6 @@
                     <?php if (isset($_SESSION['user'])) : ?>
 
                         <li>
-                            <a href="/bibliotheque">Bibliothèque</a>
-
-                        </li>
-
-                        <li>
                             <a href="/messages">
                                 <img src="/images/icon-messagerie.png" alt="TomTroc" class="icon-messagerie"> Messagerie
                                 <img src="/images/messagerie.png" alt="TomTroc" class="messagerie">

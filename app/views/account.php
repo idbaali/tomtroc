@@ -1,95 +1,151 @@
 <?php require __DIR__ . '/layout/header.php'; ?>
 
-<h1>Mon compte</h1>
-
-<?php if ($user): ?>
-    <p>Nom : <?= htmlspecialchars($user['username']) ?></p>
-    <p>Email : <?= htmlspecialchars($user['email']) ?></p>
-    <p>Date d'inscription : <?= htmlspecialchars($user['created_at']) ?></p>
-<?php else: ?>
-    <p>Utilisateur non trouvé.</p>
-<?php endif; ?>
-
-
 <main class="account-page">
 
-    <!-- INFOS UTILISATEUR -->
-    <section class="account-info" aria-labelledby="account-title">
+<?php if ($user): ?>
 
-        <h1 id="account-title">Vos informations personnelles</h1>
+<h1 class="account-title">Mon compte</h1>
+
+<!-- ================= HAUT : GAUCHE / DROITE ================= -->
+<section class="account-info">
+
+    <!-- ===== GAUCHE ===== -->
+    <div class="account-left">
+
+        <a href="#" class="link-edit">Modifier</a>
+
+        <strong class="username"><?= htmlspecialchars($user['username']) ?></strong>
+
+        <span class="member-since">
+            Membre depuis <?= htmlspecialchars($user['member_since'] ?? '1 an') ?>
+        </span>
+
+        <div class="library-resume">
+            <span class="library-title">BIBLIOTHÈQUE</span>
+            <span class="library-count">
+                <?= isset($books) ? count($books) : 0 ?> livres
+            </span>
+        </div>
+
+    </div>
+
+    <!-- ===== DROITE ===== -->
+    <div class="account-right">
+
+        <h2>Vos informations personnelles</h2>
 
         <div class="info-group">
             <span class="label">Adresse email</span>
-            <span class="value">nathalie@mail.com</span>
-            <a href="#" class="link-edit">Modifier</a>
+            <span class="value"><?= htmlspecialchars($user['email']) ?></span>
         </div>
 
         <div class="info-group">
             <span class="label">Mot de passe</span>
             <span class="value">•••••••••</span>
-            <a href="#" class="link-edit">Modifier</a>
         </div>
 
         <div class="info-group">
             <span class="label">Pseudo</span>
-            <span class="value">nathalire</span>
-        </div>
-
-        <div class="info-meta">
-            <strong>nathalire</strong><br>
-            <span>Membre depuis 1 an</span>
+            <span class="value"><?= htmlspecialchars($user['username']) ?></span>
         </div>
 
         <button class="btn-primary">Enregistrer</button>
 
-    </section>
+    </div>
 
-    <!-- BIBLIOTHÈQUE -->
-    <section class="account-library" aria-labelledby="library-title">
+</section>
 
-        <header class="library-header">
-            <h2 id="library-title">Bibliothèque</h2>
-            <span class="library-count">4 livres</span>
-        </header>
+<!-- ================= BAS : BIBLIOTHÈQUE ================= -->
+<section class="account-library">
 
-        <div class="library-table">
+    <h2>Bibliothèque</h2>
 
-            <div class="table-head">
-                <span>Photo</span>
-                <span>Titre</span>
-                <span>Auteur</span>
-                <span>Description</span>
-                <span>Disponibilité</span>
-                <span>Action</span>
-            </div>
+    <div class="library-books">
 
-            <!-- LIVRE -->
-            <article class="table-row">
-                <img src="/images/kinfolk.png" alt="Couverture The Kinfolk Table">
-
-                <div>
-                    <strong>The Kinfolk Table</strong>
-                </div>
-
-                <div>Nathan Williams</div>
-
-                <p class="desc">
-                    J'ai récemment plongé dans les pages de 'The Kinfolk Table'...
-                </p>
-
-                <span class="status available">Disponible</span>
-
-                <div class="actions">
-                    <a href="/edit-book">Éditer</a>
-                    <a href="#" class="danger">Supprimer</a>
-                </div>
-            </article>
-
-            <!-- Dupliquer les rows si besoin -->
-
+        <!-- EN-TÊTE -->
+        <div class="library-header">
+            <div>PHOTO</div>
+            <div>TITRE</div>
+            <div>AUTEUR</div>
+            <div>DESCRIPTION</div>
+            <div>DISPONIBILITÉ</div>
+            <div>ACTION</div>
         </div>
 
-    </section>
+        <!-- ROW 1 -->
+        <article class="library-book">
+            <div class="library-photo">
+                <img src="/images/books/kinfolk.png" alt="The Kinfolk Table">
+            </div>
+
+            <div class="library-title">The Kinfolk Table</div>
+
+            <div class="library-author">Nathan Williams</div>
+
+            <div class="library-description">
+                J'ai récemment plongé dans les pages de "The Kinfolk Table" et j'ai été enchanté par cette œuvre captivante...
+            </div>
+
+            <div class="library-status available">Disponible</div>
+
+            <div class="library-actions">
+                <a href="#">Éditer</a>
+                <a href="#" class="danger">Supprimer</a>
+            </div>
+        </article>
+
+        <!-- ROW 2 -->
+        <article class="library-book">
+            <div class="library-photo">
+                <img src="/images/books/kinfolk.png">
+            </div>
+            <div class="library-title">The Kinfolk Table</div>
+            <div class="library-author">Nathan Williams</div>
+            <div class="library-description">Description du livre…</div>
+            <div class="library-status unavailable">Non dispo.</div>
+            <div class="library-actions">
+                <a href="#">Éditer</a>
+                <a href="#" class="danger">Supprimer</a>
+            </div>
+        </article>
+
+        <!-- ROW 3 -->
+        <article class="library-book">
+            <div class="library-photo">
+                <img src="/images/books/kinfolk.png">
+            </div>
+            <div class="library-title">The Kinfolk Table</div>
+            <div class="library-author">Nathan Williams</div>
+            <div class="library-description">Description du livre…</div>
+            <div class="library-status available">Disponible</div>
+            <div class="library-actions">
+                <a href="#">Éditer</a>
+                <a href="#" class="danger">Supprimer</a>
+            </div>
+        </article>
+
+        <!-- ROW 4 -->
+        <article class="library-book">
+            <div class="library-photo">
+                <img src="/images/books/kinfolk.png">
+            </div>
+            <div class="library-title">The Kinfolk Table</div>
+            <div class="library-author">Nathan Williams</div>
+            <div class="library-description">Description du livre…</div>
+            <div class="library-status unavailable">Non dispo.</div>
+            <div class="library-actions">
+                <a href="#">Éditer</a>
+                <a href="#" class="danger">Supprimer</a>
+            </div>
+        </article>
+
+    </div>
+
+</section>
+
+<?php else: ?>
+<p>Utilisateur non trouvé.</p>
+<?php endif; ?>
 
 </main>
 

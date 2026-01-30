@@ -856,134 +856,185 @@ body {
 }
 
 /* =========================
-   ESPACE PERSONNEL
+   PAGE MON COMPTE
 ========================= */
 
 .account-page {
     max-width: 1200px;
-    margin: 40px auto;
-    padding: 0 20px;
+    margin: 0 auto;
+    padding: 40px 20px;
 }
 
-/* ---------- INFOS ---------- */
+.account-title {
+    margin-bottom: 30px;
+}
+
+/* =========================
+   HAUT : GAUCHE / DROITE
+========================= */
 
 .account-info {
     background: #F5F3EF;
     padding: 30px;
-    border-radius: 10px;
-    margin-bottom: 50px;
+    border-radius: 12px;
+
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 40px;
 }
 
-.account-info h1 {
-    margin-bottom: 25px;
-}
-
-.info-group {
+/* ----- GAUCHE ----- */
+.account-left {
     display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 15px;
-}
-
-.label {
-    width: 160px;
-    font-weight: bold;
-}
-
-.value {
-    flex: 1;
+    flex-direction: column;
+    gap: 12px;
 }
 
 .link-edit {
     color: #00AC66;
+    font-size: 14px;
     text-decoration: none;
+}
+
+.username {
+    font-size: 18px;
+}
+
+.member-since {
     font-size: 14px;
+    color: #666;
 }
 
-.link-edit:hover {
-    text-decoration: underline;
+.library-resume {
+    margin-top: 10px;
 }
 
-.info-meta {
-    margin: 20px 0;
-    font-size: 14px;
-    color: #555;
-}
-
-/* ---------- BIBLIOTHÈQUE ---------- */
-
-.account-library h2 {
-    margin-bottom: 10px;
-}
-
-.library-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+.library-title {
+    display: block;
+    font-weight: 700;
 }
 
 .library-count {
-    font-weight: bold;
-}
-
-.library-table {
-    background: #fff;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-/* En-tête */
-.table-head {
-    display: grid;
-    grid-template-columns: 80px 150px 140px 1fr 120px 120px;
-    padding: 15px;
-    background: #F5F3EF;
-    font-weight: bold;
-}
-
-/* Ligne */
-.table-row {
-    display: grid;
-    grid-template-columns: 80px 150px 140px 1fr 120px 120px;
-    padding: 15px;
-    border-top: 1px solid #eee;
-    align-items: center;
-}
-
-.table-row img {
-    width: 60px;
-    border-radius: 6px;
-}
-
-.desc {
     font-size: 14px;
+}
+
+/* ----- DROITE ----- */
+.account-right h2 {
+    margin-bottom: 20px;
+}
+
+.info-group {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    margin-bottom: 15px;
+}
+
+.label {
+    font-weight: 600;
+}
+
+.value {
     color: #444;
 }
 
-.status {
-    font-size: 14px;
+.btn-primary {
+    margin-top: 25px;
+    padding: 10px 16px;
+    background: #00AC66;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+
+/* BIBLIOTHÈQUE (BAS) */
+
+.library-books {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* EN-TÊTE */
+.library-header {
+    display: grid;
+    grid-template-columns: 80px 160px 140px 1fr 120px 140px;
     font-weight: bold;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #ccc;
 }
 
-.available {
-    color: #00AC66;
+/* ROW */
+.library-book {
+    display: grid;
+    grid-template-columns: 80px 160px 140px 1fr 120px 140px;
+    gap: 10px;
+    align-items: start;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
 }
 
-.unavailable {
-    color: #e74c3c;
+/* PHOTO */
+.library-photo img {
+    width: 60px;
+    height: auto;
+    border-radius: 4px;
 }
 
-.actions a {
-    display: block;
+/* TEXTE */
+.library-title {
+    font-weight: 600;
+}
+
+.library-author {
+    color: #555;
+}
+
+.library-description {
     font-size: 14px;
-    text-decoration: none;
-    color: #00AC66;
+    line-height: 1.4;
 }
 
-.actions .danger {
-    color: #e74c3c;
+/* STATUS */
+.library-status.available {
+    color: green;
+    font-weight: 600;
 }
+
+.library-status.unavailable {
+    color: red;
+    font-weight: 600;
+}
+
+/* ACTIONS */
+.library-actions a {
+    display: inline-block;
+    margin-right: 10px;
+    text-decoration: none;
+}
+
+.library-actions .danger {
+    color: red;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* =========================
@@ -1010,7 +1061,7 @@ body {
     padding: 25px 20px;
     border-radius: 10px;
     text-align: center;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 /* AVATAR – COLONNE GAUCHE */
@@ -1039,14 +1090,14 @@ body {
     border: 1px solid #00AC66;
 }
 
-   /* COLONNE DROITE */
+/* COLONNE DROITE */
 .profile-right {
     width: 100%;
     overflow: hidden;
     /* empêche tout débordement */
 }
 
-   /* BIBLIOTHÈQUE */
+/* BIBLIOTHÈQUE */
 .profile-library {
     display: flex;
     flex-direction: column;
@@ -1204,20 +1255,16 @@ body {
 /* PHOTO : forcer structure verticale */
 /* text-align: left; */
 
-.edit-book-detail .edit-book-photo {
-    width: 40%;
-    /* display: flex; */
-    /* flex-direction: column;
-    align-items: center; */
-}
+
 
 /* IMAGE = BLOC */
 .edit-book-photo img {
     display: block;
     /* ✅ TRÈS IMPORTANT */
-    width: 100%;
-    max-width: 420px;
-    height: auto;
+    width: 400px;
+    /* max-width: 420px; */
+    height: 424px;
+    /* height: auto; */
     margin-bottom: 15px;
     object-fit: cover;
 }
@@ -1235,7 +1282,7 @@ body {
 
 /* FORMULAIRE */
 .edit-book-form {
-    width: 60%;
+    width: 30%;
 }
 
 .edit-book-detail .edit-book-photo h2,
@@ -1255,10 +1302,15 @@ body {
 .edit-book-form textarea,
 .edit-book-form select {
     width: 100%;
+    /* height: 400px; */
     padding: 10px;
     margin-top: 5px;
     border-radius: 6px;
     border: 1px solid #ccc;
+}
+textarea {
+    width: 100%;
+    height: 300px;
 }
 
 .btn-edit {

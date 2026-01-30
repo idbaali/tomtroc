@@ -55,7 +55,7 @@ class AuthController extends Controller
 
             if (!$user) {
                 setFlash('error', "Email incorrect");
-            } elseif ($password !== $user['password']) {
+            } elseif (!password_verify($password, $user['password'])) {
                 setFlash('error', "Mot de passe incorrect");
             } else {
                 unset($user['password']);

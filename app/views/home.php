@@ -1,4 +1,5 @@
 <?php require __DIR__ . '/layout/header.php'; ?>
+<!-- <pre><?php var_dump($books); ?></pre> -->
 
 <!-- =========================
    MAIN CONTENT

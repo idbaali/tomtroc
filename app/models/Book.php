@@ -67,26 +67,3 @@ class Book
 
 
 
-<?php
-
-// namespace App\Models;
-
-/**
- * Modèle Book
- * ------------
- * Représente la structure d’un livre.
- * Les opérations sur la base de données sont déléguées au BookManager.
- */
-// class Book
-// {
-    // Propriétés correspondant aux colonnes de la table books
-//     public int $id;
-//     public string $title;
-//     public string $author;
-//     public ?string $description;
-//     public ?string $image;
-//     public int $owner_id;
-//     public string $slug;
-//     public string $created_at;
-// }
-?>

@@ -4,9 +4,12 @@ namespace App\Controllers;
 
 use Core\Controller;
 use App\Managers\BookManager;
+use App\Models\Book;
 
 /**
  * Contrôleur des livres
+ * ----------------------
+ * Liste, affiche et enregistre les livres.
  */
 class BookController extends Controller
 {
@@ -24,6 +27,12 @@ class BookController extends Controller
     public function index(): void
     {
         $books = $this->bookManager->getAll();
+
+        // Vérification si aucun livre
+        if (empty($books)) {
+            echo "Aucun livre trouvé !";
+            exit;
+        }
 
         $this->render('books', [
             'title' => 'Nos livres à l’échange',
@@ -75,6 +84,8 @@ class BookController extends Controller
 
         if (!$book) {
             http_response_code(404);
+            echo "Livre introuvable";
+            return;
         }
 
         $this->render('edit-book', ['book' => $book]);
@@ -90,12 +101,37 @@ class BookController extends Controller
             return;
         }
 
+        // Récupère les données du formulaire
         $data = $_POST;
-        $data['slug'] = generateSlug($data['title']);
-        $this->bookManager->create($data);
 
+        // Génère un slug
+        $data['slug'] = $this->generateSlug($data['title']);
+
+        // Crée un nouvel objet Book
+        $book = new Book([
+            'title' => $data['title'],
+            'author' => $data['author'],
+            'description' => $data['description'] ?? '',
+            'image' => $data['image'] ?? '',
+            'owner_id' => $data['owner_id'] ?? 1, // Valeur par défaut si nécessaire
+            'slug' => $data['slug']
+        ]);
+
+        $this->bookManager->create($book);
+
+        // Redirection vers la liste des livres
         header('Location: /livres');
         exit;
     }
 
+    /**
+     * Génère un slug à partir d'un titre
+     */
+    private function generateSlug(string $title): string
+    {
+        $slug = strtolower(trim($title));
+        $slug = preg_replace('/[^a-z0-9-]+/', '-', $slug);
+        $slug = preg_replace('/-+/', '-', $slug);
+        return trim($slug, '-');
+    }
 }

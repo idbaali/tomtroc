@@ -5,6 +5,12 @@ namespace App\Controllers;
 use Core\Controller;
 use App\Managers\MessageManager;
 
+/**
+ * Contrôleur de la messagerie
+ * ----------------------------
+ * Permet d'afficher les conversations, les messages
+ * et d'envoyer de nouveaux messages.
+ */
 class MessageController extends Controller
 {
     private MessageManager $messageManager;
@@ -15,20 +21,62 @@ class MessageController extends Controller
         $this->messageManager = new MessageManager();
     }
 
-    public function index()
+    /**
+     * Liste des conversations et affichage des messages
+     */
+    public function index(): void
     {
-        // ✅ Vérifier AVANT tout
-        if (!isset($_SESSION['user'])) {
-            header('Location: /connexion');
+        // 🔹 ID de l'utilisateur connecté
+        $userId = $_SESSION['user']['id'];
+
+        // 🔹 Récupère toutes les conversations de l'utilisateur
+        $conversations = $this->messageManager->getUserConversations($userId);
+
+        // 🔹 ID de l'utilisateur sélectionné pour voir la conversation
+        $currentConversationUserId = $_GET['user'] ?? null;
+
+        // 🔹 Messages à afficher (vide si aucune conversation sélectionnée)
+        $messages = [];
+        if ($currentConversationUserId) {
+            $currentConversationUserId = (int)$currentConversationUserId;
+            $messages = $this->messageManager->getConversation($userId, $currentConversationUserId);
+        }
+
+        // 🔹 Affiche la vue messages.php
+        $this->render('messages', [
+            'title' => 'Messagerie',
+            'conversations' => $conversations,
+            'messages' => $messages,
+            'currentConversationUserId' => $currentConversationUserId
+        ]);
+    }
+
+    /**
+     * Envoi d'un nouveau message
+     */
+    public function send(): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
             exit;
         }
 
-        $userId = $_SESSION['user']['id'];
+        $senderId = $_SESSION['user']['id'];
+        $receiverId = (int)($_POST['receiver_id'] ?? 0);
+        $content = trim($_POST['content'] ?? '');
 
-        $messages = $this->messageManager->findByUser($userId);
+        // 🔹 Vérifie que le message est valide
+        if ($receiverId && $content) {
+            $message = new \App\Models\Message([
+                'sender_id' => $senderId,
+                'receiver_id' => $receiverId,
+                'content' => $content
+            ]);
 
-        $this->render('messages', [
-            'messages' => $messages
-        ]);
+            $this->messageManager->send($message);
+        }
+
+        // 🔹 Redirection vers la conversation après envoi
+        redirect("/messagerie?user={$receiverId}");
     }
 }

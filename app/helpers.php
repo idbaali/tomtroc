@@ -5,8 +5,14 @@
  * =====================
  *
  * Ce fichier contient des fonctions utilitaires
- * destinées à l'affichage dans les vues.
+ * utilisées dans plusieurs parties du projet.
+ * 
+ * - Génération de slug
+ * - Affichage de carte livre
+ * - Gestion des messages flash
+ * - Utilitaires de session/utilisateur
  */
+
 
 /**
  * Affiche une carte HTML pour un livre
@@ -14,12 +20,9 @@
  * @param array $book Tableau associatif représentant un livre
  * @return void
  */
-/**
- * Affiche une carte livre
- */
 function renderBookCard(array $book): void
 {
-?>
+    ?>
     <div class="book-card">
         <h3><?= htmlspecialchars($book['title']) ?></h3>
         <p>Auteur : <?= htmlspecialchars($book['author']) ?></p>
@@ -30,12 +33,16 @@ function renderBookCard(array $book): void
             <a href="/modifier-livre/<?= htmlspecialchars($book['id']) ?>">Modifier</a>
         <?php endif; ?>
     </div>
-<?php
+    <?php
 }
 
 
 /**
  * Définit un message flash en session
+ *
+ * @param string $type  Type du message (success, error, info)
+ * @param string $message Le texte du message
+ * @return void
  */
 function setFlash(string $type, string $message): void
 {
@@ -45,8 +52,11 @@ function setFlash(string $type, string $message): void
     ];
 }
 
+
 /**
  * Affiche le message flash (si existe) puis le supprime
+ *
+ * @return void
  */
 function showFlash(): void
 {
@@ -55,27 +65,52 @@ function showFlash(): void
     }
 
     $flash = $_SESSION['flash'];
-
     echo "<div id='flash-message' class='flash {$flash['type']}'>{$flash['message']}</div>";
 
     unset($_SESSION['flash']);
 }
 
-function user()
+
+/**
+ * Retourne l'utilisateur connecté ou null
+ *
+ * @return array|null
+ */
+function user(): ?array
 {
     return $_SESSION['user'] ?? null;
 }
 
+
+/**
+ * Vérifie si un utilisateur est connecté
+ *
+ * @return bool
+ */
 function isLogged(): bool
 {
     return isset($_SESSION['user']);
 }
 
-function e($value): string
+
+/**
+ * Échappe une valeur pour l'affichage HTML
+ *
+ * @param string|null $value
+ * @return string
+ */
+function e(?string $value): string
 {
     return htmlspecialchars($value ?? '', ENT_QUOTES, 'UTF-8');
 }
 
+
+/**
+ * Redirige vers une URL donnée
+ *
+ * @param string $url
+ * @return void
+ */
 function redirect(string $url): void
 {
     if (headers_sent()) {
@@ -86,14 +121,24 @@ function redirect(string $url): void
     exit;
 }
 
-/**
-     * Génère un slug à partir d'un titre
-     */
-    function generateSlug(string $title): string
-    {
-        $slug = strtolower(trim($title));
-        $slug = preg_replace('/[^a-z0-9-]+/', '-', $slug);
-        $slug = preg_replace('/-+/', '-', $slug);
-        return trim($slug, '-');
-    }
 
+/**
+ * Génère un slug à partir d'un titre
+ *
+ * Ex: "Mon super livre !" => "mon-super-livre"
+ *
+ * @param string $title
+ * @return string
+ */
+function generateSlug(string $title): string
+{
+    $slug = strtolower(trim($title));
+
+    // Remplace les caractères non alphanumériques par des "-"
+    $slug = preg_replace('/[^a-z0-9]+/', '-', $slug);
+
+    // Supprime les doublons de "-"
+    $slug = preg_replace('/-+/', '-', $slug);
+
+    return trim($slug, '-');
+}

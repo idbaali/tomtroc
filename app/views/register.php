@@ -2,22 +2,34 @@
 
 <main class="auth-page">
 
+    <!-- Colonne gauche : formulaire d'inscription -->
     <section class="auth-left">
         <h1>Inscription</h1>
 
+        <!-- Affichage d'un message d'erreur si présent -->
         <?php if (!empty($error)): ?>
             <p class="error"><?= htmlspecialchars($error) ?></p>
         <?php endif; ?>
 
+        <!-- 
+            Formulaire d'inscription
+            method POST : envoi sécurisé des données
+            action /inscription : route gérée par AuthController
+        -->
         <form class="form" aria-label="Formulaire d’inscription" method="POST" action="/inscription">
 
             <label for="pseudo">Pseudo</label>
-            <input id="pseudo" type="text" name="pseudo" required value="<?= htmlspecialchars($_POST['pseudo'] ?? '') ?>">
+            <!-- htmlspecialchars protège contre les attaques XSS -->
+            <input id="pseudo" type="text" name="pseudo" required
+                value="<?= htmlspecialchars($_POST['pseudo'] ?? '') ?>">
 
             <label for="email">Adresse email</label>
-            <input id="email" type="email" name="email" required value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
+            <!-- type=email : validation HTML5 côté navigateur -->
+            <input id="email" type="email" name="email" required
+                value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
 
             <label for="password">Mot de passe</label>
+            <!-- Jamais pré-remplir un mot de passe -->
             <input id="password" type="password" name="password" required>
 
             <button class="btn-primary" type="submit">
@@ -32,6 +44,7 @@
         </form>
     </section>
 
+    <!-- Colonne droite : image décorative -->
     <section class="auth-right" aria-hidden="true">
         <img src="/images/register-photo.png" alt="">
     </section>

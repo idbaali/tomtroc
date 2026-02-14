@@ -1,4 +1,5 @@
 <?php
+
 namespace Core;
 
 use App\Controllers\HomeController;
@@ -38,9 +39,9 @@ class Router
         $param = $segments[1] ?? null;
 
 
-         // 3. Routes publiques (ACCESSIBLES SANS CONNEXION)
+        // 3. Routes publiques (ACCESSIBLES SANS CONNEXION)
         $publicRoutes = ['', 'connexion', 'inscription', 'livres', 'livre', 'compte-public'];
-    
+
 
         // 🔐 Protection des routes
         if (!isset($_SESSION['user']) && !in_array($page, $publicRoutes)) {
@@ -98,6 +99,18 @@ class Router
                 $controller->index();
                 break;
 
+            case 'messagerie':
+                $controller = new \App\Controllers\MessageController();
+
+                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                    // Envoi de message
+                    $controller->send();
+                } else {
+                    // Affichage des conversations / messages
+                    $controller->index();
+                }
+                break;
+
             // Modification d’un livre → /modifier-livre/12
             // 6. Fonctionne, mais pourra évoluer plus tard
 
@@ -105,6 +118,7 @@ class Router
                 $controller = new \App\Controllers\BookController();
                 $controller->edit($param);
                 break;
+
 
 
             default:

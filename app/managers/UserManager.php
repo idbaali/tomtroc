@@ -2,20 +2,17 @@
 
 namespace App\Managers;
 
-use PDO;
-use Core\Database;
+use Core\BaseManager;
 
-class UserManager
+/**
+ * UserManager
+ * -----------------
+ * Gère les interactions avec la table users.
+ */
+class UserManager extends BaseManager
 {
-    private PDO $db;
-
-    public function __construct()
-    {
-        $this->db = Database::getInstance();
-    }
-
     /**
-     * Récupérer un utilisateur par son ID
+     * Utilisateur par ID
      */
     public function getById(int $id): ?array
     {
@@ -25,12 +22,14 @@ class UserManager
             WHERE id = :id
             LIMIT 1
         ");
+
         $stmt->execute(['id' => $id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+
+        return $stmt->fetch() ?: null;
     }
 
     /**
-     * Récupérer un utilisateur par son email
+     * Trouver par email
      */
     public function findByEmail(string $email): ?array
     {
@@ -40,16 +39,17 @@ class UserManager
             WHERE email = :email
             LIMIT 1
         ");
+
         $stmt->execute(['email' => $email]);
-        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+
+        return $stmt->fetch() ?: null;
     }
 
     /**
-     * Créer un nouvel utilisateur
+     * Créer un utilisateur
      */
     public function create(string $username, string $email, string $passwordHash): bool
     {
-        // Vérifier si l'email existe déjà
         if ($this->findByEmail($email)) {
             return false;
         }

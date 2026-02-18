@@ -12,7 +12,7 @@
 
     <section class="edit-book-page">
 
-        <!-- Contenu principal -->
+        <!-- Contenu principal --> 
         <section class="edit-book-detail">
             <!-- Photo livre / aperçu -->
             <div class="edit-book-photo">

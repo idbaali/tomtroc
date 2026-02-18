@@ -1,69 +1,86 @@
 <?php require __DIR__ . '/layout/header.php'; ?>
 
-<main class="account-page">
+<h1 class="page-title">Mon compte</h1>
 
-<?php if ($user): ?>
+<div class="container">
 
-<h1 class="account-title">Mon compte</h1>
+    <!-- TOP BLOCK -->
+    <div class="top-block">
 
-<!-- ================= HAUT : GAUCHE / DROITE ================= -->
-<section class="account-info">
+        <!-- GAUCHE : Profil -->
+        <div class="profile-card">
 
-    <!-- ===== GAUCHE ===== -->
-    <div class="account-left">
+            <img src="/images/profiles/<?= htmlspecialchars($user['photo'] ?? 'default.png') ?>"
+                alt="Profil"
+                class="profile-photo">
 
-        <a href="#" class="link-edit">Modifier</a>
+            <a href="#" class="link-edit">Modifier</a>
 
-        <strong class="username"><?= htmlspecialchars($user['username']) ?></strong>
+            <div class="info-group">
+                <div class="label">Pseudo</div>
+                <div class="value"><?= htmlspecialchars($user['username'] ?? '') ?></div>
+            </div>
 
-        <span class="member-since">
-            Membre depuis <?= htmlspecialchars($user['member_since'] ?? '1 an') ?>
-        </span>
+            <div class="info-group">
+                <div class="label">Membre depuis</div>
+                <div class="value"><?= htmlspecialchars($user['member_since'] ?? '1 an') ?></div>
+            </div>
 
-        <div class="library-resume">
-            <span class="library-title">BIBLIOTHÈQUE</span>
-            <span class="library-count">
-                <?= isset($books) ? count($books) : 0 ?> livres
-            </span>
+            <div class="info-group">
+                <div class="label">BIBLIOTHÈQUE</div>
+                <div class="value"><?= isset($books) ? count($books) : 0 ?> livres</div>
+            </div>
+
+        </div>
+
+
+        <!-- DROITE -->
+        <div class="info-card">
+
+            <h2>Vos informations personnelles</h2>
+
+            <form action="/update-profile.php" method="post">
+
+                <div class="info-group">
+                    <div class="label">Adresse email</div>
+                    <input type="email"
+                        name="email"
+                        class="value"
+                        value="<?= htmlspecialchars($user['email'] ?? '') ?>"
+                        required>
+                </div>
+
+                <div class="info-group">
+                    <div class="label">Mot de passe</div>
+                    <input type="password"
+                        name="password"
+                        class="value"
+                        placeholder="•••••••••">
+                </div>
+
+                <div class="info-group">
+                    <div class="label">Pseudo</div>
+                    <input type="text"
+                        name="username"
+                        class="value"
+                        value="<?= htmlspecialchars($user['username'] ?? '') ?>"
+                        required>
+                </div>
+
+                <button type="submit">Enregistrer</button>
+
+            </form>
+
         </div>
 
     </div>
 
-    <!-- ===== DROITE ===== -->
-    <div class="account-right">
 
-        <h2>Vos informations personnelles</h2>
+    <!-- TABLE -->
+    <div class="library-table">
 
-        <div class="info-group">
-            <span class="label">Adresse email</span>
-            <span class="value"><?= htmlspecialchars($user['email']) ?></span>
-        </div>
-
-        <div class="info-group">
-            <span class="label">Mot de passe</span>
-            <span class="value">•••••••••</span>
-        </div>
-
-        <div class="info-group">
-            <span class="label">Pseudo</span>
-            <span class="value"><?= htmlspecialchars($user['username']) ?></span>
-        </div>
-
-        <button class="btn-primary">Enregistrer</button>
-
-    </div>
-
-</section>
-
-<!-- ================= BAS : BIBLIOTHÈQUE ================= -->
-<section class="account-library">
-
-    <h2>Bibliothèque</h2>
-
-    <div class="library-books">
-
-        <!-- EN-TÊTE -->
-        <div class="library-header">
+        <!-- HEADER -->
+        <div class="table-row header">
             <div>PHOTO</div>
             <div>TITRE</div>
             <div>AUTEUR</div>
@@ -72,81 +89,53 @@
             <div>ACTION</div>
         </div>
 
-        <!-- ROW 1 -->
-        <article class="library-book">
-            <div class="library-photo">
-                <img src="/images/books/kinfolk.png" alt="The Kinfolk Table">
+        <?php if (!empty($books)): ?>
+
+            <?php foreach ($books as $book): ?>
+
+                <div class="table-row">
+
+                    <div>
+                        <img src="/images/books/<?= htmlspecialchars($book['photo'] ?? 'default.png') ?>"
+                            alt="<?= htmlspecialchars($book['title']) ?>"
+                            class="book-img">
+                    </div>
+
+                    <div><?= htmlspecialchars($book['title']) ?></div>
+
+                    <div><?= htmlspecialchars($book['author']) ?></div>
+
+                    <div class="description">
+                        <?= htmlspecialchars(strlen($book['description']) > 180
+                            ? substr($book['description'],0,180).'...'
+                            : $book['description']) ?>
+                    </div>
+
+                    <div class="status <?= $book['available'] ? 'available' : 'unavailable' ?>">
+                        <?= $book['available'] ? 'Disponible' : 'Non dispo.' ?>
+                    </div>
+
+                    <div class="actions">
+                        <a class="edit" href="#">Éditer</a>
+                        <a class="delete" href="#">Supprimer</a>
+                    </div>
+
+                </div>
+
+            <?php endforeach; ?>
+
+        <?php else: ?>
+
+            <div class="table-row">
+                <div style="grid-column:1/-1;text-align:center;">
+                    Aucun livre dans votre bibliothèque.
+                </div>
             </div>
 
-            <div class="library-title">The Kinfolk Table</div>
-
-            <div class="library-author">Nathan Williams</div>
-
-            <div class="library-description">
-                J'ai récemment plongé dans les pages de "The Kinfolk Table" et j'ai été enchanté par cette œuvre captivante...
-            </div>
-
-            <div class="library-status available">Disponible</div>
-
-            <div class="library-actions">
-                <a href="#">Éditer</a>
-                <a href="#" class="danger">Supprimer</a>
-            </div>
-        </article>
-
-        <!-- ROW 2 -->
-        <article class="library-book">
-            <div class="library-photo">
-                <img src="/images/books/kinfolk.png">
-            </div>
-            <div class="library-title">The Kinfolk Table</div>
-            <div class="library-author">Nathan Williams</div>
-            <div class="library-description">Description du livre…</div>
-            <div class="library-status unavailable">Non dispo.</div>
-            <div class="library-actions">
-                <a href="#">Éditer</a>
-                <a href="#" class="danger">Supprimer</a>
-            </div>
-        </article>
-
-        <!-- ROW 3 -->
-        <article class="library-book">
-            <div class="library-photo">
-                <img src="/images/books/kinfolk.png">
-            </div>
-            <div class="library-title">The Kinfolk Table</div>
-            <div class="library-author">Nathan Williams</div>
-            <div class="library-description">Description du livre…</div>
-            <div class="library-status available">Disponible</div>
-            <div class="library-actions">
-                <a href="#">Éditer</a>
-                <a href="#" class="danger">Supprimer</a>
-            </div>
-        </article>
-
-        <!-- ROW 4 -->
-        <article class="library-book">
-            <div class="library-photo">
-                <img src="/images/books/kinfolk.png">
-            </div>
-            <div class="library-title">The Kinfolk Table</div>
-            <div class="library-author">Nathan Williams</div>
-            <div class="library-description">Description du livre…</div>
-            <div class="library-status unavailable">Non dispo.</div>
-            <div class="library-actions">
-                <a href="#">Éditer</a>
-                <a href="#" class="danger">Supprimer</a>
-            </div>
-        </article>
+        <?php endif; ?>
 
     </div>
 
-</section>
-
-<?php else: ?>
-<p>Utilisateur non trouvé.</p>
-<?php endif; ?>
-
-</main>
+</div>
 
 <?php require __DIR__ . '/layout/footer.php'; ?>

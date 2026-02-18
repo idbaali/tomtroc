@@ -4,13 +4,15 @@
  * Dépend uniquement de la variable $book
  */
 
-$title  = htmlspecialchars($book['title']  ?? '');
-$author = htmlspecialchars($book['author'] ?? '');
-// $seller = htmlspecialchars($book['seller'] ?? '');
+// Sécurisation + fallback
+$title  = htmlspecialchars($book['title'] ?? 'Titre inconnu');
+$author = htmlspecialchars($book['author'] ?? 'Auteur inconnu');
 $seller = htmlspecialchars($book['owner_name'] ?? 'Utilisateur');
-$image  = htmlspecialchars($book['image']  ?? 'default.png');
-$slug   = htmlspecialchars($book['slug']   ?? '#');
+$image  = !empty($book['image'])
+    ? htmlspecialchars($book['image'])
+    : 'default.png';
 
+$slug = htmlspecialchars($book['slug'] ?? '#');
 ?>
 
 <a href="/livre/<?= $slug ?>" class="exchange-card">

@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Managers\BookManager;
 use Core\Controller;
 use App\Models\Book;
 
@@ -10,25 +11,23 @@ use App\Models\Book;
  */
 class HomeController extends Controller
 {
-    private Book $bookModel;
-
-    public function __construct()
-    {
-        parent::__construct();
-        $this->bookModel = new Book();
-    }
-
     /**
      * Page d'accueil avec les derniers livres
      */
     public function index(): void
     {
-         $bookModel = new Book();
+        // Instancie le manager
+        $bookManager = new BookManager();
 
         // 🔥 Derniers livres ajoutés
-        $books = $bookModel->getLatest(4);
+        $books = $bookManager->getLatest(4);
 
+        // On inclut la vue
         require __DIR__ . '/../views/home.php';
     }
 }
+
+
+
+
 

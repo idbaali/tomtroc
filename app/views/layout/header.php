@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
 
-<!DOCTYPE html>
-<html lang="fr">
-
 <head>
     <meta charset="UTF-8">
 
@@ -34,9 +31,9 @@
 
 <body>
     <?php
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-    }
+    // if (session_status() === PHP_SESSION_NONE) {
+    //     session_start();
+    // }
     ?>
 
     <!-- ================= HEADER ================= -->
@@ -63,36 +60,33 @@
             <div class="nav-right">
                 <ul class="nav-list">
 
-                    <!-- MESSAGERIE : non visible -->
-                    <?php if (isset($_SESSION['user'])) : ?>
+                    <?php if (isLogged()): ?>
 
                         <li>
-                            <a href="/messages">
-                                <img src="/images/icon-messagerie.png" alt="TomTroc" class="icon-messagerie"> Messagerie
-                                <img src="/images/messagerie.png" alt="TomTroc" class="messagerie">
-                            </a>
+                            <a href="/messages">Messagerie</a>
                         </li>
 
-                        <!-- MON COMPTE : non visible -->
                         <li>
                             <a href="/compte">
-                                <img src="/images/icon-compte.png" alt="TomTroc" class="compte"> Mon compte
+                                <?= e(user()['username'] ?? 'Mon compte') ?>
                             </a>
                         </li>
 
-                        <!-- DÉCONNEXION non visible-->
                         <li>
                             <a href="/deconnexion" class="btn">Déconnexion</a>
                         </li>
+
                     <?php else: ?>
-                        <!-- MESSAGERIE : toujours visible -->
+
                         <li>
                             <a href="/connexion" class="btn">Connexion</a>
                         </li>
+
                     <?php endif; ?>
 
                 </ul>
             </div>
+
         </nav>
         <?php showFlash(); ?>
 

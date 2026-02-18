@@ -3,34 +3,32 @@
 namespace App\Controllers;
 
 use Core\Controller;
-use App\Models\Message;
+use App\Managers\MessageManager;
 
-/**
- * Contrôleur des messages
- * -----------------------
- * Récupère les messages reçus par l'utilisateur
- */
 class MessageController extends Controller
 {
-    private Message $messageModel;
+    private MessageManager $messageManager;
 
     public function __construct()
     {
         parent::__construct();
-        $this->messageModel = new Message();
+        $this->messageManager = new MessageManager();
     }
 
-    /**
-     * Liste des messages reçus
-     */
     public function index()
     {
-        $messages = $this->messageModel->getByUser(1); // Exemple : utilisateur connecté = 1
-        $this->render('messages', ['messages' => $messages]);
-
+        // ✅ Vérifier AVANT tout
         if (!isset($_SESSION['user'])) {
             header('Location: /connexion');
             exit;
         }
+
+        $userId = $_SESSION['user']['id'];
+
+        $messages = $this->messageManager->findByUser($userId);
+
+        $this->render('messages', [
+            'messages' => $messages
+        ]);
     }
 }

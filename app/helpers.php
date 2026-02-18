@@ -60,3 +60,40 @@ function showFlash(): void
 
     unset($_SESSION['flash']);
 }
+
+function user()
+{
+    return $_SESSION['user'] ?? null;
+}
+
+function isLogged(): bool
+{
+    return isset($_SESSION['user']);
+}
+
+function e($value): string
+{
+    return htmlspecialchars($value ?? '', ENT_QUOTES, 'UTF-8');
+}
+
+function redirect(string $url): void
+{
+    if (headers_sent()) {
+        die('Erreur : headers déjà envoyés.');
+    }
+
+    header("Location: {$url}");
+    exit;
+}
+
+/**
+     * Génère un slug à partir d'un titre
+     */
+    function generateSlug(string $title): string
+    {
+        $slug = strtolower(trim($title));
+        $slug = preg_replace('/[^a-z0-9-]+/', '-', $slug);
+        $slug = preg_replace('/-+/', '-', $slug);
+        return trim($slug, '-');
+    }
+

@@ -14,7 +14,7 @@
     <!-- =========================
        HERO ACCUEIL
     ========================= -->
-    <section class="hero hero-split">
+    <section class="hero hero-split"> 
         <div class="hero-text">
             <!-- Titre visible du hero -->
             <h2>Rejoignez nos <br> lecteurs passionnés</h2>

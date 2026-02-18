@@ -3,71 +3,84 @@
 namespace App\Controllers;
 
 use Core\Controller;
-use App\Models\User;
-use App\Models\Book;
+use App\Managers\UserManager;
+use App\Managers\BookManager;
 
-/**
- * Contrôleur utilisateur
- * ----------------------
- * Gère compte, profil et bibliothèque personnelle
- */
 class UserController extends Controller
 {
-    private User $userModel;
-    private Book $bookModel;
+    private UserManager $userManager;
 
     public function __construct()
     {
         parent::__construct();
-        $this->userModel = new User();
-        $this->bookModel = new Book();
+        $this->userManager = new UserManager();
     }
 
     /**
-     * Page Mon compte
+     * Page du compte connecté
      */
     public function account(): void
     {
-        // 1️⃣ Vérifier si l'utilisateur est connecté
-        if (empty($_SESSION['user']['id'])) {
-            header('Location: /connexion');
-            exit;
+        $user = $_SESSION['user'] ?? null;
+
+        if (!$user) {
+            setFlash('error', 'Vous devez être connecté.');
+            redirect('/connexion');
+            return;
         }
 
-        // 2️⃣ Récupérer l'utilisateur connecté
-        $userId = (int) $_SESSION['user']['id'];
-        $user   = $this->userModel->getById($userId);
+        $bookManager = new BookManager();
+        $books = $bookManager->getByUserId($user['id']);
 
-        // 3️⃣ Récupérer ses livres
-        $books = $this->bookModel->getByOwner($userId);
+        // Si aucun livre, on met un exemple pour tester l'affichage
+        if (empty($books)) {
+            $books = [
+                [
+                    'title' => 'The Kinfolk Table',
+                    'author' => 'Nathan Williams',
+                    'description' => 'J\'ai récemment plongé dans les pages de "The Kinfolk Table"...',
+                    'available' => true,
+                    'photo' => 'kinfolk.png'
+                ],
+                [
+                    'title' => 'Autre Livre',
+                    'author' => 'Auteur X',
+                    'description' => 'Description du livre…',
+                    'available' => false,
+                    'photo' => 'default.png'
+                ]
+            ];
+        }
 
-        // 4️⃣ Afficher la vue
         $this->render('account', [
-            'user'  => $user,
+            'title' => 'Mon compte',
+            'user' => $user,
             'books' => $books
         ]);
     }
 
     /**
-     * Page Profil
+     * Profil public d'un utilisateur
      */
     public function profile(int $id): void
     {
-        // 1️⃣ Récupérer l'utilisateur demandé
-        $user = $this->userModel->getById($id);
+        $bookManager = new BookManager();
+
+        // Récupérer l'utilisateur via UserManager
+        $user = $this->userManager->getById($id);
 
         if (!$user) {
             http_response_code(404);
-            $this->render('404');
+            echo "Utilisateur introuvable";
             return;
         }
 
-        // 2️⃣ Récupérer les livres de cet utilisateur
-        $books = $this->bookModel->getByOwner($id);
+        // Récupérer tous les livres de l'utilisateur
+        $books = $bookManager->getByUserId($user['id']);
 
-        // 3️⃣ Affichage
-        $this->render('profile', [
-            'user'  => $user,
+        $this->render('profil', [
+            'title' => ($user['username'] ?? 'Utilisateur') . ' - Profil',
+            'user' => $user,
             'books' => $books
         ]);
     }

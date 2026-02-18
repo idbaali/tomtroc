@@ -59,47 +59,50 @@ body {
     padding: 15px 30px;
 }
 
-.nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 70px;
-}
-
-/* Zones */
+/* Zones gauche et droite */
 .nav-left,
 .nav-right {
     display: flex;
     align-items: center;
+    gap: 20px;
+    /* espace propre */
 }
 
-/* .nav-center {
-    flex: 2;
-} */
+/* pousse la partie droite */
+.nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* rapproche tout */
+    gap: 430px;
+    /* contrôle l'espace global */
+}
 
-/* Listes */
+/* MENU */
 .nav-list {
     list-style: none;
     display: flex;
+    gap: 20px;
     margin: 0;
     padding: 0;
-    gap: 10px;
 }
 
-.debut {
-    padding-right: 20px;
-    padding-left: 15px;
-}
-
+/* enlève les vieux margins */
 .nav-list li {
     margin: 0;
 }
 
-.nav-left a,
-.nav-right a {
+/* LOGO */
+.logo {
+    height: 51px;
+    width: auto;
+    margin-right: 25px;
+}
+
+/* LIENS */
+.nav a {
     color: #292929;
     text-decoration: none;
-    font-weight: 500px;
     font-family: Inter;
     font-weight: 400;
     font-style: Regular;
@@ -108,55 +111,33 @@ body {
     letter-spacing: 2%;
 }
 
-.nav-left a:hover,
-.nav-left a[aria-current="page"],
-.nav-right a:hover,
-.nav-right a[aria-current="page"] {
-    text-decoration: none;
+/* Hover simple et moderne */
+.nav a:hover {
+    opacity: 0.7;
 }
 
-/* Boutons */
+/* Bouton */
 .nav-right a.btn {
     padding: 8px 15px;
-    border-radius: 5px;
-    color: #292929;
-    font-family: Inter;
-    font-weight: 400;
-    font-style: Regular;
-    font-size: 14px;
-    line-height: 100%;
-    letter-spacing: 2%;
-}
-
-.nav-right li {
-    margin-left: 18px;
+    border-radius: 6px;
 }
 
 /* Badge */
 .badge {
     background: #e74c3c;
     color: #fff;
-    font-size: 12px;
-    padding: 2px 6px;
+    font-size: 11px;
+    padding: 3px 6px;
     border-radius: 50%;
-    margin-left: 5px;
-    line-height: 1;
+    margin-left: 6px;
 }
 
-/* Logo */
-.logo {
-    height: 51px;
-    width: 155px;
-    margin: 0 60px 0 20px;
-}
-
-.fa {
-    margin-right: 6px;
-}
-
+/* Icônes */
+.fa,
 .fas {
     margin-right: 6px;
 }
+
 
 
 /* =========================
@@ -182,7 +163,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 180px;
+    padding: 50px 300px 100px;
     /* gap: 30px; */
 }
 
@@ -290,12 +271,10 @@ body {
     line-height: 100%;
     letter-spacing: 0%;
     /* text-align: center; */
-
 }
 
 .btn-secondary:hover {
     background: #00AC66;
-    /* effet au survol */
 }
 
 /* =========================
@@ -382,11 +361,10 @@ body {
     font-size: 16px;
     line-height: 100%;
     letter-spacing: 0%;
-
 }
 
 .btn-third:hover {
-    background: #2a64bd;
+    background: #FFFFFF;
     /* effet au survol */
 }
 
@@ -569,7 +547,7 @@ body {
 
 .breadcrumb {
     background-color: #F5F3EF;
-    padding: 15px 30px;
+    padding: 15px 125px;
     font-family: Inter;
     font-weight: 300;
     font-style: Light;
@@ -581,7 +559,7 @@ body {
 }
 
 .bread {
-    margin-left: 15px;
+    margin-left: 50px;
 }
 
 .breadcrumb a {
@@ -622,7 +600,7 @@ body {
 /* DROITE : contenu */
 .book-content {
     width: 50%;
-    padding: 50px;
+    padding: 50px 120px 50px;
     overflow-y: auto;
     background-color: #FAF9F7;
 }
@@ -661,7 +639,7 @@ body {
     color: #292929;
 }
 
-.book-content p {
+.book-content .descript {
     font-family: Inter;
     font-weight: 400;
     font-style: Regular;
@@ -669,18 +647,19 @@ body {
     line-height: 100%;
     letter-spacing: 0%;
     color: #292929;
-
+    width: 420px;
+    height: 200px;
 }
 
 .book-owner {
-    margin-top: 50px;
+    margin-top: 55px;
 }
 
 .owner-box {
     display: flex;
     align-items: center;
     gap: 15px;
-    margin-top: 15px;
+    margin-top: 25px;
 }
 
 .owner-avatar {
@@ -688,13 +667,71 @@ body {
     height: 60px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid #00AC66;
+    /* border: 1px solid; */
 }
 
+.owner-box {
+    width: 157px;
+    height: 60px;
+    /* angle: 0 deg; */
+    opacity: 1;
+    top: 704px;
+    left: 804px;
+    border-radius: 114px;
+    padding-top: 6px;
+    padding-right: 17px;
+    padding-bottom: 6px;
+    padding-left: 6px;
+    gap: 12px;
+    background-color: #FFFFFF;
+}
+
+/* Avatar */
+.owner-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Bloc texte */
+.owner-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* Nom */
 .owner-name {
+    margin: 0;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    color: #292929;
+    font-weight: 500;
+}
+
+.btn-book {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #00AC66;
+    color: #FFFFFF;
+    width: 485px;
+    height: 63px;
+    border-radius: 10px;
+    padding: 0 38px;
+    text-decoration: none;
     font-weight: 600;
-    font-size: 16px;
-    color: #333;
+    font-family: "Inter", sans-serif;
+    margin-top: 80px;
+    /* espace avec le propriétaire */
+    transition: 0.3s;
+}
+
+/* Effet moderne */
+.btn-book:hover {
+    background-color: #009a5a;
+    transform: translateY(-2px);
 }
 
 
@@ -795,6 +832,15 @@ body {
     object-fit: cover;
 }
 
+.btn-third {
+    color: #00AC66;
+    background-color: #FFFFFF;
+}
+
+.btn-third:hover {
+    color: #00AC66;
+}
+
 
 /* =========================
    AUTH (LOGIN / REGISTER)
@@ -855,173 +901,189 @@ body {
     display: block;
 }
 
+
+
+
+
 /* =========================
    PAGE MON COMPTE
 ========================= */
 
-.account-page {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 40px 20px;
-}
-
-.account-title {
-    margin-bottom: 30px;
-}
-
-/* =========================
-   HAUT : GAUCHE / DROITE
-========================= */
-
-.account-info {
-    background: #F5F3EF;
-    padding: 30px;
-    border-radius: 12px;
-
-    display: grid;
-    grid-template-columns: 260px 1fr;
-    gap: 40px;
-}
-
-/* ----- GAUCHE ----- */
-.account-left {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.link-edit {
-    color: #00AC66;
-    font-size: 14px;
-    text-decoration: none;
-}
-
-.username {
-    font-size: 18px;
-}
-
-.member-since {
-    font-size: 14px;
-    color: #666;
-}
-
-.library-resume {
-    margin-top: 10px;
-}
-
-.library-title {
-    display: block;
+.page-title{
+    font-size: 32px;
     font-weight: 700;
+    margin: 70px 0 0 180px;
+    /* margin-bottom:10px; */
 }
 
-.library-count {
-    font-size: 14px;
+.container{
+    max-width:1090px;
+    margin:auto;
+    padding-right: 30px;
+    /* margin-left: 10px; */
 }
 
-/* ----- DROITE ----- */
-.account-right h2 {
-    margin-bottom: 20px;
+/* ===== TOP BLOCK ===== */
+.top-block{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:20px;
+    margin-bottom:40px;
 }
 
-.info-group {
-    display: grid;
-    grid-template-columns: 160px 1fr;
-    margin-bottom: 15px;
+/* GAUCHE : Profil */
+.profile-card{
+    background: #FFFFFF;
+    padding:30px;
+    border-radius:12px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.05);
+    text-align:center;
 }
 
-.label {
-    font-weight: 600;
+.profile-card .profile-photo{
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    object-fit:cover;
+    margin-bottom:15px;
 }
 
-.value {
-    color: #444;
+.profile-card .link-edit{
+    display:block;
+    color:#00AC66;
+    margin-bottom:15px;
+    text-decoration:none;
 }
 
-.btn-primary {
-    margin-top: 25px;
-    padding: 10px 16px;
-    background: #00AC66;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
+.profile-card .info-group{
+    margin-bottom:12px;
 }
 
-
-/* BIBLIOTHÈQUE (BAS) */
-
-.library-books {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+.profile-card .label{
+    font-weight:bold;
+    color:#555;
 }
 
-/* EN-TÊTE */
-.library-header {
-    display: grid;
-    grid-template-columns: 80px 160px 140px 1fr 120px 140px;
-    font-weight: bold;
-    padding-bottom: 10px;
-    border-bottom: 2px solid #ccc;
+.profile-card .value{
+    margin-top:5px;
 }
 
-/* ROW */
-.library-book {
-    display: grid;
-    grid-template-columns: 80px 160px 140px 1fr 120px 140px;
-    gap: 10px;
-    align-items: start;
-    padding: 15px 0;
-    border-bottom: 1px solid #eee;
+/* DROITE : Vos informations personnelles */
+.info-card{
+    background:#FFFFFF;
+    padding:30px;
+    border-radius:12px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.05);
+   
 }
 
-/* PHOTO */
-.library-photo img {
-    width: 60px;
-    height: auto;
-    border-radius: 4px;
+.info-card h2{
+    margin-bottom:20px;
 }
 
-/* TEXTE */
-.library-title {
-    font-weight: 600;
+.info-card .info-group{
+    margin-bottom:15px;
 }
 
-.library-author {
-    color: #555;
+.info-card .label{
+    font-weight:bold;
+    color:#555;
+    margin-bottom:5px;
 }
 
-.library-description {
-    font-size: 14px;
-    line-height: 1.4;
+.info-card .value{
+    width:100%;
+    padding:8px 12px;
+    border:1px solid #ccc;
+    border-radius:6px;
+    font-size:14px;
+    box-sizing:border-box;
+    margin-top:5px;
 }
 
-/* STATUS */
-.library-status.available {
-    color: green;
-    font-weight: 600;
-}
-
-.library-status.unavailable {
-    color: red;
-    font-weight: 600;
-}
-
-/* ACTIONS */
-.library-actions a {
-    display: inline-block;
-    margin-right: 10px;
-    text-decoration: none;
-}
-
-.library-actions .danger {
-    color: red;
+.info-card button{
+    padding:10px 18px;
+    border:none;
+    background:#00AC66;
+    color:white;
+    border-radius:8px;
+    cursor:pointer;
 }
 
 
 
+/* TABLE BIBLIOTHEQUE */
+.library-table{
+    display:grid;
+    gap:10px;
+}
 
+/* Chaque ligne est une grid avec 6 colonnes */
+.table-row{
+    display:grid;
+    grid-template-columns: 120px 180px 160px 1fr 140px 140px;
+    align-items:start;
+    background:#fff;
+    padding:10px 15px;
+    border-radius:8px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.05);
+    word-break:break-word;
+}
 
+/* Header spécifique */
+.table-row.header{
+    background:#222;
+    color:white;
+    font-weight:bold;
+}
+
+/* Cellules */
+.table-cell{
+    padding: 3px 5px;
+}
+
+/* Images livres */
+.book-img{
+    width:100px;
+    height:120px;
+    object-fit:cover;
+    border-radius:6px;
+}
+
+/* Disponibilité */
+.status.available{ color:green; font-weight:bold;}
+.status.unavailable{ color:red; font-weight:bold;}
+
+/* Actions alignées à droite */
+.actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:8px;
+}
+
+.actions a .edit {
+    /* padding:6px 12px; */
+    color: #292929;
+    cursor:pointer;
+}
+
+.actions a {
+    /* padding: 4px 12px; */
+    color: #CB2D2D;
+    cursor:pointer;
+}
+
+/* Responsive */
+@media(max-width:900px){
+    .table-row{
+        grid-template-columns: 1fr;
+        row-gap:10px;
+    }
+
+    .actions{
+        justify-content:flex-start;
+    }
+}
 
 
 
@@ -1308,6 +1370,7 @@ body {
     border-radius: 6px;
     border: 1px solid #ccc;
 }
+
 textarea {
     width: 100%;
     height: 300px;
@@ -1511,7 +1574,7 @@ textarea {
 }
 
 .footer a:hover {
-    color: #3498db;
+    color: #00AC66;
 }
 
 .footer-legal ul {

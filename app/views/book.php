@@ -29,11 +29,11 @@
 
                 <!-- TITRE PRINCIPAL -->
                 <h1><?= htmlspecialchars($book['title'] ?? 'Titre inconnu') ?></h1>
-                <p class="book-author">par <strong><?= htmlspecialchars($book['author'] ?? 'Auteur inconnu') ?></strong></p>
+                <p class="book-author">par <?= htmlspecialchars($book['author'] ?? 'Auteur inconnu') ?></p>
 
                 <!-- DESCRIPTION -->
                 <h2>Description</h2>
-                <p><?= nl2br(htmlspecialchars($book['description'] ?? 'Pas de description')) ?></p>
+                <p class="descript"><?= nl2br(htmlspecialchars($book['description'] ?? 'Pas de description')) ?></p>
 
                 <!-- PROPRIETAIRE -->
                 <!-- ================= PROPRIÉTAIRE ================= -->
@@ -52,12 +52,10 @@
                         <!-- Nom + lien vers profil -->
                         <div class="owner-info">
                             <p class="owner-name">
+                                <a href="">
                                 <?= htmlspecialchars($book['owner_name'] ?? 'Utilisateur inconnu') ?>
+                                </a>
                             </p>
-
-                            <a href="/compte-public/<?= (int)($book['owner_id'] ?? 0) ?>">
-                                Voir le profil
-                            </a>
                         </div>
                     </div>
 

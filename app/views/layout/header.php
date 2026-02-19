@@ -63,7 +63,7 @@
                     <?php if (isLogged()): ?>
 
                         <li>
-                            <a href="/messages">Messagerie</a>
+                            <a href="/messagerie">Messagerie</a>
                         </li>
 
                         <li>

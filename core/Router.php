@@ -17,13 +17,9 @@ class Router
             session_start();
         }
 
-
-
-
         // 1. Récupération de l’URL sans les paramètres GET (?page=...)
         // Exemple :
         //   /livre/wabi-sabi?test=1  →  livre/wabi-sabi
-        // Nettoyage de l'URL (sans paramètres GET)
         $uri = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
 
         // 2. Découpage de l’URL en segments
@@ -31,17 +27,14 @@ class Router
         //   livre/wabi-sabi → ['livre', 'wabi-sabi']
         $segments = explode('/', $uri);
 
-
         // 3. Définition des variables principales
         // $page  = premier segment de l’URL
         // $param = deuxième segment (slug ou id)
         $page  = $segments[0] ?? '';
         $param = $segments[1] ?? null;
 
-
         // 3. Routes publiques (ACCESSIBLES SANS CONNEXION)
         $publicRoutes = ['', 'connexion', 'inscription', 'livres', 'livre', 'compte-public'];
-
 
         // 🔐 Protection des routes
         if (!isset($_SESSION['user']) && !in_array($page, $publicRoutes)) {
@@ -54,73 +47,72 @@ class Router
 
             // 5. Accueil → /
             case '':
-                $controller = new \App\Controllers\HomeController();
+                $controller = new HomeController();
                 $controller->index();
                 break;
 
-            case 'livres':   // au lieu de 'books'
-                $controller = new \App\Controllers\BookController();
+            // Liste de tous les livres
+            case 'livres':
+                $controller = new BookController();
                 $controller->index();
                 break;
 
-            case 'livre':    // au lieu de 'book'
-                $controller = new \App\Controllers\BookController();
+            // Affichage d’un livre par ID ou slug
+            case 'livre':
+                $controller = new BookController();
                 $controller->show($param);
                 break;
 
+            // Connexion
             case 'connexion':
-                $controller = new \App\Controllers\AuthController();
+                $controller = new AuthController();
                 $controller->login();
                 break;
 
+            // Déconnexion
             case 'deconnexion':
-                $controller = new \App\Controllers\AuthController();
+                $controller = new AuthController();
                 $controller->logout();
                 break;
 
-            case 'inscription': // au lieu de 'register'
-                $controller = new \App\Controllers\AuthController();
+            // Inscription
+            case 'inscription':
+                $controller = new AuthController();
                 $controller->register();
                 break;
 
-            case 'compte':    // au lieu de 'account'
-                $controller = new \App\Controllers\UserController();
+            // Compte utilisateur connecté
+            case 'compte':
+                $controller = new UserController();
                 $controller->account();
                 break;
 
-            case 'compte-public':    // au lieu de 'profile'
-                $controller = new \App\Controllers\UserController();
+            // Compte public d’un utilisateur
+            case 'compte-public':
+                $controller = new UserController();
                 $controller->profile((int) $param);
                 break;
 
-
-            case 'messages':
-                $controller = new \App\Controllers\MessageController();
-                $controller->index();
-                break;
-
+            // Messagerie avec envoi / affichage
             case 'messagerie':
-                $controller = new \App\Controllers\MessageController();
+                $controller = new MessageController();
 
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                    // Envoi de message
+                    // 🔹 Envoi d’un nouveau message
                     $controller->send();
                 } else {
-                    // Affichage des conversations / messages
+                    // 🔹 Affichage des conversations et messages existants
                     $controller->index();
                 }
                 break;
 
-            // Modification d’un livre → /modifier-livre/12
-            // 6. Fonctionne, mais pourra évoluer plus tard
-
-            case 'edition-livre': // au lieu de 'edit-book'
-                $controller = new \App\Controllers\BookController();
+            // Modification d’un livre → /edition-livre/12
+            case 'edition-livre':
+                $controller = new BookController();
                 $controller->edit($param);
                 break;
 
-
-
+            // 404 pour toutes les autres routes
             default:
                 http_response_code(404);
                 echo "Page non trouvée";

@@ -42,8 +42,8 @@ class MessageController extends Controller
             $messages = $this->messageManager->getConversation($userId, $currentConversationUserId);
         }
 
-        // 🔹 Affiche la vue messages.php
-        $this->render('messages', [
+        // 🔹 Affiche la vue messagerie.php
+        $this->render('messagerie', [
             'title' => 'Messagerie',
             'conversations' => $conversations,
             'messages' => $messages,

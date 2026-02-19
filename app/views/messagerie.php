@@ -1,4 +1,26 @@
-<?php require_once __DIR__ . '/layout/header.php'; ?>
+<?php
+require_once __DIR__ . '/layout/header.php';
+require_once __DIR__ . '/../../app/helpers.php'; // inclus helpers.php si pas déjà inclus
+
+// 🔹 ID de l'utilisateur courant
+$currentUserId = $_SESSION['user']['id'] ?? null;
+
+// 🔹 ID de la conversation sélectionnée (GET param ?user=)
+$currentConversationUserId = $_GET['user'] ?? null;
+
+// 🔹 Instancier le MessageManager
+$messageManager = new \App\Managers\MessageManager();
+
+// 🔹 Récupérer toutes les conversations de l'utilisateur courant
+$conversations = $messageManager->getUserConversations($currentUserId);
+
+// 🔹 Si une conversation est sélectionnée, récupérer ses messages
+$messages = [];
+if ($currentConversationUserId) {
+    $currentConversationUserId = (int)$currentConversationUserId;
+    $messages = $messageManager->getConversation($currentUserId, $currentConversationUserId);
+}
+?>
 
 <main class="messages-page">
 
@@ -12,22 +34,18 @@
                 <?php if (!empty($conversations)): ?>
                     <?php foreach ($conversations as $conv): ?>
                         <?php 
-                            $isActive = ($currentConversationUserId == $conv['id']) ? 'active' : '';
+                            // 🔹 Déterminer l'autre utilisateur de la conversation
+                            $otherUserId = ($conv['sender_id'] == $currentUserId) ? $conv['receiver_id'] : $conv['sender_id'];
+                            $isActive = ($currentConversationUserId == $otherUserId) ? 'active' : '';
                         ?>
                         <li class="conversation <?= $isActive ?>">
-                            <a href="/messagerie?user=<?= $conv['id'] ?>">
-                                <strong><?= e($conv['username']) ?></strong>
+                            <a href="/messagerie?user=<?= $otherUserId ?>">
+                                <strong>User #<?= $otherUserId ?></strong>
                                 <span class="time">
-                                    <!-- On peut afficher la dernière date de message si souhaité -->
+                                    <?= e($conv['created_at']) ?>
                                 </span>
                                 <p>
-                                    <?php
-                                        // Aperçu du dernier message avec cet utilisateur
-                                        $lastMsg = end($messages);
-                                        if ($lastMsg && ($lastMsg['sender_id'] == $conv['id'] || $lastMsg['receiver_id'] == $conv['id'])) {
-                                            echo e(substr($lastMsg['content'], 0, 50)) . '…';
-                                        }
-                                    ?>
+                                    <?= e(substr($conv['content'], 0, 50)) ?>…
                                 </p>
                             </a>
                         </li>
@@ -43,17 +61,13 @@
             <?php if ($currentConversationUserId && !empty($messages)): ?>
                 <header class="chat-header">
                     <h2>
-                        <?php 
-                            $currentUser = array_filter($conversations, fn($c) => $c['id'] == $currentConversationUserId);
-                            $currentUser = reset($currentUser);
-                            echo e($currentUser['username'] ?? 'Conversation');
-                        ?>
+                        User #<?= $currentConversationUserId ?>
                     </h2>
                 </header>
 
                 <div class="chat-messages">
                     <?php foreach ($messages as $msg): ?>
-                        <?php $isSent = ($msg['sender_id'] == $_SESSION['user']['id']); ?>
+                        <?php $isSent = ($msg['sender_id'] == $currentUserId); ?>
                         <div class="message <?= $isSent ? 'sent' : 'received' ?>">
                             <time><?= e($msg['created_at']) ?></time>
                             <p><?= e($msg['content']) ?></p>

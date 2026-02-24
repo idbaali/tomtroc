@@ -61,7 +61,7 @@
 
                     <!-- Bouton "Envoyer un message" uniquement si l'utilisateur est connecté et n'est pas le propriétaire -->
                     <?php if (!empty($_SESSION['user']) && $_SESSION['user']['id'] !== ($book['owner_id'] ?? 0)) : ?>
-                        <a href="/messages/nouveau/<?= (int)$book['owner_id'] ?>" class="btn-book">
+                        <a href="/messages/nouveau/<?= (int)$book['owner_id'] ?>" class="btn btn-book">
                             Envoyer un message
                         </a>
                     <?php endif; ?>

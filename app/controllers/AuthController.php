@@ -33,7 +33,7 @@ class AuthController extends Controller
                 setFlash('error', "Tous les champs sont obligatoires.");
             }
             // ✅ Vérification du format de l'email
-            elseif (!preg_match('/^[^\s@]+@[^\s@]+\.[^\s@]+$/', $email)) {
+            elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
                 setFlash('error', "Format d'email invalide.");
             } else {

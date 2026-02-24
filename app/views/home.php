@@ -14,12 +14,12 @@
     <!-- =========================
        HERO ACCUEIL
     ========================= -->
-    <section class="hero hero-split"> 
+    <section class="hero hero-split">
         <div class="hero-text">
             <!-- Titre visible du hero -->
             <h2>Rejoignez nos <br> lecteurs passionnés</h2>
             <p>Donnez une nouvelle vie à vos livres en les échangeant avec d'autres amoureux de la lecture. Nous croyons en la magie du partage de connaissances et d'histoires à travers les livres.</p>
-            <a href="/livres" class="btn-primary">Découvrir</a>
+            <a href="/livres" class="btn btn-primary">Découvrir</a>
         </div>
 
         <div class="hero-image-wrapper">
@@ -31,7 +31,7 @@
        DERNIERS LIVRES
     ========================= -->
     <section class="books" id="books">
-        <h2>Les derniers livres ajoutés</h2>
+        <h2 class="section-title">Les derniers livres ajoutés</h2>
 
         <!-- <ul class="book-list"> -->
         <?php if (!empty($books)): ?>
@@ -46,7 +46,7 @@
 
 
         <div class="see-all-books">
-            <a href="/livres" class="btn-secondary">Voir tous les livres</a>
+            <a href="/livres" class="btn btn-secondary">Voir tous les livres</a>
         </div>
     </section>
 
@@ -63,15 +63,11 @@
             <li>Proposez un échange et discutez avec des passionnés de lecture.</li>
         </ol>
         <div class="see-all-books">
-            <a href="/livres" class="btn-third">Voir tous les livres</a>
+            <a href="/livres" class="btn btn-third">Voir tous les livres</a>
         </div>
     </section>
 
-    <div class="steps-image-wrapper steps">
-        <img src="/images/exchange-books.png"
-            alt="Deux personnes échangeant des livres dans une bibliothèque conviviale"
-            class="steps-image">
-    </div>
+    <div class="steps-image-wrapper steps"></div>
 
     <!-- =========================
        NOS VALEURS
@@ -81,8 +77,10 @@
         <p>Chez TomTroc, nous mettons l'accent sur le partage, la découverte et la communauté. Nos valeurs sont ancrées dans notre passion pour les livres et notre désir de créer des liens entre les lecteurs. Nous croyons en la puissance des histoires pour rassembler les gens et inspirer des conversations enrichissantes.</p>
         <p>Notre association a été fondée avec une conviction profonde : chaque livre mérite d'être lu et partagé.</p>
         <p>Nous sommes passionnés par la création d'une plateforme conviviale qui permet aux lecteurs de se connecter, de partager leurs découvertes littéraires et d'échanger des livres qui attendent patiemment sur les étagères.</p>
-        <p class="Team">L’équipe TomTroc</p>
-        <p><img src="/images/Vector.svg" alt="Vector" class="Vector-image"></p>
+        <div>
+            <p class="Team">L’équipe TomTroc</p>
+            <p><img src="/images/Vector.svg" alt="Vector" class="Vector-image"></p>
+        </div>
     </section>
 
 </main>

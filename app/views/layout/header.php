@@ -8,7 +8,7 @@
          Responsive & accessibilité mobile
          Indispensable pour le bon affichage sur téléphone
     ====================================================== -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- =====================================================
          TITRE DE LA PAGE
@@ -88,6 +88,8 @@
             </div>
 
         </nav>
+
+        
         <?php showFlash(); ?>
 
     </header>

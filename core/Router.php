@@ -82,9 +82,8 @@ class Router
             //     break;
 
             case 'compte-public':
-                $controller = new UserController();
-                $id = $_GET['id'] ?? null;
-                $controller->profile($id);
+                $controller = new UserController();                
+                $controller->profile($param);
                 break;
 
 

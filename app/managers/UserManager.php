@@ -5,50 +5,28 @@ namespace App\Managers;
 use Core\BaseManager;
 use App\Models\User;
 
-/**
- * UserManager
- * -----------------
- * Gère les interactions avec la table users.
- */
 class UserManager extends BaseManager
 {
-    /**
-     * Récupère un utilisateur par ID
-     */
-    public function getById(int $id): ?User
-    {
-        $stmt = $this->db->prepare("
-            SELECT id, username, email, avatar
-            FROM users
-            WHERE id = :id
-            LIMIT 1
-        ");
-
-        $stmt->execute(['id' => $id]);
-
-        return $stmt->fetchObject(User::class) ?: null;
-    }
-
-    /**
-     * Récupère un utilisateur par email
-     */
     public function findByEmail(string $email): ?User
     {
         $stmt = $this->db->prepare("
-            SELECT *
-            FROM users
-            WHERE email = :email
-            LIMIT 1
-        ");
+        SELECT id, username, email, avatar, password, created_at
+        FROM users
+        WHERE email = :email
+        LIMIT 1
+    ");
 
         $stmt->execute(['email' => $email]);
 
-        return $stmt->fetchObject(User::class) ?: null;
+        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        if (!$data) {
+            return null;
+        }
+
+        return new User($data);
     }
 
-    /**
-     * Créer un utilisateur
-     */
     public function create(string $username, string $email, string $passwordHash): bool
     {
         if ($this->findByEmail($email)) {
@@ -56,8 +34,8 @@ class UserManager extends BaseManager
         }
 
         $stmt = $this->db->prepare("
-            INSERT INTO users (username, email, password)
-            VALUES (:username, :email, :password)
+            INSERT INTO users (username, email, password, created_at)
+            VALUES (:username, :email, :password, NOW())
         ");
 
         return $stmt->execute([
@@ -67,19 +45,23 @@ class UserManager extends BaseManager
         ]);
     }
 
-    /**
-     * Trouver un utilisateur par ID (alternative)
-     */
-    public function find(int $id): ?User
+    public function getById(int $id): ?User
     {
         $stmt = $this->db->prepare("
-            SELECT *
-            FROM users
-            WHERE id = ?
-        ");
+        SELECT id, username, email, avatar, password, created_at
+        FROM users
+        WHERE id = :id
+        LIMIT 1
+    ");
 
-        $stmt->execute([$id]);
+        $stmt->execute(['id' => $id]);
 
-        return $stmt->fetchObject(User::class) ?: null;
+        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        if (!$data) {
+            return null;
+        }
+
+        return new User($data);
     }
 }

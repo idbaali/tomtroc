@@ -69,6 +69,9 @@ class AuthController extends Controller
             // Récupérer l'utilisateur par email
             $user = $this->userManager->findByEmail($email);
 
+            // var_dump($user); 
+            // die;
+
             // Vérification sécurisée
             if (!$user || !password_verify($password, $user->getPassword())) {
                 setFlash('error', "Email ou mot de passe incorrect");

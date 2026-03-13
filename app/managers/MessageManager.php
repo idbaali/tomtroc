@@ -47,23 +47,23 @@ class MessageManager extends BaseManager
      */
     public function getConversation(int $user1, int $user2): array
     {
-        // 🔹 Requête SQL pour tous les messages échangés entre deux utilisateurs
         $stmt = $this->db->prepare("
-            SELECT *
-            FROM messages
-            WHERE (sender_id = :u1 AND receiver_id = :u2)
-               OR (sender_id = :u2 AND receiver_id = :u1)
-            ORDER BY created_at ASC
-        ");
+        SELECT *
+        FROM messages
+        WHERE 
+            (sender_id = ? AND receiver_id = ?)
+            OR 
+            (sender_id = ? AND receiver_id = ?)
+        ORDER BY created_at ASC
+    ");
 
-        // 🔹 Exécution avec paramètres nommés
         $stmt->execute([
-            'u1' => $user1,
-            'u2' => $user2
+            $user1,
+            $user2,
+            $user2,
+            $user1
         ]);
-
-        // 🔹 Retourne les messages sous forme de tableau associatif
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(\PDO::FETCH_CLASS, Message::class);
     }
 
     /**
@@ -96,7 +96,7 @@ class MessageManager extends BaseManager
         // 🔹 Attention ici : les '?' doivent être fournis dans le bon ordre
         $stmt->execute([$userId, $userId, $userId]);
 
-        $allMessages = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $allMessages = $stmt->fetchAll(\PDO::FETCH_CLASS, Message::class);
 
         // 🔹 On ne garde qu'un message par conversation (le dernier)
         $conversations = [];
@@ -108,5 +108,24 @@ class MessageManager extends BaseManager
         }
 
         return array_values($conversations);
+    }
+
+      /**
+     * Mettre à jour un message (ou autre, selon ton usage)
+     */
+    public function update(int $id, array $data): bool
+    {
+        $stmt = $this->db->prepare("
+            UPDATE books
+            SET 
+                title = :title,
+                description = :description,
+                status = :status
+            WHERE id = :id
+        ");
+
+        $data['id'] = $id;
+
+        return $stmt->execute($data);
     }
 }

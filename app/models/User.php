@@ -2,38 +2,23 @@
 
 namespace App\Models;
 
-/**
- * Modèle User
- * -----------------
- * Représente un utilisateur de l'application.
- *
- * ⚠️ Ce modèle ne contient AUCUNE logique SQL.
- * Toutes les interactions avec la base sont gérées
- * par le UserManager.
- */
 class User
 {
-    private int $id;
-    private string $username;
-    private string $email;
-    private string $password; // mot de passe hashé
-    private ?string $avatar;
-    private string $created_at;
+    private int $id = 0;
+    private string $username = '';
+    private string $email = '';
+    private string $password = '';
+    private ?string $avatar = null;
+    private string $created_at = '';
 
-    /**
-     * Hydratation automatique du modèle
-     * Permet de remplir l'objet avec un tableau (ex: résultat PDO)
-     */
     public function __construct(array $data = [])
     {
-        if (!empty($data)) {
-            $this->id = $data['id'] ?? 0;
-            $this->username = $data['username'] ?? '';
-            $this->email = strtolower(trim($data['email'] ?? ''));
-            $this->password = $data['password'] ?? '';
-            $this->avatar = $data['avatar'] ?? null;
-            $this->created_at = $data['created_at'] ?? '';
-        }
+        $this->id = $data['id'] ?? 0;
+        $this->username = $data['username'] ?? '';
+        $this->email = strtolower(trim($data['email'] ?? ''));
+        $this->password = $data['password'] ?? '';
+        $this->avatar = $data['avatar'] ?? null;
+        $this->created_at = $data['created_at'] ?? '';
     }
 
     // ================= GETTERS =================
@@ -53,9 +38,6 @@ class User
         return $this->email;
     }
 
-    /**
-     * ⚠️ Ne jamais exposer ce getter dans une API !
-     */
     public function getPassword(): string
     {
         return $this->password;
@@ -80,13 +62,11 @@ class User
 
     public function setEmail(string $email): void
     {
-        // Normalisation pour éviter les doublons
         $this->email = strtolower(trim($email));
     }
 
     public function setPassword(string $password): void
     {
-        // On suppose que le password est déjà hashé
         $this->password = $password;
     }
 

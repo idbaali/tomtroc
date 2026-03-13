@@ -42,12 +42,31 @@ class MessageController extends Controller
             $messages = $this->messageManager->getConversation($userId, $currentConversationUserId);
         }
 
+        // Verification rapide pour s'assurer que la requête est bien POST
+        // var_dump('MESSAGE ENVOYÉ');
+        // die();
+
+        // 🔥 DEBUG récupération messages
+        // var_dump($messages);
+        // die();
+
+        // var_dump($userId);
+        // var_dump($currentConversationUserId);
+        // die();
+
+        // var_dump($_SESSION);
+        // var_dump($userId);
+        // var_dump($conversations);
+        // die();
+
+
         // 🔹 Affiche la vue messagerie.php
         $this->render('messagerie', [
             'title' => 'Messagerie',
             'conversations' => $conversations,
             'messages' => $messages,
-            'currentConversationUserId' => $currentConversationUserId
+            'currentConversationUserId' => $currentConversationUserId,
+            'currentUserId' => $userId
         ]);
     }
 

@@ -1,18 +1,19 @@
 <?php
 /**
  * Composant : carte d’un livre
- * Dépend uniquement de la variable $book
+ * Dépend uniquement de la variable $book (objet Book)
  */
 
 // Sécurisation + fallback
-$title  = htmlspecialchars($book['title'] ?? 'Titre inconnu');
-$author = htmlspecialchars($book['author'] ?? 'Auteur inconnu');
-$seller = htmlspecialchars($book['owner_name'] ?? 'Utilisateur');
-$image  = !empty($book['image'])
-    ? htmlspecialchars($book['image'])
+$title  = htmlspecialchars($book->getTitle() ?? 'Titre inconnu');
+$author = htmlspecialchars($book->getAuthor() ?? 'Auteur inconnu');
+$seller = htmlspecialchars($book->getSeller() ?? 'Utilisateur');
+
+$image  = $book->getImage()
+    ? htmlspecialchars($book->getImage())
     : 'default.png';
 
-$slug = htmlspecialchars($book['slug'] ?? '#');
+$slug = htmlspecialchars($book->getSlug() ?? '#');
 ?>
 
 <a href="/livre/<?= $slug ?>" class="exchange-card">
@@ -30,6 +31,5 @@ $slug = htmlspecialchars($book['slug'] ?? '#');
     <p class="seller">
         Vendu par : <?= $seller ?>
     </p>
-    
 
 </a>

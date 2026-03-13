@@ -3,6 +3,7 @@
 namespace App\Managers;
 
 use Core\BaseManager;
+use App\Models\User;
 
 /**
  * UserManager
@@ -12,9 +13,9 @@ use Core\BaseManager;
 class UserManager extends BaseManager
 {
     /**
-     * Utilisateur par ID
+     * Récupère un utilisateur par ID
      */
-    public function getById(int $id): ?array
+    public function getById(int $id): ?User
     {
         $stmt = $this->db->prepare("
             SELECT id, username, email, avatar
@@ -25,13 +26,13 @@ class UserManager extends BaseManager
 
         $stmt->execute(['id' => $id]);
 
-        return $stmt->fetch() ?: null;
+        return $stmt->fetchObject(User::class) ?: null;
     }
 
     /**
-     * Trouver par email
+     * Récupère un utilisateur par email
      */
-    public function findByEmail(string $email): ?array
+    public function findByEmail(string $email): ?User
     {
         $stmt = $this->db->prepare("
             SELECT *
@@ -42,7 +43,7 @@ class UserManager extends BaseManager
 
         $stmt->execute(['email' => $email]);
 
-        return $stmt->fetch() ?: null;
+        return $stmt->fetchObject(User::class) ?: null;
     }
 
     /**
@@ -64,5 +65,21 @@ class UserManager extends BaseManager
             'email' => $email,
             'password' => $passwordHash
         ]);
+    }
+
+    /**
+     * Trouver un utilisateur par ID (alternative)
+     */
+    public function find(int $id): ?User
+    {
+        $stmt = $this->db->prepare("
+            SELECT *
+            FROM users
+            WHERE id = ?
+        ");
+
+        $stmt->execute([$id]);
+
+        return $stmt->fetchObject(User::class) ?: null;
     }
 }

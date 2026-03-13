@@ -10,7 +10,7 @@
         <!-- GAUCHE : Profil -->
         <div class="profile-card">
 
-            <img src="/images/profiles/<?= htmlspecialchars($user['photo'] ?? 'default.png') ?>"
+            <img src="/images/profiles/<?= htmlspecialchars($user['avatar'] ?? 'default-user.png') ?>"
                 alt="Profil"
                 class="profile-photo">
 
@@ -107,7 +107,7 @@
 
                     <div class="description">
                         <?= htmlspecialchars(strlen($book['description']) > 180
-                            ? substr($book['description'],0,180).'...'
+                            ? substr($book['description'], 0, 180) . '...'
                             : $book['description']) ?>
                     </div>
 

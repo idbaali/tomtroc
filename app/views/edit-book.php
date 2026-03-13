@@ -12,7 +12,7 @@
 
     <section class="edit-book-page">
 
-        <!-- Contenu principal --> 
+        <!-- Contenu principal -->
         <section class="edit-book-detail">
             <!-- Photo livre / aperçu -->
             <div class="edit-book-photo">
@@ -23,25 +23,37 @@
             <!-- Formulaire édition -->
             <div class="edit-book-form">
 
-                <form aria-label="Formulaire d'édition de livre">
+                <form method="POST" action="/edition-livre/<?= $book['id'] ?>" aria-label="Formulaire d'édition de livre">
+
                     <label for="title">Titre</label>
-                    <input type="text" id="title" name="title" value="The Kinfolk Table" required>
+                    <input type="text" id="title" name="title"
+                        value="<?= htmlspecialchars($book['title']) ?>" required>
 
                     <label for="author">Auteur</label>
-                    <input type="text" id="author" name="author" value="Nathan Williams" required>
+                    <input type="text" id="author" name="author"
+                        value="<?= htmlspecialchars($book['author']) ?>" required>
 
                     <label for="description">Description</label>
-                    <textarea id="description" name="description" rows="6" required>
-                        J'ai récemment plongé dans les pages de 'The Kinfolk Table' et j'ai été enchanté par cette œuvre captivante...
-                    </textarea>
+                    <textarea id="description" name="description" rows="6">
+<?= htmlspecialchars($book['description']) ?>
+</textarea>
 
                     <label for="availability">Disponibilité</label>
-                    <select id="availability" name="availability">
-                        <option value="disponible" selected>Disponible</option>
-                        <option value="non_disponible">Non disponible</option>
-                    </select>
 
-                    <button type="submit" class="btn-edit">Valider</button>
+                    <select id="availability" name="status">
+
+                        <option value="available"
+                            <?= (($book['status'] ?? 'available') === 'available') ? 'selected' : '' ?>>
+                            Disponible
+                        </option>
+
+                        <option value="unavailable"
+                            <?= (($book['status'] ?? '') === 'unavailable') ? 'selected' : '' ?>>
+                            Non disponible
+                        </option>
+
+                    </select>
+                    <button type="submit" class="btn-primary">Enregistrer les modifications</button>
                 </form>
             </div>
 

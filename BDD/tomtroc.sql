@@ -1,4 +1,6 @@
-CREATE DATABASE IF NOT EXISTS tomtroc
+DROP DATABASE IF EXISTS tomtroc;
+
+CREATE DATABASE tomtroc
 CHARACTER SET utf8mb4
 COLLATE utf8mb4_unicode_ci;
 
@@ -7,7 +9,7 @@ USE tomtroc;
 -- =========================
 -- TABLE USERS
 -- =========================
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
@@ -20,7 +22,7 @@ CREATE TABLE IF NOT EXISTS users (
 -- =========================
 -- TABLE BOOKS
 -- =========================
-CREATE TABLE IF NOT EXISTS books (
+CREATE TABLE books (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(150) NOT NULL,
     author VARCHAR(100) NOT NULL,
@@ -28,44 +30,65 @@ CREATE TABLE IF NOT EXISTS books (
     image VARCHAR(255) DEFAULT NULL,
     owner_id INT NOT NULL,
     slug VARCHAR(255) NOT NULL UNIQUE,
+    status ENUM('available','unavailable') DEFAULT 'available',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
+
+    FOREIGN KEY (owner_id) 
+    REFERENCES users(id)
+    ON DELETE CASCADE
 );
 
 -- =========================
 -- TABLE MESSAGES
 -- =========================
-CREATE TABLE IF NOT EXISTS messages (
+CREATE TABLE messages (
     id INT AUTO_INCREMENT PRIMARY KEY,
     sender_id INT NOT NULL,
     receiver_id INT NOT NULL,
     content TEXT NOT NULL,
     is_read TINYINT(1) DEFAULT 0,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (sender_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (receiver_id) REFERENCES users(id) ON DELETE CASCADE
+
+    FOREIGN KEY (sender_id)
+    REFERENCES users(id)
+    ON DELETE CASCADE,
+
+    FOREIGN KEY (receiver_id)
+    REFERENCES users(id)
+    ON DELETE CASCADE
 );
 
 -- =========================
 -- TABLE EXCHANGES
 -- =========================
-CREATE TABLE IF NOT EXISTS exchanges (
+CREATE TABLE exchanges (
     id INT AUTO_INCREMENT PRIMARY KEY,
     book_id INT NOT NULL,
     requester_id INT NOT NULL,
     status ENUM('pending','accepted','rejected') DEFAULT 'pending',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE,
-    FOREIGN KEY (requester_id) REFERENCES users(id) ON DELETE CASCADE
+
+    FOREIGN KEY (book_id)
+    REFERENCES books(id)
+    ON DELETE CASCADE,
+
+    FOREIGN KEY (requester_id)
+    REFERENCES users(id)
+    ON DELETE CASCADE
 );
 
-
+-- =========================
+-- DONNÉES UTILISATEURS
+-- =========================
 INSERT INTO users (username, email, password, description, avatar) VALUES
 ('Nathalire', 'nathalire@example.com', 'password1', 'Passionnée de romans.', 'nathalire.png'),
 ('CamilleClubLit', 'camille@example.com', 'password2', 'Bibliophile et organisatrice.', 'camille.png'),
 ('Alexlecture', 'alex@example.com', 'password3', 'Toujours à la recherche de nouvelles histoires.', 'alexlecture.png'),
 ('Hugo1990_12', 'hugo@example.com', 'password4', 'Fan de poésie.', 'hugo.png');
 
+-- =========================
+-- DONNÉES LIVRES
+-- =========================
 INSERT INTO books (title, author, description, image, owner_id, slug) VALUES
 ('Alabaster', 'Nathan Williams', 'Un roman captivant sur la famille et les secrets.', 'esther-alabaster.png', 1, 'alabaster'),
 ('The Kinfolk Table', 'Esther', 'Découvrez l’art de partager les repas et les histoires.', 'kinfolk.png', 2, 'the-kinfolk-table'),
@@ -82,13 +105,20 @@ INSERT INTO books (title, author, description, image, owner_id, slug) VALUES
 ('The Subtle Art Of...', 'Mark Manson', 'Conseils pour vivre mieux et plus sereinement.', 'subtle-art.png', 1, 'the-subtle-art-of'),
 ('Narnia', 'C.S Lewis', 'Aventures fantastiques dans un monde magique.', 'narnia.png', 2, 'narnia'),
 ('Company Of One', 'Paul Jarvis', 'Réflexion sur l’entrepreneuriat et le travail.', 'company-of-one.png', 3, 'company-of-one'),
-('The Two Towers', 'J.R.R Tolkien', 'Le deuxième tome de la trilogie du Seigneur des Anneaux.', 'two-towers.png', 4, 'the-two-towers');
+('The Two Towers', 'J.R.R Tolkien', 'Le deuxième tome du Seigneur des Anneaux.', 'two-towers.png', 4, 'the-two-towers');
 
+-- =========================
+-- MESSAGES
+-- =========================
 INSERT INTO messages (sender_id, receiver_id, content, is_read) VALUES
 (1, 2, 'Salut Camille, tu as vu le nouveau livre Alabaster ?', 0),
 (2, 1, 'Oui, il est super ! Merci pour le conseil.', 1),
-(3, 4, 'Hugo, est-ce que tu veux échanger Milk & Honey ?', 0);
+(3, 4, 'Hugo, est-ce que tu veux échanger Milk & Honey ?', 0),
+(4, 3, 'Oui Alex, pourquoi pas !', 0);
 
+-- =========================
+-- DEMANDES D'ÉCHANGE
+-- =========================
 INSERT INTO exchanges (book_id, requester_id, status) VALUES
 (1, 2, 'pending'),
 (4, 3, 'accepted');

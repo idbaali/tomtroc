@@ -64,7 +64,7 @@ class BookController extends Controller
         }
 
         $this->render('book', [
-            'title' => $book['title'],
+            'title' => $book->getTitle(),
             'book'  => $book
         ]);
     }

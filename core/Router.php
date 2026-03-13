@@ -63,6 +63,31 @@ class Router
                 $controller->show($param);
                 break;
 
+            // Création d’un livre
+            // case 'ajouter-livre':
+            //     $controller = new BookController();
+            //     $controller->create();
+            //     break;
+
+            // Modification d’un livre → /edition-livre/12
+            case 'edition-livre':
+                $controller = new BookController();
+                $controller->edit($param);
+                break;
+
+            // Suppression d’un livre → /supprimer-livre/12
+            // case 'supprimer-livre':
+            //     $controller = new BookController();
+            //     $controller->delete($param);
+            //     break;
+
+            case 'compte-public':
+                $controller = new UserController();
+                $id = $_GET['id'] ?? null;
+                $controller->profile($id);
+                break;
+
+
             // Connexion
             case 'connexion':
                 $controller = new AuthController();
@@ -87,30 +112,19 @@ class Router
                 $controller->account();
                 break;
 
-            // Compte public d’un utilisateur
-            case 'compte-public':
-                $controller = new UserController();
-                $controller->profile((int) $param);
-                break;
-
-            // Messagerie avec envoi / affichage
+            // Messagerie (AFFICHAGE + ENVOI)
             case 'messagerie':
                 $controller = new MessageController();
 
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                    // 🔹 Envoi d’un nouveau message
+                    // Envoi message
                     $controller->send();
                 } else {
-                    // 🔹 Affichage des conversations et messages existants
+                    // Affichage messagerie
                     $controller->index();
                 }
                 break;
 
-            // Modification d’un livre → /edition-livre/12
-            case 'edition-livre':
-                $controller = new BookController();
-                $controller->edit($param);
-                break;
 
             // 404 pour toutes les autres routes
             default:

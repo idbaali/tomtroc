@@ -1,87 +1,64 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Managers;
 
-use Core\Controller;
-use App\Managers\UserManager;
-use App\Managers\BookManager;
+use Core\BaseManager;
+use App\Models\User;
 
-class UserController extends Controller
+class UserManager extends BaseManager
 {
-    private UserManager $userManager;
-
-    public function __construct()
+    /**
+     * Récupère un utilisateur par email
+     */
+    public function findByEmail(string $email): ?User
     {
-        parent::__construct();
-        $this->userManager = new UserManager();
+        $stmt = $this->db->prepare("
+            SELECT id, username, email, avatar, password, created_at
+            FROM users
+            WHERE email = :email
+            LIMIT 1
+        ");
+
+        $stmt->execute(['email' => $email]);
+
+        return $stmt->fetchObject(User::class) ?: null;
     }
 
     /**
-     * Page du compte connecté
+     * Créer un utilisateur
      */
-    public function account(): void
+    public function create(string $username, string $email, string $passwordHash): bool
     {
-        $user = $_SESSION['user'] ?? null;
-
-        if (!$user) {
-            setFlash('error', 'Vous devez être connecté.');
-            redirect('/connexion');
-            return;
+        if ($this->findByEmail($email)) {
+            return false;
         }
 
-        $bookManager = new BookManager();
-        $books = $bookManager->getByUserId($user['id']);
+        $stmt = $this->db->prepare("
+            INSERT INTO users (username, email, password, created_at)
+            VALUES (:username, :email, :password, NOW())
+        ");
 
-        // Si aucun livre, on met un exemple pour tester l'affichage
-        if (empty($books)) {
-            $books = [
-                [
-                    'title' => 'The Kinfolk Table',
-                    'author' => 'Nathan Williams',
-                    'description' => 'J\'ai récemment plongé dans les pages de "The Kinfolk Table"...',
-                    'available' => true,
-                    'photo' => 'kinfolk.png'
-                ],
-                [
-                    'title' => 'Autre Livre',
-                    'author' => 'Auteur X',
-                    'description' => 'Description du livre…',
-                    'available' => false,
-                    'photo' => 'default.png'
-                ]
-            ];
-        }
-
-        $this->render('account', [
-            'title' => 'Mon compte',
-            'user' => $user,
-            'books' => $books
+        return $stmt->execute([
+            'username' => $username,
+            'email' => $email,
+            'password' => $passwordHash
         ]);
     }
 
     /**
-     * Profil public d'un utilisateur
+     * Récupérer un utilisateur par ID
      */
-    public function profile(int $id): void
+    public function getById(int $id): ?User
     {
-        $bookManager = new BookManager();
+        $stmt = $this->db->prepare("
+            SELECT id, username, email, avatar, password, created_at
+            FROM users
+            WHERE id = :id
+            LIMIT 1
+        ");
 
-        // Récupérer l'utilisateur via UserManager
-        $user = $this->userManager->getById($id);
+        $stmt->execute(['id' => $id]);
 
-        if (!$user) {
-            http_response_code(404);
-            echo "Utilisateur introuvable";
-            return;
-        }
-
-        // Récupérer tous les livres de l'utilisateur
-        $books = $bookManager->getByUserId($user['id']);
-
-        $this->render('profil', [
-            'title' => ($user['username'] ?? 'Utilisateur') . ' - Profil',
-            'user' => $user,
-            'books' => $books
-        ]);
+        return $stmt->fetchObject(User::class) ?: null;
     }
 }

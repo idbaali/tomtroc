@@ -1,25 +1,6 @@
 <?php
 require_once __DIR__ . '/layout/header.php';
 require_once __DIR__ . '/../../app/helpers.php'; // inclus helpers.php si pas déjà inclus
-
-// 🔹 ID de l'utilisateur courant
-$currentUserId = $_SESSION['user']['id'] ?? null;
-
-// 🔹 ID de la conversation sélectionnée (GET param ?user=)
-$currentConversationUserId = $_GET['user'] ?? null;
-
-// 🔹 Instancier le MessageManager
-$messageManager = new \App\Managers\MessageManager();
-
-// 🔹 Récupérer toutes les conversations de l'utilisateur courant
-$conversations = $messageManager->getUserConversations($currentUserId);
-
-// 🔹 Si une conversation est sélectionnée, récupérer ses messages
-$messages = [];
-if ($currentConversationUserId) {
-    $currentConversationUserId = (int)$currentConversationUserId;
-    $messages = $messageManager->getConversation($currentUserId, $currentConversationUserId);
-}
 ?>
 
 <main class="messages-page">

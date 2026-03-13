@@ -69,15 +69,19 @@ class AuthController extends Controller
             // Récupérer l'utilisateur par email
             $user = $this->userManager->findByEmail($email);
 
-            // Vérification sécurisée : email et mot de passe
-            if (!$user || !password_verify($password, $user['password'])) {
+            // Vérification sécurisée
+            if (!$user || !password_verify($password, $user->getPassword())) {
                 setFlash('error', "Email ou mot de passe incorrect");
-                return; // arrêter l'exécution
+                return redirect('/connexion');
             }
 
-            // Supprimer le mot de passe avant de stocker en session
-            unset($user['password']);
-            $_SESSION['user'] = $user;
+            // Stocker seulement les infos utiles en session
+            $_SESSION['user'] = [
+                'id' => $user->getId(),
+                'username' => $user->getUsername(),
+                'email' => $user->getEmail(),
+                'avatar' => $user->getAvatar()
+            ];
 
             setFlash('success', "Connexion réussie !");
             redirect('/compte');

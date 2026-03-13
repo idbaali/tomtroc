@@ -16,16 +16,26 @@ class BookManager extends BaseManager
     /**
      * Récupère tous les livres
      */
+
     public function getAll(): array
     {
         $stmt = $this->db->query("
-            SELECT b.*, u.username AS seller
-            FROM books b
-            JOIN users u ON u.id = b.owner_id
-            ORDER BY b.created_at DESC
-        ");
+        SELECT b.*, u.username AS seller
+        FROM books b
+        JOIN users u ON u.id = b.owner_id
+        ORDER BY b.created_at DESC
+    ");
 
-        return $stmt->fetchAll();
+        $booksData = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $books = [];
+
+        foreach ($booksData as $data) {
+            $book = new Book($data);
+            $book->setSeller($data['seller'] ?? null);
+            $books[] = $book;
+        }
+
+        return $books;
     }
 
     /**
@@ -52,34 +62,45 @@ class BookManager extends BaseManager
 
         $stmt->execute();
 
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(\PDO::FETCH_CLASS, Book::class);
     }
 
     /**
      * Récupère un livre via son slug
      */
-    public function getBySlug(string $slug): ?array
+
+    public function getBySlug(string $slug): ?Book
     {
         $stmt = $this->db->prepare("
-            SELECT 
-                b.*,
-                u.username AS owner_name,
-                u.avatar AS owner_avatar
-            FROM books b
-            JOIN users u ON u.id = b.owner_id
-            WHERE b.slug = :slug
-            LIMIT 1
-        ");
+        SELECT 
+            b.*,
+            u.username AS owner_name,
+            u.avatar AS owner_avatar
+        FROM books b
+        JOIN users u ON u.id = b.owner_id
+        WHERE b.slug = :slug
+        LIMIT 1
+    ");
 
         $stmt->execute(['slug' => $slug]);
 
-        return $stmt->fetch() ?: null;
+        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+        if (!$data) {
+            return null;
+        }
+
+        // Instancie Book et rempli les propriétés "join"
+        $book = new Book($data);
+        $book->setOwnerName($data['owner_name'] ?? null);
+        $book->setOwnerAvatar($data['owner_avatar'] ?? null);
+
+        return $book;
     }
 
     /**
      * Récupère un livre par son ID
      */
-    public function getById(int $id): ?array
+    public function getById(int $id): ?Book
     {
         $stmt = $this->db->prepare("
             SELECT 
@@ -94,7 +115,7 @@ class BookManager extends BaseManager
 
         $stmt->execute(['id' => $id]);
 
-        return $stmt->fetch() ?: null;
+        return $stmt->fetchObject(Book::class) ?: null;
     }
 
     /**
@@ -112,7 +133,7 @@ class BookManager extends BaseManager
 
         $stmt->execute(['userId' => $userId]);
 
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(\PDO::FETCH_CLASS, Book::class);
     }
 
     /**
@@ -170,5 +191,17 @@ class BookManager extends BaseManager
 
         return $stmt->execute(['id' => $id]);
     }
-}
 
+    public function findByUser(int $userId): array
+    {
+        $stmt = $this->db->prepare("
+        SELECT * FROM books
+        WHERE owner_id = ?
+        ORDER BY created_at DESC
+    ");
+
+        $stmt->execute([$userId]);
+
+        return $stmt->fetchAll(\PDO::FETCH_CLASS, Book::class);
+    }
+}

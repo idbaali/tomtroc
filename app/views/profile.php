@@ -8,22 +8,33 @@
     <aside class="profile-left">
 
         <div class="avatar-wrapper">
-            <img src="/images/avatars/<?= htmlspecialchars($user->getAvatar() ?? 'default-user.png') ?>"
-                alt="Photo de <?= htmlspecialchars($user->getUsername() ?? 'Utilisateur inconnu') ?>">
-            <?php if (isset($_SESSION['user']) && $_SESSION['user']['id'] === $user->getId()): ?>
-                <span class="status-online">En ligne</span>
-            <?php endif; ?>
+            <img src="/images/avatars/<?= e($user->getAvatar() ?? 'default-user.png') ?>"
+                alt="Photo de <?= e($user->getUsername() ?? 'Utilisateur inconnu') ?>">
         </div>
 
-        <h2 class="username"><?= htmlspecialchars($user->getUsername() ?? 'Utilisateur inconnu') ?></h2>
-        <p class="member-since">Membre depuis <?= htmlspecialchars($user->getCreatedAt() ?? 'inconnu') ?></p>
+        <h2 class="username"><?= e($user->getUsername() ?? 'Utilisateur inconnu') ?></h2>
+
+        <p class="member-since">
+            Membre depuis <?= date('d/m/Y', strtotime($user->getCreatedAt())) ?>
+        </p>
 
         <div class="library-summary">
             <h6>BIBLIOTHÈQUE</h6>
-            <p class="book-count"><?= count($books) ?> livre<?= count($books) > 1 ? 's' : '' ?></p>
+            <p class="book-count">
+                <?= count($books) ?> livre<?= count($books) > 1 ? 's' : '' ?>
+            </p>
         </div>
 
-        <a href="#" class="btn-primary-profile">Écrire un message</a>
+        <!-- Lien vers messagerie -->
+        <?php if (isset($_SESSION['user'])): ?>
+            <a href="/messagerie?user=<?= $user->getId() ?>" class="btn-primary-profile">
+                Écrire un message
+            </a>
+        <?php else: ?>
+            <a href="/connexion" class="btn-primary-profile">
+                Ecrivez un message
+            </a>
+        <?php endif; ?>
 
     </aside>
 
@@ -32,36 +43,45 @@
     ============================ -->
     <section class="profile-right">
 
-        <!-- Bibliothèque -->
-        <section class="profile-library">
-            <h2>Bibliothèque</h2>
+        <div class="library-books">
 
-            <div class="library-books">
-                <?php if (!empty($books)): ?>
-                    <div class="library-header">
-                        <div>PHOTO</div>
-                        <div>TITRE</div>
-                        <div>AUTEUR</div>
-                        <div>DESCRIPTION</div>
-                    </div>
+            <?php if (!empty($books)): ?>
 
-                    <?php foreach ($books as $book): ?>
-                        <article class="library-book">
-                            <div class="library-photo">
-                                <img src="/images/books/<?= htmlspecialchars($book->getImage() ?? 'default-book.png') ?>"
-                                    alt="<?= htmlspecialchars($book->getTitle()) ?>">
-                            </div>
-                            <div class="library-title"><?= htmlspecialchars($book->getTitle()) ?></div>
-                            <div class="library-author"><?= htmlspecialchars($book->getAuthor()) ?></div>
-                            <div class="library-description"><?= htmlspecialchars($book->getDescription()) ?></div>
-                        </article>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <p>Aucun livre disponible pour cet utilisateur.</p>
-                <?php endif; ?>
-            </div>
+                <div class="library-header">
+                    <div>PHOTO</div>
+                    <div>TITRE</div>
+                    <div>AUTEUR</div>
+                    <div>DESCRIPTION</div>
+                </div>
 
-        </section>
+                <?php foreach ($books as $book): ?>
+                    <article class="library-book">
+
+                        <div class="library-photo">
+                            <img src="/images/books/<?= e($book->getImage() ?? 'default-book.png') ?>"
+                                alt="<?= e($book->getTitle()) ?>">
+                        </div>
+
+                        <div class="library-title">
+                            <?= e($book->getTitle()) ?>
+                        </div>
+
+                        <div class="library-author">
+                            <?= e($book->getAuthor()) ?>
+                        </div>
+
+                        <div class="library-description">
+                            <?= e($book->getDescription()) /* Affiche la description complète */ ?>
+                        </div>
+
+                    </article>
+                <?php endforeach; ?>
+
+            <?php else: ?>
+                <p>Aucun livre disponible pour cet utilisateur.</p>
+            <?php endif; ?>
+
+        </div>
 
     </section>
 

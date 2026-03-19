@@ -9,11 +9,13 @@ use App\Managers\BookManager;
 class UserController extends Controller
 {
     private UserManager $userManager;
+    private BookManager $bookManager;
 
     public function __construct()
     {
         parent::__construct();
         $this->userManager = new UserManager();
+        $this->bookManager = new BookManager();
     }
 
     /**
@@ -62,12 +64,17 @@ class UserController extends Controller
     /**
      * Profil public d'un utilisateur
      */
+
     public function profile(int $id): void
     {
-        $bookManager = new BookManager();
+        if (!$id) {
+            http_response_code(404);
+            echo "Utilisateur introuvable";
+            return;
+        }
 
-        // Récupérer l'utilisateur via UserManager
         $user = $this->userManager->getById($id);
+        $books = $this->bookManager->getByUserId($id);
 
         if (!$user) {
             http_response_code(404);
@@ -75,11 +82,7 @@ class UserController extends Controller
             return;
         }
 
-        // Récupérer tous les livres de l'utilisateur
-        $books = $bookManager->getByUserId($user->getId());
-
         $this->render('profile', [
-            'title' => ($user->getUsername() ?? 'Utilisateur') . ' - Profil',
             'user' => $user,
             'books' => $books
         ]);

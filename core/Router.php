@@ -64,10 +64,15 @@ class Router
                 break;
 
             // Création d’un livre
-            // case 'ajouter-livre':
-            //     $controller = new BookController();
-            //     $controller->create();
-            //     break;
+            case 'create-book':
+                $controller = new \App\Controllers\BookController();
+
+                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                    $controller->create();
+                } else {
+                    $controller->form();
+                }
+                break;
 
             // Modification d’un livre → /edition-livre/12
             case 'edition-livre':
@@ -76,13 +81,13 @@ class Router
                 break;
 
             // Suppression d’un livre → /supprimer-livre/12
-            // case 'supprimer-livre':
-            //     $controller = new BookController();
-            //     $controller->delete($param);
-            //     break;
+            case 'supprimer-livre':
+                $controller = new BookController();
+                $controller->delete($param);
+                break;
 
             case 'compte-public':
-                $controller = new UserController();                
+                $controller = new UserController();
                 $controller->profile($param);
                 break;
 

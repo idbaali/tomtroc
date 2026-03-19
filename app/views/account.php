@@ -10,7 +10,7 @@
         <!-- GAUCHE : Profil -->
         <div class="profile-card">
 
-            <img src="/images/profiles/<?= htmlspecialchars($user['avatar'] ?? 'default-user.png') ?>"
+            <img src="/images/profiles/<?= e($user['avatar'] ?? 'default-user.png') ?>"
                 alt="Profil"
                 class="profile-photo">
 
@@ -18,12 +18,16 @@
 
             <div class="info-group">
                 <div class="label">Pseudo</div>
-                <div class="value"><?= htmlspecialchars($user['username'] ?? '') ?></div>
+                <div class="value"><?= e($user['username'] ?? '') ?></div>
             </div>
 
             <div class="info-group">
                 <div class="label">Membre depuis</div>
-                <div class="value"><?= htmlspecialchars($user['member_since'] ?? '1 an') ?></div>
+                <div class="value">
+                    <?= !empty($user['created_at']) 
+                        ? date('d/m/Y', strtotime($user['created_at'])) 
+                        : '1 an' ?>
+                </div>
             </div>
 
             <div class="info-group">
@@ -32,7 +36,6 @@
             </div>
 
         </div>
-
 
         <!-- DROITE -->
         <div class="info-card">
@@ -46,7 +49,7 @@
                     <input type="email"
                         name="email"
                         class="value"
-                        value="<?= htmlspecialchars($user['email'] ?? '') ?>"
+                        value="<?= e($user['email'] ?? '') ?>"
                         required>
                 </div>
 
@@ -63,7 +66,7 @@
                     <input type="text"
                         name="username"
                         class="value"
-                        value="<?= htmlspecialchars($user['username'] ?? '') ?>"
+                        value="<?= e($user['username'] ?? '') ?>"
                         required>
                 </div>
 
@@ -74,7 +77,6 @@
         </div>
 
     </div>
-
 
     <!-- TABLE -->
     <div class="library-table">
@@ -92,36 +94,37 @@
         <?php if (!empty($books)): ?>
 
             <?php foreach ($books as $book): ?>
-
                 <div class="table-row">
 
                     <div>
-                        <img src="/images/books/<?= htmlspecialchars($book['photo'] ?? 'default.png') ?>"
-                            alt="<?= htmlspecialchars($book['title']) ?>"
+                        <img src="/images/books/<?= e($book->getImage() ?? 'default.png') ?>"
+                            alt="<?= e($book->getTitle()) ?>"
                             class="book-img">
                     </div>
 
-                    <div><?= htmlspecialchars($book['title']) ?></div>
-
-                    <div><?= htmlspecialchars($book['author']) ?></div>
+                    <div><?= e($book->getTitle()) ?></div>
+                    <div><?= e($book->getAuthor()) ?></div>
 
                     <div class="description">
-                        <?= htmlspecialchars(strlen($book['description']) > 180
-                            ? substr($book['description'], 0, 180) . '...'
-                            : $book['description']) ?>
+                        <?= e(strlen($book->getDescription()) > 180
+                            ? substr($book->getDescription(), 0, 180) . '...'
+                            : $book->getDescription()) ?>
                     </div>
 
-                    <div class="status <?= $book['available'] ? 'available' : 'unavailable' ?>">
-                        <?= $book['available'] ? 'Disponible' : 'Non dispo.' ?>
+                    <div class="status <?= $book->isAvailable() ? 'available' : 'unavailable' ?>">
+                        <?= $book->isAvailable() ? 'Disponible' : 'Non dispo.' ?>
                     </div>
 
                     <div class="actions">
-                        <a class="edit" href="#">Éditer</a>
-                        <a class="delete" href="#">Supprimer</a>
+                        <a class="edit" href="/livre/modifier/<?= $book->getId() ?>">Éditer</a>
+                        <a class="delete"
+                           href="/livre/supprimer/<?= $book->getId() ?>"
+                           onclick="return confirm('Supprimer ce livre ?')">
+                           Supprimer
+                        </a>
                     </div>
 
                 </div>
-
             <?php endforeach; ?>
 
         <?php else: ?>

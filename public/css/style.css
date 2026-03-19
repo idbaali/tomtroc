@@ -1115,7 +1115,8 @@ div .Team {
 .profile-left {
     width: 280px;
     background: #FFFFFF;
-    padding: 70px 20px;
+    padding-top: 30px;
+    padding-bottom: 75px;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     display: flex;
@@ -1126,8 +1127,8 @@ div .Team {
 
 /* avatar */
 .avatar-wrapper img {
-    width: 120px;
-    height: 120px;
+    width: 140px;
+    height: 140px;
     border-radius: 50%;
     object-fit: cover;
     margin-bottom: 15px;
@@ -1156,7 +1157,7 @@ div .Team {
 }
 
 /* bibliothèque */
-.library-summary h3 {
+.library-summary h6 {
     font-size: 0.5em;
     letter-spacing: 1px;
     color: #292929;
@@ -1185,10 +1186,11 @@ div .Team {
     background: #009060;
 }
 
-
-
-
-
+.profile-right {
+    margin-top: 0; /* espace en haut */
+    padding-top: 0;
+    align-self: start; /* top align */
+}
 
 /* En-têtes */
 .library-header {
@@ -1198,7 +1200,7 @@ div .Team {
     font-weight: bold;
     padding: 10px 0;
     border-bottom: 2px solid #ccc;
-
+    font-size: 0.5em;
 }
 
 
@@ -1230,7 +1232,7 @@ div .Team {
 
 .member-since {
     font-size: 0.875em;
-    color: #777;
+    color: #A6A6A6;
     margin-bottom: 20px;
 }
 
@@ -1238,10 +1240,10 @@ div .Team {
     margin: 20px 0;
 }
 
-.library-summary h3 {
+.library-summary h6 {
     font-size: 0.875em;
     letter-spacing: 1px;
-    color: #333;
+    color: #292929;
 }
 
 .book-count {

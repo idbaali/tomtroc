@@ -26,10 +26,8 @@ class BookManager extends BaseManager
         ORDER BY b.created_at DESC
     ");
 
-        $booksData = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         $books = [];
-
-        foreach ($booksData as $data) {
+        while ($data = $stmt->fetch(\PDO::FETCH_ASSOC)) {
             $book = new Book($data);
             $book->setSeller($data['seller'] ?? null);
             $books[] = $book;
@@ -72,24 +70,17 @@ class BookManager extends BaseManager
     public function getBySlug(string $slug): ?Book
     {
         $stmt = $this->db->prepare("
-        SELECT 
-            b.*,
-            u.username AS owner_name,
-            u.avatar AS owner_avatar
+        SELECT b.*, u.username AS owner_name, u.avatar AS owner_avatar
         FROM books b
         JOIN users u ON u.id = b.owner_id
         WHERE b.slug = :slug
         LIMIT 1
     ");
-
         $stmt->execute(['slug' => $slug]);
 
         $data = $stmt->fetch(\PDO::FETCH_ASSOC);
-        if (!$data) {
-            return null;
-        }
+        if (!$data) return null;
 
-        // Instancie Book et rempli les propriétés "join"
         $book = new Book($data);
         $book->setOwnerName($data['owner_name'] ?? null);
         $book->setOwnerAvatar($data['owner_avatar'] ?? null);
@@ -103,19 +94,22 @@ class BookManager extends BaseManager
     public function getById(int $id): ?Book
     {
         $stmt = $this->db->prepare("
-            SELECT 
-                b.*,
-                u.username AS owner_name,
-                u.avatar AS owner_avatar
-            FROM books b
-            JOIN users u ON u.id = b.owner_id
-            WHERE b.id = :id
-            LIMIT 1
-        ");
-
+        SELECT b.*, u.username AS owner_name, u.avatar AS owner_avatar
+        FROM books b
+        JOIN users u ON u.id = b.owner_id
+        WHERE b.id = :id
+        LIMIT 1
+    ");
         $stmt->execute(['id' => $id]);
 
-        return $stmt->fetchObject(Book::class) ?: null;
+        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+        if (!$data) return null;
+
+        $book = new Book($data);
+        $book->setOwnerName($data['owner_name'] ?? null);
+        $book->setOwnerAvatar($data['owner_avatar'] ?? null);
+
+        return $book;
     }
 
     /**
@@ -124,16 +118,23 @@ class BookManager extends BaseManager
     public function getByUserId(int $userId): array
     {
         $stmt = $this->db->prepare("
-            SELECT b.*, u.username AS seller
-            FROM books b
-            JOIN users u ON u.id = b.owner_id
-            WHERE b.owner_id = :userId
-            ORDER BY b.created_at DESC
-        ");
+        SELECT b.*, u.username AS seller
+        FROM books b
+        JOIN users u ON u.id = b.owner_id
+        WHERE b.owner_id = :userId
+        ORDER BY b.created_at DESC
+    ");
 
         $stmt->execute(['userId' => $userId]);
 
-        return $stmt->fetchAll(\PDO::FETCH_CLASS, Book::class);
+        $books = [];
+        while ($data = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $book = new Book($data);
+            $book->setSeller($data['seller'] ?? null);
+            $books[] = $book;
+        }
+
+        return $books;
     }
 
     /**
@@ -204,4 +205,5 @@ class BookManager extends BaseManager
 
         return $stmt->fetchAll(\PDO::FETCH_CLASS, Book::class);
     }
+    
 }

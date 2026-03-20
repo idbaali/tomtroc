@@ -117,9 +117,11 @@
 
                     <div class="actions">
                         <a class="edit" href="/livre/modifier/<?= $book->getId() ?>">Éditer</a>
+
                         <a class="delete"
                            href="/livre/supprimer/<?= $book->getId() ?>"
-                           onclick="return confirm('Supprimer ce livre ?')">
+                           title="Supprimer ce livre"
+                           onclick="return confirm('Voulez-vous vraiment supprimer ce livre ?');">
                            Supprimer
                         </a>
                     </div>

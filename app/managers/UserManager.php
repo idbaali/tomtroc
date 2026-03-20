@@ -64,4 +64,64 @@ class UserManager extends BaseManager
 
         return new User($data);
     }
+
+    public function getUserWithBooks(int $id): ?array
+    {
+        $stmt = $this->db->prepare("
+        SELECT 
+            u.id AS user_id,
+            u.username,
+            u.email,
+            u.avatar,
+            u.created_at,
+
+            b.id AS book_id,
+            b.title,
+            b.author,
+            b.description,
+            b.image,
+            b.status
+
+        FROM users u
+        LEFT JOIN books b ON b.owner_id = u.id
+        WHERE u.id = :id
+    ");
+
+        $stmt->execute(['id' => $id]);
+
+        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        if (!$rows) {
+            return null;
+        }
+
+        // 🔹 Utilisateur (1 seule fois)
+        $user = [
+            'id' => $rows[0]['user_id'],
+            'username' => $rows[0]['username'],
+            'email' => $rows[0]['email'],
+            'avatar' => $rows[0]['avatar'],
+            'created_at' => $rows[0]['created_at'],
+        ];
+
+        // 🔹 Livres
+        $books = [];
+        foreach ($rows as $row) {
+            if (!empty($row['book_id'])) {
+                $books[] = [
+                    'id' => $row['book_id'],
+                    'title' => $row['title'],
+                    'author' => $row['author'],
+                    'description' => $row['description'],
+                    'image' => $row['image'],
+                    'status' => $row['status'],
+                ];
+            }
+        }
+
+        return [
+            'user' => $user,
+            'books' => $books
+        ];
+    }
 }

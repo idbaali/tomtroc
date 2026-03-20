@@ -73,18 +73,21 @@ class UserController extends Controller
             return;
         }
 
+        // Récupère l'utilisateur demandé
         $user = $this->userManager->getById($id);
-        $books = $this->bookManager->getByUserId($id);
-
         if (!$user) {
             http_response_code(404);
             echo "Utilisateur introuvable";
             return;
         }
 
+        // Récupère uniquement les livres de cet utilisateur
+        $books = $this->bookManager->getByUserId($id);
+
+        // On passe à la vue publique
         $this->render('profile', [
-            'user' => $user,
-            'books' => $books
+            'user' => $user,   // l'utilisateur ciblé
+            'books' => $books  // uniquement ses livres
         ]);
     }
 }

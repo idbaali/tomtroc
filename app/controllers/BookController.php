@@ -153,41 +153,37 @@ class BookController extends Controller
         ]);
     }
 
-    /**
-     * Création d'un livre
-     */
     public function create(): void
     {
         $user = $_SESSION['user'] ?? null;
+
         if (!$user) {
-            setFlash('error', 'Vous devez être connecté.');
             redirect('/connexion');
             return;
         }
 
-        // Récupère les données du formulaire
         $title = $_POST['title'] ?? '';
         $author = $_POST['author'] ?? '';
         $description = $_POST['description'] ?? '';
-        $image = $_POST['image'] ?? 'default.png'; // tu peux gérer upload plus tard
-        $slug = strtolower(str_replace(' ', '-', $title));
+        $image = $_POST['image'] ?? 'default.png';
 
-        $book = new Book([
-            'title' => $title,
-            'author' => $author,
-            'description' => $description,
-            'image' => $image,
-            'owner_id' => $user['id'],
-            'slug' => $slug
-        ]);
+        if ($title && $author && $description) {
 
-        if ($this->bookManager->create($book)) {
-            setFlash('success', 'Livre créé avec succès.');
-            redirect('/compte');
-        } else {
-            setFlash('error', 'Erreur lors de la création du livre.');
-            redirect('/livre/creer');
+            $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $title)));
+
+            $book = new Book([
+                'title' => $title,
+                'author' => $author,
+                'description' => $description,
+                'image' => $image,
+                'owner_id' => $user['id'],
+                'slug' => $slug
+            ]);
+
+            $this->bookManager->create($book);
         }
+
+        redirect('/compte');
     }
 
     /**
@@ -250,29 +246,25 @@ class BookController extends Controller
     }
 
     /**
-     * Suppression d'un livre
+     * 🔹 Supprimer un livre
      */
     public function delete(int $id): void
     {
         $user = $_SESSION['user'] ?? null;
+
         if (!$user) {
-            setFlash('error', 'Vous devez être connecté.');
             redirect('/connexion');
             return;
         }
 
         $book = $this->bookManager->getById($id);
+
+        // 🔥 SÉCURITÉ (C’EST ICI QUE TU DOIS LE METTRE)
         if (!$book || $book->getOwnerId() !== $user['id']) {
-            setFlash('error', 'Action non autorisée.');
-            redirect('/compte');
-            return;
+            die('Accès interdit');
         }
 
-        if ($this->bookManager->delete($id)) {
-            setFlash('success', 'Livre supprimé avec succès.');
-        } else {
-            setFlash('error', 'Erreur lors de la suppression.');
-        }
+        $this->bookManager->delete($id);
 
         redirect('/compte');
     }

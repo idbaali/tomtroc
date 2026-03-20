@@ -43,8 +43,8 @@
                     <div class="owner-box">
                         <!-- Avatar du propriétaire -->
                         <img
-                            src="/images/avatars/<?= htmlspecialchars($book->getOwnerAvatar() ?: 'default-user.png') ?>"
-                            alt="Photo de <?= htmlspecialchars($book->getOwnerName() ?: 'Utilisateur inconnu') ?>"
+                            src="/images/avatars/<?= htmlspecialchars($book->getOwner()->getAvatar() ?: 'default-user.png') ?>"
+                            alt="Photo de <?= htmlspecialchars($book->getOwner()->getUsername() ?: 'Utilisateur inconnu') ?>"
                             class="owner-avatar"
                             loading="lazy">
 
@@ -52,15 +52,15 @@
                         <div class="owner-info">
                             <p class="owner-name">
                                 <a href="">
-                                    <?= htmlspecialchars($book->getOwnerName() ?: 'Utilisateur inconnu') ?>
+                                    <?= htmlspecialchars($book->getOwner()->getUsername() ?: 'Utilisateur inconnu') ?>
                                 </a>
                             </p>
                         </div>
                     </div>
 
                     <!-- Bouton "Envoyer un message" uniquement si l'utilisateur est connecté et n'est pas le propriétaire -->
-                    <?php if (!empty($_SESSION['user']) && $_SESSION['user']['id'] !== $book->getOwnerId()) : ?>
-                        <a href="/messages/nouveau/<?= $book->getOwnerId() ?>" class="btn btn-book">
+                    <?php if (!empty($_SESSION['user']) && $_SESSION['user']['id'] !== $book->getOwner()->getId()) : ?>
+                        <a href="/messages/nouveau/<?= $book->getOwner()->getId() ?>" class="btn btn-book">
                             Envoyer un message
                         </a>
                     <?php endif; ?>

@@ -133,9 +133,9 @@ class BookManager extends BaseManager
     public function create(Book $book): bool
     {
         $stmt = $this->db->prepare("
-            INSERT INTO books (title, author, description, image, owner_id, slug)
-            VALUES (:title, :author, :description, :image, :owner_id, :slug)
-        ");
+        INSERT INTO books (title, author, description, image, owner_id, slug)
+        VALUES (:title, :author, :description, :image, :owner_id, :slug)
+    ");
 
         return $stmt->execute([
             'title' => $book->getTitle(),

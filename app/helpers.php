@@ -142,3 +142,5 @@ function generateSlug(string $title): string
 
     return trim($slug, '-');
 }
+
+

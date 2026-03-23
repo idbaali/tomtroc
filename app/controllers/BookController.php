@@ -5,6 +5,7 @@ namespace App\Controllers;
 use Core\Controller;
 use App\Managers\BookManager;
 use App\Models\Book;
+use App\Models\User;
 
 /**
  * Contrôleur des livres
@@ -79,39 +80,43 @@ class BookController extends Controller
             return;
         }
 
-        // Récupère les données du formulaire
         $data = $_POST;
-
-        // Génère un slug
         $data['slug'] = $this->generateSlug($data['title']);
 
-        // Crée un nouvel objet Book
+        $user = $_SESSION['user'] ?? null;
+
+        if (!$user) {
+            setFlash('error', 'Vous devez être connecté.');
+            redirect('/connexion');
+            return;
+        }
+
+        $owner = new \App\Models\User([
+            'id' => $user['id'] ?? null,
+            'username' => $user['username'] ?? '',
+            'avatar' => $user['avatar'] ?? null
+        ]);
+
         $book = new Book([
             'title' => $data['title'],
             'author' => $data['author'],
             'description' => $data['description'] ?? '',
             'image' => $data['image'] ?? '',
-            'owner_id' => $data['owner_id'] ?? 1, // Valeur par défaut si nécessaire
+            'owner' => $owner,
             'slug' => $data['slug']
         ]);
 
-        $this->bookManager->create($book);
+        if ($this->bookManager->create($book)) {
+            setFlash('success', 'Livre créé avec succès.');
+        } else {
+            setFlash('error', 'Erreur lors de la création.');
+        }
 
-        // Redirection vers la liste des livres
-        header('Location: /livres');
-        exit;
+        redirect('/livres');
     }
 
-    /**
-     * Génère un slug à partir d'un titre
-     */
-    private function generateSlug(string $title): string
-    {
-        $slug = strtolower(trim($title));
-        $slug = preg_replace('/[^a-z0-9-]+/', '-', $slug);
-        $slug = preg_replace('/-+/', '-', $slug);
-        return trim($slug, '-');
-    }
+
+    // Compte utilisateur
 
     public function account(): void
     {
@@ -153,11 +158,14 @@ class BookController extends Controller
         ]);
     }
 
+    // Creation d'un livre
+
     public function create(): void
     {
         $user = $_SESSION['user'] ?? null;
 
         if (!$user) {
+            setFlash('error', 'Vous devez être connecté.');
             redirect('/connexion');
             return;
         }
@@ -167,20 +175,33 @@ class BookController extends Controller
         $description = $_POST['description'] ?? '';
         $image = $_POST['image'] ?? 'default.png';
 
-        if ($title && $author && $description) {
+        if (!$title || !$author || !$description) {
+            setFlash('error', 'Veuillez remplir tous les champs.');
+            redirect('/compte');
+            return;
+        }
 
-            $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $title)));
+        $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $title)));
 
-            $book = new Book([
-                'title' => $title,
-                'author' => $author,
-                'description' => $description,
-                'image' => $image,
-                'owner_id' => $user['id'],
-                'slug' => $slug
-            ]);
+        $owner = new \App\Models\User([
+            'id' => $user['id'] ?? null,
+            'username' => $user['username'] ?? '',
+            'avatar' => $user['avatar'] ?? null
+        ]);
 
-            $this->bookManager->create($book);
+        $book = new Book([
+            'title' => $title,
+            'author' => $author,
+            'description' => $description,
+            'image' => $image,
+            'owner' => $owner,
+            'slug' => $slug
+        ]);
+
+        if ($this->bookManager->create($book)) {
+            setFlash('success', 'Livre ajouté avec succès.');
+        } else {
+            setFlash('error', 'Erreur lors de l\'ajout du livre.');
         }
 
         redirect('/compte');
@@ -253,18 +274,24 @@ class BookController extends Controller
         $user = $_SESSION['user'] ?? null;
 
         if (!$user) {
+            setFlash('error', 'Vous devez être connecté.');
             redirect('/connexion');
             return;
         }
 
         $book = $this->bookManager->getById($id);
 
-        // 🔥 SÉCURITÉ (C’EST ICI QUE TU DOIS LE METTRE)
         if (!$book || $book->getOwnerId() !== $user['id']) {
-            die('Accès interdit');
+            setFlash('error', 'Accès interdit.');
+            redirect('/compte');
+            return;
         }
 
-        $this->bookManager->delete($id);
+        if ($this->bookManager->delete($id)) {
+            setFlash('success', 'Livre supprimé avec succès.');
+        } else {
+            setFlash('error', 'Erreur lors de la suppression.');
+        }
 
         redirect('/compte');
     }

@@ -12,18 +12,18 @@ class Book
     private ?User $owner;
     private string $slug;
     private string $created_at;
-    private ?string $status = null; 
+    private ?string $status = null;
     private ?string $seller = null;
 
-    // ✅ Constructeur
+    // Constructeur
     public function __construct(array $data = [])
     {
         if (!empty($data)) {
             $this->id = $data['id'] ?? 0;
             $this->title = $data['title'] ?? '';
             $this->author = $data['author'] ?? '';
-            $this->description = $data['description'] ?? null; // initialisé pour éviter erreur PHP 8+
-            $this->image = $data['image'] ?? null;             // initialisé pour éviter erreur PHP 8+
+            $this->description = $data['description'] ?? null;
+            $this->image = $data['image'] ?? null;
             $this->owner = $data['owner'] ?? null;
             $this->slug = $data['slug'] ?? '';
             $this->created_at = $data['created_at'] ?? '';
@@ -32,19 +32,20 @@ class Book
         }
     }
 
-    // ✅ GETTERS
+    // GETTERS
     public function getId(): int { return $this->id; }
     public function getTitle(): string { return $this->title; }
     public function getAuthor(): string { return $this->author; }
     public function getDescription(): ?string { return $this->description; }
     public function getImage(): ?string { return $this->image; }
     public function getOwner(): ?User { return $this->owner; }
+    public function getOwnerId(): ?int { return $this->owner ? $this->owner->getId() : null; }
     public function getSlug(): string { return $this->slug; }
     public function getCreatedAt(): string { return $this->created_at; }
     public function getStatus(): ?string { return $this->status; }
     public function getSeller(): ?string { return $this->seller; }
 
-    // ✅ SETTERS
+    // SETTERS
     public function setTitle(string $title): void { $this->title = $title; }
     public function setAuthor(string $author): void { $this->author = $author; }
     public function setDescription(?string $description): void { $this->description = $description; }

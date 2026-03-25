@@ -41,6 +41,15 @@ class BookController extends Controller
         ]);
     }
 
+    private function generateSlug(string $title): string
+    {
+        $slug = strtolower(trim($title));
+        $slug = preg_replace('/[^a-z0-9-]+/', '-', $slug);
+        $slug = preg_replace('/-+/', '-', $slug);
+
+        return trim($slug, '-');
+    }
+
     /**
      * Affiche un livre par ID ou slug
      */
@@ -170,14 +179,22 @@ class BookController extends Controller
             return;
         }
 
-        $title = $_POST['title'] ?? '';
-        $author = $_POST['author'] ?? '';
-        $description = $_POST['description'] ?? '';
-        $image = $_POST['image'] ?? 'default.png';
+        $title = trim($_POST['title'] ?? '');
+        $author = trim($_POST['author'] ?? '');
+        $description = trim($_POST['description'] ?? '');
+        $image = trim($_POST['image'] ?? 'default.png');
+
+        // ✅ On garde les anciennes valeurs pour réafficher le formulaire
+        $_SESSION['old_create_book'] = [
+            'title' => $title,
+            'author' => $author,
+            'description' => $description,
+            'image' => $image
+        ];
 
         if (!$title || !$author || !$description) {
-            setFlash('error', 'Veuillez remplir tous les champs.');
-            redirect('/compte');
+            setFlash('error', 'Veuillez remplir tous les champs obligatoires.');
+            redirect('/ajouter-livre');
             return;
         }
 
@@ -193,15 +210,19 @@ class BookController extends Controller
             'title' => $title,
             'author' => $author,
             'description' => $description,
-            'image' => $image,
+            'image' => $image ?: 'default.png',
             'owner' => $owner,
             'slug' => $slug
         ]);
 
         if ($this->bookManager->create($book)) {
+            // ✅ Succès : on vide les anciennes valeurs
+            unset($_SESSION['old_create_book']);
             setFlash('success', 'Livre ajouté avec succès.');
         } else {
-            setFlash('error', 'Erreur lors de l\'ajout du livre.');
+            setFlash('error', 'Erreur lors de l’ajout du livre.');
+            redirect('/ajouter-livre');
+            return;
         }
 
         redirect('/compte');

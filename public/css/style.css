@@ -1254,15 +1254,8 @@ div .Team {
 }
 
 
-
-
-
-
-
-
-
 /* =========================
-   PAGE ÉDITION LIVRE
+   PAGE EDIT BOOK
 ========================= */
 /* FOND GÉNÉRAL */
 .edit-book-principal {
@@ -1576,6 +1569,111 @@ textarea {
     overflow: hidden;
     clip: rect(0, 0, 0, 0);
 }
+
+
+
+
+/* ===========================
+   PAGE CREATION LIVRE
+=========================== */
+
+.create-book-page {
+    padding: 40px 20px;
+}
+
+.form-card {
+    max-width: 700px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.form-card-header {
+    margin-bottom: 24px;
+}
+
+.form-card-header h2 {
+    margin-bottom: 8px;
+    font-size: 28px;
+}
+
+.form-intro {
+    color: #666;
+    line-height: 1.5;
+}
+
+.book-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #222;
+}
+
+.form-control {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #d9d9d9;
+    border-radius: 8px;
+    font-size: 16px;
+    background: #fff;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #222;
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 140px;
+}
+
+.form-help {
+    font-size: 14px;
+    color: #777;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.btn-primary,
+.btn-secondary {
+    display: inline-block;
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: #222;
+    color: #fff;
+}
+
+.btn-secondary {
+    background: #f3f3f3;
+    color: #222;
+}
+
+
 
 
 

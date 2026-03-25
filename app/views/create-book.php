@@ -1,46 +1,111 @@
 <?php require __DIR__ . '/layout/header.php'; ?>
 
-<h1 class="page-title">Ajouter un livre</h1>
+<?php
+// ✅ Anciennes valeurs du formulaire si erreur
+$old = $_SESSION['old_create_book'] ?? [
+    'title' => '',
+    'author' => '',
+    'description' => '',
+    'image' => ''
+];
+?>
 
-<div class="container">
+<main class="create-book-page">
 
-    <div class="info-card">
+    <!-- ===========================
+         TITRE DE PAGE
+    ============================ -->
+    <h1 class="page-title">Ajouter un livre</h1>
 
-        <h2>Créer un nouveau livre</h2>
+    <div class="container">
 
-        <form action="/create-book" method="POST">
+        <section class="form-card">
 
-            <!-- TITRE -->
-            <div class="info-group">
-                <div class="label">Titre</div>
-                <input type="text" name="title" class="value" required>
+            <!-- ===========================
+                 EN-TÊTE
+            ============================ -->
+            <div class="form-card-header">
+                <h2>Créer un nouveau livre</h2>
+                <p class="form-intro">
+                    Remplissez les informations ci-dessous pour ajouter un livre à votre bibliothèque d’échange.
+                </p>
             </div>
 
-            <!-- AUTEUR -->
-            <div class="info-group">
-                <div class="label">Auteur</div>
-                <input type="text" name="author" class="value" required>
-            </div>
+            <!-- ===========================
+                 FORMULAIRE
+            ============================ -->
+            <form action="/create-book" method="POST" class="book-form">
 
-            <!-- DESCRIPTION -->
-            <div class="info-group">
-                <div class="label">Description</div>
-                <textarea name="description" class="value" rows="5" required></textarea>
-            </div>
+                <!-- TITRE -->
+                <div class="form-group">
+                    <label for="title">Titre du livre</label>
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        class="form-control"
+                        placeholder="Ex : Wabi Sabi"
+                        value="<?= e($old['title'] ?? '') ?>"
+                        required>
+                </div>
 
-            <!-- IMAGE -->
-            <div class="info-group">
-                <div class="label">Nom de l’image</div>
-                <input type="text" name="image" class="value" placeholder="ex: mon-livre.png">
-            </div>
+                <!-- AUTEUR -->
+                <div class="form-group">
+                    <label for="author">Auteur</label>
+                    <input
+                        type="text"
+                        id="author"
+                        name="author"
+                        class="form-control"
+                        placeholder="Ex : Beth Kempton"
+                        value="<?= e($old['author'] ?? '') ?>"
+                        required>
+                </div>
 
-            <!-- BOUTON -->
-            <button type="submit">Ajouter le livre</button>
+                <!-- DESCRIPTION -->
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea
+                        id="description"
+                        name="description"
+                        class="form-control"
+                        rows="6"
+                        placeholder="Décrivez brièvement le livre, son contenu ou son intérêt..."
+                        required><?= e($old['description'] ?? '') ?></textarea>
+                </div>
 
-        </form>
+                <!-- IMAGE -->
+                <div class="form-group">
+                    <label for="image">Nom de l’image</label>
+                    <input
+                        type="text"
+                        id="image"
+                        name="image"
+                        class="form-control"
+                        placeholder="Ex : mon-livre.png"
+                        value="<?= e($old['image'] ?? '') ?>">
+                    <small class="form-help">
+                        Indiquez le nom du fichier image déjà présent dans le dossier des images.
+                    </small>
+                </div>
+
+                <!-- ACTIONS -->
+                <div class="form-actions">
+                    <a href="/compte" class="btn-secondary">Annuler</a>
+                    <button type="submit" class="btn-primary">Ajouter le livre</button>
+                </div>
+
+            </form>
+
+        </section>
 
     </div>
 
-</div>
+</main>
+
+<?php
+// ✅ On efface les anciennes valeurs après affichage
+unset($_SESSION['old_create_book']);
+?>
 
 <?php require __DIR__ . '/layout/footer.php'; ?>

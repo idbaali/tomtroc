@@ -19,7 +19,7 @@ class UserController extends Controller
     }
 
     /**
-     * Page du compte connecté
+     * 👤 COMPTE UTILISATEUR CONNECTÉ
      */
     public function account(): void
     {
@@ -31,28 +31,8 @@ class UserController extends Controller
             return;
         }
 
-        $bookManager = new BookManager();
-        $books = $bookManager->getByUserId($user['id']);
-
-        // Si aucun livre, on met un exemple pour tester l'affichage
-        if (empty($books)) {
-            $books = [
-                [
-                    'title' => 'The Kinfolk Table',
-                    'author' => 'Nathan Williams',
-                    'description' => 'J\'ai récemment plongé dans les pages de "The Kinfolk Table"...',
-                    'available' => true,
-                    'photo' => 'kinfolk.png'
-                ],
-                [
-                    'title' => 'Autre Livre',
-                    'author' => 'Auteur X',
-                    'description' => 'Description du livre…',
-                    'available' => false,
-                    'photo' => 'default.png'
-                ]
-            ];
-        }
+        // ✅ On récupère uniquement SES livres
+        $books = $this->bookManager->getByUserId($user['id']);
 
         $this->render('account', [
             'title' => 'Mon compte',
@@ -62,9 +42,10 @@ class UserController extends Controller
     }
 
     /**
-     * Profil public d'un utilisateur
+     * 🌍 PROFIL PUBLIC
+     * 🎯 OBJECTIF MENTOR :
+     * → UNE SEULE requête (jointure)
      */
-
     public function profile(int $id): void
     {
         if (!$id) {
@@ -73,21 +54,29 @@ class UserController extends Controller
             return;
         }
 
-        // Récupère l'utilisateur demandé
-        $user = $this->userManager->getById($id);
-        if (!$user) {
+        /**
+         * ✅ UNE SEULE requête SQL
+         * (user + livres)
+         */
+        $result = $this->userManager->getUserWithBooks($id);
+
+        if (!$result) {
             http_response_code(404);
             echo "Utilisateur introuvable";
             return;
         }
 
-        // Récupère uniquement les livres de cet utilisateur
-        $books = $this->bookManager->getByUserId($id);
+        // ✅ On récupère les objets
+        $user = $result['user'];
+        $books = $result['books'];
 
-        // On passe à la vue publique
+        /**
+         * ✅ Envoi à la vue
+         */
         $this->render('profile', [
-            'user' => $user,   // l'utilisateur ciblé
-            'books' => $books  // uniquement ses livres
+            'title' => 'Profil de ' . $user->getUsername(),
+            'user' => $user,
+            'books' => $books
         ]);
     }
 }

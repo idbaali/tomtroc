@@ -26,16 +26,16 @@ class MessageController extends Controller
      */
     public function index(): void
     {
-        // 🔹 ID de l'utilisateur connecté
+        // ID de l'utilisateur connecté
         $userId = $_SESSION['user']['id'];
 
-        // 🔹 Récupère toutes les conversations de l'utilisateur
+        // Récupère toutes les conversations de l'utilisateur
         $conversations = $this->messageManager->getUserConversations($userId);
 
-        // 🔹 ID de l'utilisateur sélectionné pour voir la conversation
+        // ID de l'utilisateur sélectionné pour voir la conversation
         $currentConversationUserId = $_GET['user'] ?? null;
 
-        // 🔹 Messages à afficher (vide si aucune conversation sélectionnée)
+        // Messages à afficher (vide si aucune conversation sélectionnée)
         $messages = [];
         if ($currentConversationUserId) {
             $currentConversationUserId = (int)$currentConversationUserId;
@@ -46,7 +46,7 @@ class MessageController extends Controller
         // var_dump('MESSAGE ENVOYÉ');
         // die();
 
-        // 🔥 DEBUG récupération messages
+        // DEBUG récupération messages
         // var_dump($messages);
         // die();
 
@@ -60,7 +60,7 @@ class MessageController extends Controller
         // die();
 
 
-        // 🔹 Affiche la vue messagerie.php
+        // Affiche la vue messagerie.php
         $this->render('messagerie', [
             'title' => 'Messagerie',
             'conversations' => $conversations,
@@ -84,7 +84,7 @@ class MessageController extends Controller
         $receiverId = (int)($_POST['receiver_id'] ?? 0);
         $content = trim($_POST['content'] ?? '');
 
-        // 🔹 Vérifie que le message est valide
+        // Vérifie que le message est valide
         if ($receiverId && $content) {
             $message = new \App\Models\Message([
                 'sender_id' => $senderId,
@@ -95,7 +95,7 @@ class MessageController extends Controller
             $this->messageManager->send($message);
         }
 
-        // 🔹 Redirection vers la conversation après envoi
+        // Redirection vers la conversation après envoi
         redirect("/messagerie?user={$receiverId}");
     }
 }

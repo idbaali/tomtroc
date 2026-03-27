@@ -21,7 +21,7 @@
             <!-- GAUCHE : IMAGE DU LIVRE -->
             <div class="book-cover">
                 <img src="/images/books/<?= htmlspecialchars($book->getImage() ?: 'default.png') ?>"
-                     alt="Couverture du livre <?= htmlspecialchars($book->getTitle()) ?>">
+                    alt="Couverture du livre <?= htmlspecialchars($book->getTitle()) ?>">
             </div>
 
             <!-- DROITE : CONTENU -->
@@ -59,7 +59,7 @@
                     </div>
 
                     <!-- Bouton "Envoyer un message" uniquement si l'utilisateur est connecté et n'est pas le propriétaire -->
-                    <?php if (!empty($_SESSION['user']) && $_SESSION['user']['id'] !== $book->getOwner()->getId()) : ?>
+                    <?php if (user() && user()->getId() !== $book->getOwner()->getId()) : ?>
                         <a href="/messages/nouveau/<?= $book->getOwner()->getId() ?>" class="btn btn-book">
                             Envoyer un message
                         </a>

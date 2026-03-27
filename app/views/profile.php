@@ -21,7 +21,7 @@
         <div class="library-summary">
             <h6>BIBLIOTHÈQUE</h6>
             <p class="book-count">
-                <?= count($books) ?> livre<?= count($books) > 1 ? 's' : '' ?>
+                <?= count($user->getBooks()) ?> livre<?= count($user->getBooks()) > 1 ? 's' : '' ?>
             </p>
         </div>
 
@@ -45,7 +45,7 @@
 
         <div class="library-books">
 
-            <?php if (!empty($books)): ?>
+            <?php if (!empty($user->getBooks())): ?>
 
                 <div class="library-header">
                     <div>PHOTO</div>
@@ -54,7 +54,7 @@
                     <div>DESCRIPTION</div>
                 </div>
 
-                <?php foreach ($books as $book): ?>
+                <?php foreach ($user->getBooks() as $book): ?>
                     <article class="library-book">
 
                         <div class="library-photo">

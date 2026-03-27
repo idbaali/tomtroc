@@ -33,9 +33,7 @@ class BookManager extends BaseManager
         return $books;
     }
 
-    /**
-     * Récupère les livres d’un utilisateur
-     */
+    
     public function getByUserId(int $userId): array
     {
         $stmt = $this->db->prepare("
@@ -50,14 +48,14 @@ class BookManager extends BaseManager
         $books = [];
         while ($data = $stmt->fetch(\PDO::FETCH_ASSOC)) {
             // Crée l'objet User pour le propriétaire
-            $owner = new \App\Models\User([
+            $owner = new User([
                 'id' => $data['owner_id'] ?? 0,
                 'username' => $data['owner_name'] ?? '',
                 'avatar' => $data['owner_avatar'] ?? null
             ]);
 
             // Crée l'objet Book avec l'owner
-            $book = new \App\Models\Book([
+            $book = new Book([
                 'id' => $data['id'],
                 'title' => $data['title'],
                 'author' => $data['author'],
@@ -204,13 +202,13 @@ class BookManager extends BaseManager
 
         $books = [];
         while ($data = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-            $data['owner'] = new \App\Models\User([
+            $data['owner'] = new User([
                 'id' => $data['owner_id'] ?? null,
                 'username' => $data['owner_name'] ?? null,
                 'avatar' => $data['owner_avatar'] ?? null
             ]);
 
-            $books[] = new \App\Models\Book($data);
+            $books[] = new Book($data);
         }
 
         return $books;

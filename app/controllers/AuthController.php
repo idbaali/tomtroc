@@ -32,13 +32,13 @@ class AuthController extends Controller
 
                 setFlash('error', "Tous les champs sont obligatoires.");
             }
-            // ✅ Vérification du format de l'email
+            // Vérification du format de l'email
             elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
                 setFlash('error', "Format d'email invalide.");
             } else {
 
-                // 🔒 Hash sécurisé du mot de passe
+                // Hash sécurisé du mot de passe
                 $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
                 // Enregistrement via le Manager
@@ -78,16 +78,13 @@ class AuthController extends Controller
                 return redirect('/connexion');
             }
 
-            // Stocker seulement les infos utiles en session
-            $_SESSION['user'] = [
-                'id' => $user->getId(),
-                'username' => $user->getUsername(),
-                'email' => $user->getEmail(),
-                'avatar' => $user->getAvatar()
-            ];
+            // Je stocke directement l'objet User
+            $_SESSION['user'] = $user;
+            
 
-            setFlash('success', "Connexion réussie !");
+            setFlash('success', 'Connexion réussie !');
             redirect('/compte');
+
         }
 
         // Affichage de la page de connexion

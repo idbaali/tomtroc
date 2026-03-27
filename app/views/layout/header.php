@@ -46,7 +46,7 @@
 
                         <li>
                             <a href="/compte">
-                                <?= e(user()['username'] ?? 'Mon compte') ?>
+                                <?= e(user()->getUsername() ?? 'Mon compte') ?>
                             </a>
                         </li>
 

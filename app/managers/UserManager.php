@@ -9,7 +9,7 @@ use App\Models\Book;
 class UserManager extends BaseManager
 {
     /**
-     * 🔍 Trouver un utilisateur par email
+     * Trouver un utilisateur par email
      */
     public function findByEmail(string $email): ?User
     {
@@ -28,7 +28,7 @@ class UserManager extends BaseManager
             return null;
         }
 
-        // ✅ On retourne un objet User
+        // On retourne un objet User
         return new User($data);
     }
 
@@ -37,7 +37,7 @@ class UserManager extends BaseManager
      */
     public function create(string $username, string $email, string $passwordHash): bool
     {
-        // ✅ Vérifie si l'email existe déjà
+        // Vérifie si l'email existe déjà
         if ($this->findByEmail($email)) {
             return false;
         }
@@ -55,7 +55,7 @@ class UserManager extends BaseManager
     }
 
     /**
-     * 🔍 Récupérer un utilisateur seul (sans livres)
+     * Récupérer un utilisateur seul (sans livres)
      */
     public function getById(int $id): ?User
     {
@@ -103,12 +103,12 @@ class UserManager extends BaseManager
 
             FROM users u
 
-            -- ✅ Jointure pour récupérer les livres du user
+            -- Jointure pour récupérer les livres du user
             LEFT JOIN books b ON b.owner_id = u.id
 
             WHERE u.id = :id
 
-            -- ✅ Important pour afficher les livres récents en premier
+            -- Important pour afficher les livres récents en premier
             ORDER BY b.created_at DESC
         ");
 
@@ -116,31 +116,20 @@ class UserManager extends BaseManager
 
         $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
-        // ❌ Aucun utilisateur trouvé
+        // Aucun utilisateur trouvé
         if (!$rows) {
             return null;
         }
 
         /**
-         * ✅ Création de l'objet USER (une seule fois)
-         */
-        $user = new User([
-            'id' => $rows[0]['user_id'],
-            'username' => $rows[0]['username'],
-            'email' => $rows[0]['email'],
-            'avatar' => $rows[0]['avatar'],
-            'created_at' => $rows[0]['user_created_at'],
-        ]);
-
-        /**
-         * ✅ Création des objets BOOK
+         * Création des objets BOOK
          * Chaque livre reçoit le même owner (User)
          */
         $books = [];
 
         foreach ($rows as $row) {
 
-            // ⚠️ Si pas de livre (LEFT JOIN)
+            // Si pas de livre (LEFT JOIN)
             if (!empty($row['book_id'])) {
 
                 $books[] = new Book([
@@ -152,21 +141,30 @@ class UserManager extends BaseManager
                     'slug' => $row['slug'] ?? '',
                     'status' => $row['status'],
                     'created_at' => $row['book_created_at'] ?? '',
-
-                    // ✅ IMPORTANT (mentor) : on injecte le owner
-                    'owner' => $user
                 ]);
             }
         }
 
+
         /**
-         * ✅ On retourne :
+         * Création de l'objet USER (une seule fois)
+         */
+        $user = new User([
+            'id' => $rows[0]['user_id'],
+            'username' => $rows[0]['username'],
+            'email' => $rows[0]['email'],
+            'avatar' => $rows[0]['avatar'],
+            'created_at' => $rows[0]['user_created_at'],
+            'books' => $books
+        ]);
+
+
+        /**
+         * On retourne :
          * - un objet User
          * - un tableau d'objets Book
          */
         return [
-            'user' => $user,
-            'books' => $books
-        ];
+            'user' => $user,        ];
     }
 }

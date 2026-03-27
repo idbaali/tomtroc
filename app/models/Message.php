@@ -28,14 +28,14 @@ class Message
         }
     }
 
-    // ✅ GETTERS
+    // GETTERS
     public function getId(): ?int { return $this->id; }
     public function getSender(): ?User { return $this->sender; }
     public function getReceiver(): ?User { return $this->receiver; }
     public function getContent(): string { return $this->content; }
     public function getCreatedAt(): ?string { return $this->created_at; }
 
-    // ✅ SETTERS (fluent)
+    // SETTERS (fluent)
     public function setSender(User $sender): self { $this->sender = $sender; return $this; }
     public function setReceiver(User $receiver): self { $this->receiver = $receiver; return $this; }
     public function setContent(string $content): self { $this->content = trim($content); return $this; }

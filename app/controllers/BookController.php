@@ -100,7 +100,7 @@ class BookController extends Controller
             return;
         }
 
-        $owner = new \App\Models\User([
+        $owner = new User([
             'id' => $user['id'] ?? null,
             'username' => $user['username'] ?? '',
             'avatar' => $user['avatar'] ?? null
@@ -138,7 +138,7 @@ class BookController extends Controller
         $user = $_SESSION['user'];
 
         // 🔹 Récupérer uniquement SES livres
-        $books = $this->bookManager->getByUserId($user['id']);
+        $books = $this->bookManager->getByUserId($user->getId());
 
         // 🔹 Envoyer à la vue
         $this->render('account', [
@@ -167,6 +167,7 @@ class BookController extends Controller
         ]);
     }
 
+
     // Creation d'un livre
 
     public function create(): void
@@ -182,49 +183,30 @@ class BookController extends Controller
         $title = trim($_POST['title'] ?? '');
         $author = trim($_POST['author'] ?? '');
         $description = trim($_POST['description'] ?? '');
-        $image = trim($_POST['image'] ?? 'default.png');
+        $image = trim($_POST['image'] ?? '');
 
-        // ✅ On garde les anciennes valeurs pour réafficher le formulaire
-        $_SESSION['old_create_book'] = [
-            'title' => $title,
-            'author' => $author,
-            'description' => $description,
-            'image' => $image
-        ];
-
-        if (!$title || !$author || !$description) {
+        if ($title === '' || $author === '' || $description === '') {
             setFlash('error', 'Veuillez remplir tous les champs obligatoires.');
-            redirect('/ajouter-livre');
+            redirect('/creation-livre');
             return;
         }
-
-        $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $title)));
-
-        $owner = new \App\Models\User([
-            'id' => $user['id'] ?? null,
-            'username' => $user['username'] ?? '',
-            'avatar' => $user['avatar'] ?? null
-        ]);
 
         $book = new Book([
             'title' => $title,
             'author' => $author,
             'description' => $description,
-            'image' => $image ?: 'default.png',
-            'owner' => $owner,
-            'slug' => $slug
+            'image' => $image !== '' ? $image : 'default.png',
+            'owner' => $user,
+            'slug' => generateSlug($title)
         ]);
 
-        if ($this->bookManager->create($book)) {
-            // ✅ Succès : on vide les anciennes valeurs
-            unset($_SESSION['old_create_book']);
-            setFlash('success', 'Livre ajouté avec succès.');
-        } else {
+        if (!$this->bookManager->create($book)) {
             setFlash('error', 'Erreur lors de l’ajout du livre.');
-            redirect('/ajouter-livre');
+            redirect('/creation-livre');
             return;
         }
 
+        setFlash('success', 'Livre ajouté avec succès.');
         redirect('/compte');
     }
 
@@ -234,6 +216,7 @@ class BookController extends Controller
     public function edit(int $id): void
     {
         $user = $_SESSION['user'] ?? null;
+
         if (!$user) {
             setFlash('error', 'Vous devez être connecté.');
             redirect('/connexion');
@@ -242,7 +225,7 @@ class BookController extends Controller
 
         $book = $this->bookManager->getById($id);
 
-        if (!$book || $book->getOwnerId() !== $user['id']) {
+        if (!$book || $book->getOwnerId() !== $user->getId()) {
             setFlash('error', 'Action non autorisée.');
             redirect('/compte');
             return;
@@ -267,7 +250,7 @@ class BookController extends Controller
         }
 
         $book = $this->bookManager->getById($id);
-        if (!$book || $book->getOwnerId() !== $user['id']) {
+        if (!$book || $book->getOwnerId() !== $user->getId()) {
             setFlash('error', 'Action non autorisée.');
             redirect('/compte');
             return;
@@ -288,7 +271,7 @@ class BookController extends Controller
     }
 
     /**
-     * 🔹 Supprimer un livre
+     * Supprimer un livre
      */
     public function delete(int $id): void
     {
@@ -302,7 +285,7 @@ class BookController extends Controller
 
         $book = $this->bookManager->getById($id);
 
-        if (!$book || $book->getOwnerId() !== $user['id']) {
+        if (!$book || $book->getOwnerId() !== $user->getId()) {
             setFlash('error', 'Accès interdit.');
             redirect('/compte');
             return;

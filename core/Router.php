@@ -64,8 +64,8 @@ class Router
                 break;
 
             // Création d’un livre
-            case 'create-book':
-                $controller = new \App\Controllers\BookController();
+            case 'creation-livre':
+                $controller = new BookController();
 
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $controller->create();

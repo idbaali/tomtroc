@@ -1,7 +1,7 @@
 <?php require __DIR__ . '/layout/header.php'; ?>
 
 <?php
-// ✅ Anciennes valeurs du formulaire si erreur
+// Anciennes valeurs du formulaire si erreur
 $old = $_SESSION['old_create_book'] ?? [
     'title' => '',
     'author' => '',
@@ -34,7 +34,7 @@ $old = $_SESSION['old_create_book'] ?? [
             <!-- ===========================
                  FORMULAIRE
             ============================ -->
-            <form action="/create-book" method="POST" class="book-form">
+            <form action="/creation-livre" method="POST" class="book-form">
 
                 <!-- TITRE -->
                 <div class="form-group">

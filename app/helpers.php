@@ -74,9 +74,9 @@ function showFlash(): void
 /**
  * Retourne l'utilisateur connecté ou null
  *
- * @return array|null
+ * @return \App\Models\User|null
  */
-function user(): ?array
+function user(): ?\App\Models\User
 {
     return $_SESSION['user'] ?? null;
 }

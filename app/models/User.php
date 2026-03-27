@@ -9,6 +9,7 @@ class User
     private string $email = '';
     private string $password = '';
     private ?string $avatar = null;
+    private ?array $books = null;
     private string $created_at = '';
 
     public function __construct(array $data = [])
@@ -18,6 +19,7 @@ class User
         $this->email = strtolower(trim($data['email'] ?? ''));
         $this->password = $data['password'] ?? '';
         $this->avatar = $data['avatar'] ?? null;
+        $this->books = $data['books'] ?? null;
         $this->created_at = $data['created_at'] ?? '';
     }
 
@@ -53,6 +55,11 @@ class User
         return $this->created_at;
     }
 
+    public function getBooks(): ?array
+    {
+        return $this->books;
+    }
+
     // ================= SETTERS =================
 
     public function setUsername(string $username): void
@@ -73,5 +80,10 @@ class User
     public function setAvatar(?string $avatar): void
     {
         $this->avatar = $avatar;
+    }
+    
+    public function setBooks(?array $books): void
+    {
+        $this->books = $books;
     }
 }

@@ -10,8 +10,8 @@
         <!-- GAUCHE : Profil -->
         <div class="profile-card">
 
-            <img src="/images/profiles/<?= e($user['avatar'] ?? 'default-user.png') ?>"
-                alt="Profil de <?= e($user['username'] ?? 'Utilisateur') ?>"
+            <img src="/images/profiles/<?= e($user->getAvatar() ?? 'default-user.png') ?>"
+                alt="Profil de <?= e($user->getUsername() ?? 'Utilisateur') ?>"
                 class="profile-photo">
 
             <a href="#" class="link-edit">Modifier</a>
@@ -19,8 +19,8 @@
             <div class="info-group">
                 <div class="label">Membre depuis</div>
                 <div class="value profile-value">
-                    <?= !empty($user['created_at'])
-                        ? date('d/m/Y', strtotime($user['created_at']))
+                    <?= !empty($user->getCreatedAt())
+                        ? date('d/m/Y', strtotime($user->getCreatedAt()))
                         : '1 an' ?>
                 </div>
             </div>
@@ -45,7 +45,7 @@
                         id="email"
                         name="email"
                         class="value"
-                        value="<?= e($user['email'] ?? '') ?>"
+                        value="<?= e($user->getEmail() ?? '') ?>"
                         required>
                 </div>
 
@@ -64,7 +64,7 @@
                         id="username"
                         name="username"
                         class="value"
-                        value="<?= e($user['username'] ?? '') ?>"
+                        value="<?= e($user->getUsername() ?? '') ?>"
                         required>
                 </div>
 

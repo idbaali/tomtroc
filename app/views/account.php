@@ -11,33 +11,28 @@
         <div class="profile-card">
 
             <img src="/images/profiles/<?= e($user['avatar'] ?? 'default-user.png') ?>"
-                alt="Profil"
+                alt="Profil de <?= e($user['username'] ?? 'Utilisateur') ?>"
                 class="profile-photo">
 
             <a href="#" class="link-edit">Modifier</a>
 
             <div class="info-group">
-                <div class="label">Pseudo</div>
-                <div class="value"><?= e($user['username'] ?? '') ?></div>
-            </div>
-
-            <div class="info-group">
                 <div class="label">Membre depuis</div>
-                <div class="value">
-                    <?= !empty($user['created_at']) 
-                        ? date('d/m/Y', strtotime($user['created_at'])) 
+                <div class="value profile-value">
+                    <?= !empty($user['created_at'])
+                        ? date('d/m/Y', strtotime($user['created_at']))
                         : '1 an' ?>
                 </div>
             </div>
 
             <div class="info-group">
                 <div class="label">BIBLIOTHÈQUE</div>
-                <div class="value"><?= isset($books) ? count($books) : 0 ?> livres</div>
+                <div class="value profile-value"><?= isset($books) ? count($books) : 0 ?> livres</div>
             </div>
 
         </div>
 
-        <!-- DROITE -->
+        <!-- DROITE : Informations personnelles -->
         <div class="info-card">
 
             <h2>Vos informations personnelles</h2>
@@ -45,8 +40,9 @@
             <form action="/update-profile.php" method="post">
 
                 <div class="info-group">
-                    <div class="label">Adresse email</div>
+                    <label class="label" for="email">Adresse email</label>
                     <input type="email"
+                        id="email"
                         name="email"
                         class="value"
                         value="<?= e($user['email'] ?? '') ?>"
@@ -54,16 +50,18 @@
                 </div>
 
                 <div class="info-group">
-                    <div class="label">Mot de passe</div>
+                    <label class="label" for="password">Mot de passe</label>
                     <input type="password"
+                        id="password"
                         name="password"
                         class="value"
                         placeholder="•••••••••">
                 </div>
 
                 <div class="info-group">
-                    <div class="label">Pseudo</div>
+                    <label class="label" for="username">Pseudo</label>
                     <input type="text"
+                        id="username"
                         name="username"
                         class="value"
                         value="<?= e($user['username'] ?? '') ?>"
@@ -78,17 +76,17 @@
 
     </div>
 
-    <!-- TABLE -->
+    <!-- TABLE BIBLIOTHÈQUE -->
     <div class="library-table">
 
         <!-- HEADER -->
         <div class="table-row header">
-            <div>PHOTO</div>
-            <div>TITRE</div>
-            <div>AUTEUR</div>
-            <div>DESCRIPTION</div>
-            <div>DISPONIBILITÉ</div>
-            <div>ACTION</div>
+            <div class="table-cell">PHOTO</div>
+            <div class="table-cell">TITRE</div>
+            <div class="table-cell">AUTEUR</div>
+            <div class="table-cell">DESCRIPTION</div>
+            <div class="table-cell">DISPONIBILITÉ</div>
+            <div class="table-cell">ACTION</div>
         </div>
 
         <?php if (!empty($books)): ?>
@@ -96,31 +94,37 @@
             <?php foreach ($books as $book): ?>
                 <div class="table-row">
 
-                    <div>
+                    <div class="table-cell">
                         <img src="/images/books/<?= e($book->getImage() ?? 'default.png') ?>"
                             alt="<?= e($book->getTitle()) ?>"
                             class="book-img">
                     </div>
 
-                    <div><?= e($book->getTitle()) ?></div>
-                    <div><?= e($book->getAuthor()) ?></div>
+                    <div class="table-cell">
+                        <?= e($book->getTitle()) ?>
+                    </div>
 
-                    <div class="description">
+                    <div class="table-cell">
+                        <?= e($book->getAuthor()) ?>
+                    </div>
+
+                    <div class="table-cell description">
                         <?= e(strlen($book->getDescription()) > 180
                             ? substr($book->getDescription(), 0, 180) . '...'
                             : $book->getDescription()) ?>
                     </div>
 
-                    <div class="status <?= $book->isAvailable() ? 'available' : 'unavailable' ?>">
-                        <?= $book->isAvailable() ? 'Disponible' : 'Non dispo.' ?>
+                    <div class="table-cell">
+                        <span class="status <?= $book->getStatus() === 'available' ? 'available' : 'unavailable' ?>">
+                            <?= $book->getStatus() === 'available' ? 'Disponible' : 'Non dispo.' ?>
+                        </span>
                     </div>
 
-                    <div class="actions">
-                        <a class="edit" href="/livre/modifier/<?= $book->getId() ?>">Éditer</a>
+                    <div class="table-cell actions">
+                        <a class="edit" href="/edition-livre/<?= $book->getId() ?>">Éditer</a>
 
                         <a class="delete"
-                           href="/livre/supprimer/<?= $book->getId() ?>"
-                           title="Supprimer ce livre"
+                           href="/supprimer-livre/<?= $book->getId() ?>"
                            onclick="return confirm('Voulez-vous vraiment supprimer ce livre ?');">
                            Supprimer
                         </a>
@@ -132,7 +136,7 @@
         <?php else: ?>
 
             <div class="table-row">
-                <div style="grid-column:1/-1;text-align:center;">
+                <div class="table-cell empty-library">
                     Aucun livre dans votre bibliothèque.
                 </div>
             </div>

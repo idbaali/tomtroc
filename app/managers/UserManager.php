@@ -28,16 +28,14 @@ class UserManager extends BaseManager
             return null;
         }
 
-        // On retourne un objet User
-        return new User($data);
+        return $this->createUser($data);
     }
 
     /**
-     * ➕ Créer un utilisateur
+     * Créer un utilisateur
      */
     public function create(string $username, string $email, string $passwordHash): bool
     {
-        // Vérifie si l'email existe déjà
         if ($this->findByEmail($email)) {
             return false;
         }
@@ -55,7 +53,7 @@ class UserManager extends BaseManager
     }
 
     /**
-     * Récupérer un utilisateur seul (sans livres)
+     * Récupérer un utilisateur par ID
      */
     public function getById(int $id): ?User
     {
@@ -74,15 +72,13 @@ class UserManager extends BaseManager
             return null;
         }
 
-        return new User($data);
+        return $this->createUser($data);
     }
 
     /**
-     * 🎯 OBJECTIF MENTOR :
-     * UNE SEULE REQUÊTE avec jointure
-     * → récupérer utilisateur + ses livres
+     * Une seule requête → utilisateur + livres
      */
-    public function getUserWithBooks(int $id): ?array
+    public function getUserWithBooks(int $id): ?User
     {
         $stmt = $this->db->prepare("
             SELECT 
@@ -90,8 +86,8 @@ class UserManager extends BaseManager
                 u.username,
                 u.email,
                 u.avatar,
+                u.password,
                 u.created_at AS user_created_at,
-
                 b.id AS book_id,
                 b.title,
                 b.author,
@@ -100,15 +96,9 @@ class UserManager extends BaseManager
                 b.slug,
                 b.status,
                 b.created_at AS book_created_at
-
             FROM users u
-
-            -- Jointure pour récupérer les livres du user
             LEFT JOIN books b ON b.owner_id = u.id
-
             WHERE u.id = :id
-
-            -- Important pour afficher les livres récents en premier
             ORDER BY b.created_at DESC
         ");
 
@@ -116,55 +106,59 @@ class UserManager extends BaseManager
 
         $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
-        // Aucun utilisateur trouvé
         if (!$rows) {
             return null;
         }
 
-        /**
-         * Création des objets BOOK
-         * Chaque livre reçoit le même owner (User)
-         */
-        $books = [];
-
-        foreach ($rows as $row) {
-
-            // Si pas de livre (LEFT JOIN)
-            if (!empty($row['book_id'])) {
-
-                $books[] = new Book([
-                    'id' => $row['book_id'],
-                    'title' => $row['title'],
-                    'author' => $row['author'],
-                    'description' => $row['description'],
-                    'image' => $row['image'],
-                    'slug' => $row['slug'] ?? '',
-                    'status' => $row['status'],
-                    'created_at' => $row['book_created_at'] ?? '',
-                ]);
-            }
-        }
-
-
-        /**
-         * Création de l'objet USER (une seule fois)
-         */
+        // Création de l'utilisateur
         $user = new User([
             'id' => $rows[0]['user_id'],
             'username' => $rows[0]['username'],
             'email' => $rows[0]['email'],
             'avatar' => $rows[0]['avatar'],
-            'created_at' => $rows[0]['user_created_at'],
-            'books' => $books
+            'password' => $rows[0]['password'],
+            'created_at' => $rows[0]['user_created_at']
         ]);
 
+        $books = [];
 
-        /**
-         * On retourne :
-         * - un objet User
-         * - un tableau d'objets Book
-         */
-        return [
-            'user' => $user,        ];
+        // Création des livres
+        foreach ($rows as $row) {
+
+            if (empty($row['book_id'])) {
+                continue;
+            }
+
+            $books[] = new Book([
+                'id' => $row['book_id'],
+                'title' => $row['title'],
+                'author' => $row['author'],
+                'description' => $row['description'],
+                'image' => $row['image'],
+                'slug' => $row['slug'] ?? '',
+                'status' => $row['status'],
+                'created_at' => $row['book_created_at'],
+                'owner' => $user
+            ]);
+        }
+
+        $user->setBooks($books);
+
+        return $user;
+    }
+
+    /**
+     * Créer un objet User
+     */
+    private function createUser(array $data): User
+    {
+        return new User([
+            'id' => $data['id'] ?? null,
+            'username' => $data['username'] ?? '',
+            'email' => $data['email'] ?? '',
+            'avatar' => $data['avatar'] ?? 'default-user.png',
+            'password' => $data['password'] ?? '',
+            'created_at' => $data['created_at'] ?? ''
+        ]);
     }
 }

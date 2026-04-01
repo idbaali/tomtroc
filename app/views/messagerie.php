@@ -1,75 +1,167 @@
+<?php require __DIR__ . '/layout/header.php'; ?>
+
 <?php
-require_once __DIR__ . '/layout/header.php';
-require_once __DIR__ . '/../../app/helpers.php'; // inclus helpers.php si pas déjà inclus
+$otherUserId = $otherUserId ?? null;
+$otherUser = $otherUser ?? null;
+
+/**
+ * Retourne un chemin d'avatar valide pour l'affichage
+ */
+function getAvatarPath(?string $avatar): string
+{
+    $default = '/images/profiles/default-user.png';
+
+    if (empty($avatar)) {
+        return $default;
+    }
+
+    $avatar = trim($avatar);
+
+    // Si la valeur contient déjà le chemin complet public
+    if (str_starts_with($avatar, '/images/profiles/')) {
+        $filename = basename($avatar);
+    }
+    // Si la valeur contient "profiles/nomfichier"
+    elseif (str_starts_with($avatar, 'profiles/')) {
+        $filename = basename($avatar);
+    }
+    // Si la valeur contient juste le nom du fichier
+    else {
+        $filename = basename($avatar);
+    }
+
+    $fullPath = __DIR__ . '/../../public/images/profiles/' . $filename;
+
+    if (!file_exists($fullPath) || !is_file($fullPath)) {
+        return $default;
+    }
+
+    return '/images/profiles/' . $filename;
+}
 ?>
 
-<main class="messages-page">
+<section class="messaging-page">
+    <div class="messaging-wrapper">
 
-    <h1 class="page-title">Messagerie</h1>
+        <aside class="messaging-sidebar" aria-label="Liste des conversations">
+            <h1 class="messaging-title">Messagerie</h1>
 
-    <section class="messages-container">
-
-        <!-- Liste des conversations -->
-        <aside class="conversations" aria-label="Liste des conversations">
-            <ul>
+            <div class="conversation-list">
                 <?php if (!empty($conversations)): ?>
-                    <?php foreach ($conversations as $conv): ?>
-                        <?php 
-                            // 🔹 Déterminer l'autre utilisateur de la conversation
-                            $otherUserId = ($conv['sender_id'] == $currentUserId) ? $conv['receiver_id'] : $conv['sender_id'];
-                            $isActive = ($currentConversationUserId == $otherUserId) ? 'active' : '';
+                    <?php foreach ($conversations as $conversation): ?>
+                        <?php
+                        $sender = $conversation->getSender();
+                        $receiver = $conversation->getReceiver();
+
+                        $other = ($sender->getId() === $currentUserId) ? $receiver : $sender;
+
+                        if (!$other) {
+                            continue;
+                        }
+
+                        $isActive = ($otherUserId == $other->getId()) ? 'active' : '';
+                        $avatarPath = getAvatarPath($other->getAvatar());
                         ?>
-                        <li class="conversation <?= $isActive ?>">
-                            <a href="/messagerie?user=<?= $otherUserId ?>">
-                                <strong>User #<?= $otherUserId ?></strong>
-                                <span class="time">
-                                    <?= e($conv['created_at']) ?>
-                                </span>
-                                <p>
-                                    <?= e(substr($conv['content'], 0, 50)) ?>…
+
+                        <a href="/messagerie?user=<?= $other->getId(); ?>" class="conversation-item <?= $isActive; ?>">
+                            <img
+                                src="<?= htmlspecialchars($avatarPath); ?>"
+                                alt="Photo de profil de <?= htmlspecialchars($other->getUsername()); ?>"
+                                class="conversation-avatar"
+                            >
+
+                            <div class="conversation-content">
+                                <div class="conversation-top">
+                                    <h2 class="conversation-name"><?= htmlspecialchars($other->getUsername()); ?></h2>
+                                    <span class="conversation-time">
+                                        <?= date('H:i', strtotime($conversation->getCreatedAt())); ?>
+                                    </span>
+                                </div>
+
+                                <p class="conversation-preview">
+                                    <?= htmlspecialchars(mb_strimwidth($conversation->getContent(), 0, 40, '...')); ?>
                                 </p>
-                            </a>
-                        </li>
+                            </div>
+                        </a>
                     <?php endforeach; ?>
                 <?php else: ?>
-                    <li>Aucune conversation</li>
+                    <p>Aucune conversation pour le moment.</p>
                 <?php endif; ?>
-            </ul>
+            </div>
         </aside>
 
-        <!-- Discussion -->
-        <section class="chat" aria-label="Discussion">
-            <?php if ($currentConversationUserId && !empty($messages)): ?>
-                <header class="chat-header">
-                    <h2>
-                        User #<?= $currentConversationUserId ?>
-                    </h2>
-                </header>
+        <section class="messaging-chat" aria-label="Zone de discussion">
+            <header class="chat-header">
+                <?php if ($otherUser): ?>
+                    <?php $headerAvatarPath = getAvatarPath($otherUser->getAvatar()); ?>
 
-                <div class="chat-messages">
-                    <?php foreach ($messages as $msg): ?>
-                        <?php $isSent = ($msg['sender_id'] == $currentUserId); ?>
-                        <div class="message <?= $isSent ? 'sent' : 'received' ?>">
-                            <time><?= e($msg['created_at']) ?></time>
-                            <p><?= e($msg['content']) ?></p>
-                        </div>
+                    <img
+                        src="<?= htmlspecialchars($headerAvatarPath); ?>"
+                        alt="Photo de profil de <?= htmlspecialchars($otherUser->getUsername()); ?>"
+                        class="chat-header-avatar"
+                    >
+
+                    <div class="chat-header-info">
+                        <h2 class="chat-header-name"><?= htmlspecialchars($otherUser->getUsername()); ?></h2>
+                        <p class="chat-header-status">Conversation ouverte</p>
+                    </div>
+                <?php else: ?>
+                    <div class="chat-header-info">
+                        <h2 class="chat-header-name">Messagerie</h2>
+                        <p class="chat-header-status">Sélectionnez une conversation</p>
+                    </div>
+                <?php endif; ?>
+            </header>
+
+            <div class="chat-messages">
+                <?php if ($otherUserId && !empty($messages)): ?>
+                    <?php foreach ($messages as $message): ?>
+                        <?php
+                        $sender = $message->getSender();
+                        $isMine = ($sender->getId() === $currentUserId);
+                        $class = $isMine ? 'sent' : 'received';
+                        ?>
+
+                        <article class="message-row <?= $class; ?>">
+                            <span class="message-time">
+                                <?= date('H:i', strtotime($message->getCreatedAt())); ?>
+                            </span>
+
+                            <div class="message-bubble">
+                                <?= htmlspecialchars($message->getContent()); ?>
+                            </div>
+                        </article>
                     <?php endforeach; ?>
+
+                <?php elseif ($otherUserId): ?>
+                    <p>Aucun message pour le moment.</p>
+
+                <?php else: ?>
+                    <p>Sélectionnez une conversation pour afficher les messages.</p>
+                <?php endif; ?>
+            </div>
+
+            <?php if ($otherUserId): ?>
+                <div class="chat-form-wrapper">
+                    <form action="/messagerie" method="POST" class="chat-form">
+                        <input type="hidden" name="receiver_id" value="<?= $otherUserId; ?>">
+
+                        <label for="content" class="sr-only">Tapez votre message</label>
+                        <input
+                            type="text"
+                            id="content"
+                            name="content"
+                            class="chat-input"
+                            placeholder="Tapez votre message ici"
+                            required
+                        >
+
+                        <button type="submit" class="chat-submit">Envoyer</button>
+                    </form>
                 </div>
-
-                <form class="chat-form" action="/messagerie" method="POST" aria-label="Envoyer un message">
-                    <input type="hidden" name="receiver_id" value="<?= $currentConversationUserId ?>">
-                    <label for="message" class="sr-only">Votre message</label>
-                    <textarea id="message" name="content" placeholder="Tapez votre message ici" required></textarea>
-                    <button type="submit" class="btn-primary">Envoyer</button>
-                </form>
-
-            <?php else: ?>
-                <p class="no-conversation">Sélectionnez une conversation pour voir les messages.</p>
             <?php endif; ?>
         </section>
+    </div>
+</section>
 
-    </section>
-
-</main>
-
-<?php require_once __DIR__ . '/layout/footer.php'; ?>
+<?php require __DIR__ . '/layout/footer.php'; ?>

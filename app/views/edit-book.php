@@ -3,7 +3,7 @@
 <main class="edit-book-principal">
     <!-- Fil d’Ariane -->
     <nav class="bread-retour" aria-label="Fil d’ariane">
-        <a href="/livres">
+        <a href="/compte">
             <i class="fa-solid fa-arrow-left"></i>
             <span>retour</span>
         </a>

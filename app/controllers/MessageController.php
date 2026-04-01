@@ -4,13 +4,9 @@ namespace App\Controllers;
 
 use Core\Controller;
 use App\Managers\MessageManager;
+use App\Models\Message;
+use App\Models\User;
 
-/**
- * Contrôleur de la messagerie
- * ----------------------------
- * Permet d'afficher les conversations, les messages
- * et d'envoyer de nouveaux messages.
- */
 class MessageController extends Controller
 {
     private MessageManager $messageManager;
@@ -22,80 +18,84 @@ class MessageController extends Controller
     }
 
     /**
-     * Liste des conversations et affichage des messages
+     * Afficher la messagerie
      */
     public function index(): void
     {
-        // ID de l'utilisateur connecté
-        $userId = $_SESSION['user']['id'];
+        $user = $_SESSION['user'] ?? null;
 
-        // Récupère toutes les conversations de l'utilisateur
-        $conversations = $this->messageManager->getUserConversations($userId);
-
-        // ID de l'utilisateur sélectionné pour voir la conversation
-        $currentConversationUserId = $_GET['user'] ?? null;
-
-        // Messages à afficher (vide si aucune conversation sélectionnée)
-        $messages = [];
-        if ($currentConversationUserId) {
-            $currentConversationUserId = (int)$currentConversationUserId;
-            $messages = $this->messageManager->getConversation($userId, $currentConversationUserId);
+        if (!$user) {
+            setFlash('error', 'Vous devez être connecté.');
+            redirect('/connexion');
+            return;
         }
 
-        // Verification rapide pour s'assurer que la requête est bien POST
-        // var_dump('MESSAGE ENVOYÉ');
-        // die();
+        $currentUserId = $user->getId();
+        $otherUserId = isset($_GET['user']) ? (int) $_GET['user'] : null;
 
-        // DEBUG récupération messages
-        // var_dump($messages);
-        // die();
+        $messages = [];
+        $conversations = $this->messageManager->getUserConversations($currentUserId);
+        $otherUser = null;
 
-        // var_dump($userId);
-        // var_dump($currentConversationUserId);
-        // die();
+        if ($otherUserId) {
+            $messages = $this->messageManager->getConversation($currentUserId, $otherUserId);
 
-        // var_dump($_SESSION);
-        // var_dump($userId);
-        // var_dump($conversations);
-        // die();
+            foreach ($conversations as $conversation) {
+                $sender = $conversation->getSender();
+                $receiver = $conversation->getReceiver();
 
+                $candidate = ($sender->getId() === $currentUserId) ? $receiver : $sender;
 
-        // Affiche la vue messagerie.php
+                if ($candidate && $candidate->getId() === $otherUserId) {
+                    $otherUser = $candidate;
+                    break;
+                }
+            }
+        }
+
         $this->render('messagerie', [
             'title' => 'Messagerie',
-            'conversations' => $conversations,
             'messages' => $messages,
-            'currentConversationUserId' => $currentConversationUserId,
-            'currentUserId' => $userId
+            'conversations' => $conversations,
+            'currentUserId' => $currentUserId,
+            'otherUserId' => $otherUserId,
+            'otherUser' => $otherUser
         ]);
     }
 
     /**
-     * Envoi d'un nouveau message
+     * Envoyer un message
      */
     public function send(): void
     {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            http_response_code(405);
-            exit;
+        $user = $_SESSION['user'] ?? null;
+
+        if (!$user) {
+            setFlash('error', 'Vous devez être connecté.');
+            redirect('/connexion');
+            return;
         }
 
-        $senderId = $_SESSION['user']['id'];
-        $receiverId = (int)($_POST['receiver_id'] ?? 0);
+        $receiverId = isset($_POST['receiver_id']) ? (int) $_POST['receiver_id'] : 0;
         $content = trim($_POST['content'] ?? '');
 
-        // Vérifie que le message est valide
-        if ($receiverId && $content) {
-            $message = new \App\Models\Message([
-                'sender_id' => $senderId,
-                'receiver_id' => $receiverId,
-                'content' => $content
-            ]);
-
-            $this->messageManager->send($message);
+        if (!$receiverId || $content === '') {
+            setFlash('error', 'Message invalide.');
+            redirect('/messagerie');
+            return;
         }
 
-        // Redirection vers la conversation après envoi
-        redirect("/messagerie?user={$receiverId}");
+        $sender = new User(['id' => $user->getId()]);
+        $receiver = new User(['id' => $receiverId]);
+
+        $message = new Message([
+            'content' => $content,
+            'sender' => $sender,
+            'receiver' => $receiver
+        ]);
+
+        $this->messageManager->send($message);
+
+        redirect('/messagerie?user=' . $receiverId);
     }
 }

@@ -213,13 +213,22 @@ class BookController extends Controller
     /**
      * Formulaire d'édition d'un livre
      */
-    public function edit(int $id): void
+    /**
+     * Formulaire d'édition d'un livre
+     */
+    public function edit(?int $id): void
     {
         $user = $_SESSION['user'] ?? null;
 
         if (!$user) {
             setFlash('error', 'Vous devez être connecté.');
             redirect('/connexion');
+            return;
+        }
+
+        if (!$id) {
+            http_response_code(404);
+            echo "Livre introuvable";
             return;
         }
 

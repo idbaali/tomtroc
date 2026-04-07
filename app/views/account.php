@@ -16,21 +16,28 @@
 
             <a href="#" class="link-edit">Modifier</a>
 
+            <div class="profile-name">
+                <?= e($user->getUsername() ?? 'Utilisateur') ?>
+            </div>
+
             <div class="info-group">
-                <div class="label">Membre depuis</div>
                 <div class="value profile-value">
-                    <?= !empty($user->getCreatedAt())
-                        ? date('d/m/Y', strtotime($user->getCreatedAt()))
-                        : '1 an' ?>
+                    Membre depuis
+                    <?= $user->getCreatedAt() ? date('d/m/Y', strtotime($user->getCreatedAt())) : '1 an' ?>
                 </div>
             </div>
 
             <div class="info-group">
                 <div class="label">BIBLIOTHÈQUE</div>
-                <div class="value profile-value"><?= isset($books) ? count($books) : 0 ?> livres</div>
+                <div class="value profile-value"><?= count($books ?? []) ?> livres</div>
+            </div>
+
+            <div class="account-actions">
+                <a href="/creation-livre" class="btn-ajouter">+ Ajouter un livre</a>
             </div>
 
         </div>
+
 
         <!-- DROITE : Informations personnelles -->
         <div class="info-card">
@@ -124,9 +131,9 @@
                         <a class="edit" href="/edition-livre/<?= $book->getId() ?>">Éditer</a>
 
                         <a class="delete"
-                           href="/supprimer-livre/<?= $book->getId() ?>"
-                           onclick="return confirm('Voulez-vous vraiment supprimer ce livre ?');">
-                           Supprimer
+                            href="/supprimer-livre/<?= $book->getId() ?>"
+                            onclick="return confirm('Voulez-vous vraiment supprimer ce livre ?');">
+                            Supprimer
                         </a>
                     </div>
 

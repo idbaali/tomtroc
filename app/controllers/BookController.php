@@ -125,28 +125,6 @@ class BookController extends Controller
     }
 
 
-    // Compte utilisateur
-
-    public function account(): void
-    {
-        //  Vérifier connexion
-        if (!isset($_SESSION['user'])) {
-            redirect('/connexion');
-        }
-
-        // 🔹 Utilisateur connecté (objet)
-        $user = $_SESSION['user'];
-
-        // 🔹 Récupérer uniquement SES livres
-        $books = $this->bookManager->getByUserId($user->getId());
-
-        // 🔹 Envoyer à la vue
-        $this->render('account', [
-            'title' => 'Mon compte',
-            'user' => $user,
-            'books' => $books
-        ]);
-    }
 
     /**
      * Formulaire de création d'un livre

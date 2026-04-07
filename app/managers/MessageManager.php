@@ -33,15 +33,13 @@ class MessageManager extends BaseManager
     }
 
     /**
-     * Récupérer tous les messages entre deux utilisateurs
+     * Conversation entre deux utilisateurs
      */
     public function getConversation(int $user1, int $user2): array
     {
-        $sql = "
+        $stmt = $this->db->prepare("
         SELECT
-            m.id,
-            m.content,
-            m.created_at,
+            m.*,
 
             sender.id AS sender_id,
             sender.username AS sender_username,
@@ -65,9 +63,8 @@ class MessageManager extends BaseManager
            OR (m.sender_id = :u3 AND m.receiver_id = :u4)
 
         ORDER BY m.created_at ASC
-    ";
+    ");
 
-        $stmt = $this->db->prepare($sql);
         $stmt->execute([
             'u1' => $user1,
             'u2' => $user2,
@@ -75,19 +72,16 @@ class MessageManager extends BaseManager
             'u4' => $user1
         ]);
 
-        return $this->createMessageList($stmt);
+        return $this->hydrateMessages($stmt);
     }
     /**
-     * Récupérer la liste des conversations d’un utilisateur
-     * On garde le dernier message de chaque conversation
+     * Liste des conversations
      */
     public function getUserConversations(int $userId): array
     {
         $stmt = $this->db->prepare("
             SELECT
-                m.id,
-                m.content,
-                m.created_at,
+                m.*,
 
                 sender.id AS sender_id,
                 sender.username AS sender_username,
@@ -111,9 +105,7 @@ class MessageManager extends BaseManager
                 SELECT MAX(id)
                 FROM messages
                 WHERE sender_id = ? OR receiver_id = ?
-                GROUP BY
-                    LEAST(sender_id, receiver_id),
-                    GREATEST(sender_id, receiver_id)
+                GROUP BY LEAST(sender_id, receiver_id), GREATEST(sender_id, receiver_id)
             )
 
             ORDER BY m.created_at DESC
@@ -121,67 +113,52 @@ class MessageManager extends BaseManager
 
         $stmt->execute([$userId, $userId]);
 
-        return $this->createMessageList($stmt);
+        return $this->hydrateMessages($stmt);
     }
 
     /**
-     * Créer une liste d'objets Message
+     * Hydratation → objets Message
      */
-    private function createMessageList(\PDOStatement $stmt): array
+    private function hydrateMessages(\PDOStatement $stmt): array
     {
         $messages = [];
 
         while ($data = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-            $messages[] = $this->createMessage($data);
+            $messages[] = $this->hydrateMessage($data);
         }
 
         return $messages;
     }
 
     /**
-     * Créer un objet Message
+     * Hydratation d’un Message
      */
-    private function createMessage(array $data): Message
+    private function hydrateMessage(array $data): Message
     {
-        $sender = $this->createUser([
-            'id' => $data['sender_id'] ?? 0,
-            'username' => $data['sender_username'] ?? '',
-            'email' => $data['sender_email'] ?? '',
-            'password' => $data['sender_password'] ?? '',
-            'avatar' => $data['sender_avatar'] ?? null,
-            'created_at' => $data['sender_created_at'] ?? ''
+        $sender = new User([
+            'id' => $data['sender_id'],
+            'username' => $data['sender_username'],
+            'email' => $data['sender_email'],
+            'password' => $data['sender_password'],
+            'avatar' => $data['sender_avatar'],
+            'created_at' => $data['sender_created_at']
         ]);
 
-        $receiver = $this->createUser([
-            'id' => $data['receiver_id'] ?? 0,
-            'username' => $data['receiver_username'] ?? '',
-            'email' => $data['receiver_email'] ?? '',
-            'password' => $data['receiver_password'] ?? '',
-            'avatar' => $data['receiver_avatar'] ?? null,
-            'created_at' => $data['receiver_created_at'] ?? ''
+        $receiver = new User([
+            'id' => $data['receiver_id'],
+            'username' => $data['receiver_username'],
+            'email' => $data['receiver_email'],
+            'password' => $data['receiver_password'],
+            'avatar' => $data['receiver_avatar'],
+            'created_at' => $data['receiver_created_at']
         ]);
 
         return new Message([
-            'id' => $data['id'] ?? null,
-            'content' => $data['content'] ?? '',
-            'created_at' => $data['created_at'] ?? null,
+            'id' => $data['id'],
+            'content' => $data['content'],
+            'created_at' => $data['created_at'],
             'sender' => $sender,
             'receiver' => $receiver
-        ]);
-    }
-
-    /**
-     * Créer un objet User
-     */
-    private function createUser(array $data): User
-    {
-        return new User([
-            'id' => $data['id'] ?? 0,
-            'username' => $data['username'] ?? '',
-            'email' => $data['email'] ?? '',
-            'password' => $data['password'] ?? '',
-            'avatar' => $data['avatar'] ?? null,
-            'created_at' => $data['created_at'] ?? ''
         ]);
     }
 }

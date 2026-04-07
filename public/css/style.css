@@ -915,183 +915,336 @@ div .Team {
 
 
 
-
 /* =========================
    PAGE MON COMPTE
 ========================= */
 
 .page-title {
-    font-size: 2.25em;
-    font-weight: 700;
-    margin: 70px 0 0 180px;
-    /* margin-bottom:10px; */
+    max-width: 1180px;
+    margin: 55px auto 35px;
+    padding: 0 20px;
+    font-size: 2.2rem;
+    font-weight: 400;
+    color: #1f1f1f;
+    line-height: 1.2;
 }
 
 .container {
-    max-width: 1090px;
-    margin: auto;
-    padding-right: 30px;
-    /* margin-left: 10px; */
+    max-width: 1180px;
+    margin: 0 auto 80px;
+    padding: 0 20px;
 }
 
-/* ===== TOP BLOCK ===== */
+/* =========================
+   TOP BLOCK
+========================= */
+
 .top-block {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    margin-bottom: 40px;
+    gap: 26px;
+    margin-bottom: 28px;
 }
 
-/* GAUCHE : Profil */
+/* =========================
+   BLOCS PRINCIPAUX
+========================= */
+
+.profile-card,
+.info-card,
+.library-table {
+    background: #ffffff;
+    border: 1px solid #f0f0eb;
+    border-radius: 18px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.03);
+}
+
+/* =========================
+   CARTE PROFIL
+========================= */
+
 .profile-card {
-    background: #FFFFFF;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    min-height: 420px;
+    padding: 42px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-photo {
+    width: 118px;
+    height: 118px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.link-edit {
+    font-size: 0.95rem;
+    color: #7b7b7b;
+    text-decoration: underline;
+    margin-bottom: 45px;
+    transition: opacity 0.2s ease;
+}
+
+.link-edit:hover {
+    opacity: 0.7;
+}
+
+.profile-name {
+    font-size: 2rem;
+    font-weight: 400;
+    color: #222;
+    margin: 0 0 20px;
     text-align: center;
 }
 
-.profile-card .profile-photo {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 15px;
-}
-
-.profile-card .link-edit {
-    display: block;
-    color: #00AC66;
-    margin-bottom: 15px;
-    text-decoration: none;
-}
-
 .profile-card .info-group {
-    margin-bottom: 12px;
+    margin-bottom: 18px;
+    text-align: center;
 }
 
 .profile-card .label {
-    font-weight: bold;
-    color: #555;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #444;
+    margin-bottom: 6px;
 }
 
 .profile-card .value {
-    margin-top: 5px;
+    font-size: 1rem;
+    color: #1f1f1f;
+    line-height: 1.5;
 }
 
-/* DROITE : Vos informations personnelles */
-.info-card {
-    background: #FFFFFF;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+.profile-value {
+    text-align: center;
+}
 
+.account-actions {
+    margin-top: 18px;
+}
+
+.btn-ajouter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 170px;
+    height: 48px;
+    padding: 0 22px;
+    border: 1.5px solid #6f9774;
+    border-radius: 12px;
+    background: #fff;
+    color: #5e8965;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.btn-ajouter:hover {
+    background: #f8fcf8;
+    border-color: #5f8666;
+    color: #4f7255;
+}
+
+/* =========================
+   INFORMATIONS PERSONNELLES
+========================= */
+
+.info-card {
+    min-height: 420px;
+    padding: 42px 42px 36px;
 }
 
 .info-card h2 {
-    margin-bottom: 20px;
+    margin: 0 0 28px;
+    font-size: 1.9rem;
+    font-weight: 400;
+    color: #222;
+    line-height: 1.2;
+}
+
+.info-card form {
+    width: 100%;
 }
 
 .info-card .info-group {
-    margin-bottom: 15px;
+    margin-bottom: 24px;
 }
 
 .info-card .label {
-    font-weight: bold;
-    color: #555;
-    margin-bottom: 5px;
+    display: block;
+    font-size: 0.96rem;
+    color: #666;
+    margin-bottom: 10px;
 }
 
-.info-card .value {
+.info-card input.value {
     width: 100%;
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 0.875em;
+    height: 54px;
+    border: 1px solid #edf0f2;
+    background: #f4f7f8;
+    border-radius: 10px;
+    padding: 0 16px;
+    font-size: 1rem;
+    color: #222;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
     box-sizing: border-box;
-    margin-top: 5px;
 }
 
-.info-card button {
-    padding: 10px 1.125em;
-    border: none;
-    background: #00AC66;
-    color: white;
-    border-radius: 8px;
+.info-card input.value:focus {
+    border-color: #6aa57a;
+    box-shadow: 0 0 0 3px rgba(106, 165, 122, 0.12);
+}
+
+.info-card button[type="submit"] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 145px;
+    height: 54px;
+    padding: 0 28px;
+    border: 1.5px solid #6f9774;
+    border-radius: 12px;
+    background: #fff;
+    color: #5e8965;
+    font-size: 1rem;
+    font-weight: 600;
     cursor: pointer;
-
-
+    transition: all 0.2s ease;
 }
 
+.info-card button[type="submit"]:hover {
+    background: #f8fcf8;
+    border-color: #5f8666;
+    color: #4f7255;
+}
 
+/* =========================
+   TABLE BIBLIOTHÈQUE
+========================= */
 
-/* TABLE BIBLIOTHEQUE */
 .library-table {
-    display: grid;
-    gap: 10px;
+    overflow: hidden;
+    margin-top: 0;
 }
 
-/* Chaque ligne est une grid avec 6 colonnes */
 .table-row {
     display: grid;
-    grid-template-columns: 120px 180px 160px 1fr 140px 140px;
-    align-items: start;
-    background: #fff;
-    padding: 10px 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-    word-break: break-word;
+    grid-template-columns: 110px 180px 160px 1fr 145px 150px;
+    align-items: center;
+    column-gap: 0;
+    border-bottom: 1px solid #f3f3ef;
 }
 
-/* Header spécifique */
+.table-row:last-child {
+    border-bottom: none;
+}
+
 .table-row.header {
-    background: #222;
-    color: white;
-    font-weight: bold;
+    background: #fff;
 }
 
-/* Cellules */
+.table-row:not(.header):nth-child(even) {
+    background: #f7f8f6;
+}
+
 .table-cell {
-    padding: 3px 5px;
+    /* padding: 20px 24px; */
+    font-size: 0.95rem;
+    color: #2a2a2a;
+    word-break: break-word;  
 }
 
-/* Images livres */
+.table-row.header .table-cell {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #444;
+    padding-top: 22px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #f0f0eb;
+    margin-bottom: -20px;
+}
+
 .book-img {
-    width: 100px;
-    height: 120px;
+    width: 80px;
+    height: 80px;
     object-fit: cover;
     border-radius: 6px;
+    display: block;
 }
 
-/* Disponibilité */
+.description {
+    color: #555;
+    font-size: 0.92rem;
+    line-height: 1.4;
+}
+
+.status {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+}
+
 .status.available {
-    color: green;
-    font-weight: bold;
+    background: #5fbf8e;
+    color: #fff;
 }
 
 .status.unavailable {
-    color: red;
-    font-weight: bold;
+    background: #cf6a72;
+    color: #fff;
 }
 
-/* Actions alignées à droite */
 .actions {
     display: flex;
-    justify-content: flex-end;
-    gap: 8px;
-}
-
-.actions a .edit {
-    /* padding:6px 12px; */
-    color: #292929;
-    cursor: pointer;
+    align-items: center;
+    gap: 18px;
+    /* flex-wrap: wrap; */
 }
 
 .actions a {
-    /* padding: 4px 12px; */
-    color: #CB2D2D;
-    cursor: pointer;
+    font-size: 0.92rem;
+    text-decoration: underline;
+    transition: opacity 0.2s ease;
 }
+
+.actions a:hover {
+    opacity: 0.7;
+}
+
+.actions .edit {
+    color: #333;
+}
+
+.actions .delete {
+    color: #9f5f63;
+}
+
+.empty-library {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 28px 24px;
+    color: #666;
+    font-size: 1rem;
+}
+
+
+
+
+
 
 
 
@@ -1408,9 +1561,7 @@ textarea {
 }
 
 
-/* =========================
-   PAGE MESSAGERIE
-========================= */
+
 
 /* =========================
    ACCESSIBILITÉ

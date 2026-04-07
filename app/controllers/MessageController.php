@@ -17,9 +17,6 @@ class MessageController extends Controller
         $this->messageManager = new MessageManager();
     }
 
-    /**
-     * Afficher la messagerie
-     */
     public function index(): void
     {
         $user = $_SESSION['user'] ?? null;
@@ -63,9 +60,6 @@ class MessageController extends Controller
         ]);
     }
 
-    /**
-     * Envoyer un message
-     */
     public function send(): void
     {
         $user = $_SESSION['user'] ?? null;
@@ -76,7 +70,7 @@ class MessageController extends Controller
             return;
         }
 
-        $receiverId = isset($_POST['receiver_id']) ? (int) $_POST['receiver_id'] : 0;
+        $receiverId = (int) ($_POST['receiver_id'] ?? 0);
         $content = trim($_POST['content'] ?? '');
 
         if (!$receiverId || $content === '') {

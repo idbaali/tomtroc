@@ -34,7 +34,7 @@ $old = $_SESSION['old_create_book'] ?? [
             <!-- ===========================
                  FORMULAIRE
             ============================ -->
-            <form action="/creation-livre" method="POST" class="book-form">
+            <form action="/creation-livre" method="POST" novalidate="book-form">
 
                 <!-- TITRE -->
                 <div class="form-group">
@@ -104,7 +104,7 @@ $old = $_SESSION['old_create_book'] ?? [
 </main>
 
 <?php
-// ✅ On efface les anciennes valeurs après affichage
+// On efface les anciennes valeurs après affichage
 unset($_SESSION['old_create_book']);
 ?>
 

@@ -5,8 +5,7 @@
 $old = $_SESSION['old_create_book'] ?? [
     'title' => '',
     'author' => '',
-    'description' => '',
-    'image' => ''
+    'description' => ''
 ];
 ?>
 
@@ -34,7 +33,7 @@ $old = $_SESSION['old_create_book'] ?? [
             <!-- ===========================
                  FORMULAIRE
             ============================ -->
-            <form action="/creation-livre" method="POST" novalidate="book-form">
+            <form action="/creation-livre" method="POST" enctype="multipart/form-data" novalidate>
 
                 <!-- TITRE -->
                 <div class="form-group">
@@ -76,16 +75,15 @@ $old = $_SESSION['old_create_book'] ?? [
 
                 <!-- IMAGE -->
                 <div class="form-group">
-                    <label for="image">Nom de l’image</label>
+                    <label for="image">Image du livre</label>
                     <input
-                        type="text"
+                        type="file"
                         id="image"
                         name="image"
                         class="form-control"
-                        placeholder="Ex : mon-livre.png"
-                        value="<?= e($old['image'] ?? '') ?>">
+                        accept=".jpg,.jpeg,.png,.webp">
                     <small class="form-help">
-                        Indiquez le nom du fichier image déjà présent dans le dossier des images.
+                        Formats autorisés : JPG, PNG, WEBP.
                     </small>
                 </div>
 

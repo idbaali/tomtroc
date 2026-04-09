@@ -6,6 +6,7 @@ use Core\Controller;
 use App\Managers\BookManager;
 use App\Models\Book;
 use App\Models\User;
+use App\Services\Validations;
 
 /**
  * Contrôleur des livres
@@ -161,19 +162,43 @@ class BookController extends Controller
         $title = trim($_POST['title'] ?? '');
         $author = trim($_POST['author'] ?? '');
         $description = trim($_POST['description'] ?? '');
-        $image = trim($_POST['image'] ?? '');
 
-        if ($title === '' || $author === '' || $description === '') {
-            setFlash('error', 'Veuillez remplir tous les champs obligatoires.');
+        $_SESSION['old_create_book'] = [
+            'title' => $title,
+            'author' => $author,
+            'description' => $description
+        ];
+
+        $errors = Validations::validateBookCreation($_POST, $_FILES);
+
+        if (!empty($errors)) {
+            setFlash('error', implode('<br>', $errors));
             redirect('/creation-livre');
             return;
+        }
+
+        $imageName = 'default.png';
+
+        if (isset($_FILES['image']) && $_FILES['image']['error'] !== UPLOAD_ERR_NO_FILE) {
+            $tmpName = $_FILES['image']['tmp_name'];
+            $originalName = $_FILES['image']['name'];
+            $extension = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
+
+            $imageName = uniqid('book_', true) . '.' . $extension;
+            $destination = __DIR__ . '/../../public/images/books/' . $imageName;
+
+            if (!move_uploaded_file($tmpName, $destination)) {
+                setFlash('error', 'Impossible d’enregistrer l’image.');
+                redirect('/creation-livre');
+                return;
+            }
         }
 
         $book = new Book([
             'title' => $title,
             'author' => $author,
             'description' => $description,
-            'image' => $image !== '' ? $image : 'default.png',
+            'image' => $imageName,
             'owner' => $user,
             'slug' => generateSlug($title)
         ]);
@@ -184,13 +209,13 @@ class BookController extends Controller
             return;
         }
 
+        unset($_SESSION['old_create_book']);
+
         setFlash('success', 'Livre ajouté avec succès.');
         redirect('/compte');
     }
 
-    /**
-     * Formulaire d'édition d'un livre
-     */
+
     /**
      * Formulaire d'édition d'un livre
      */
@@ -215,6 +240,65 @@ class BookController extends Controller
         if (!$book || $book->getOwnerId() !== $user->getId()) {
             setFlash('error', 'Action non autorisée.');
             redirect('/compte');
+            return;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $title = trim($_POST['title'] ?? '');
+            $author = trim($_POST['author'] ?? '');
+            $description = trim($_POST['description'] ?? '');
+            $status = trim($_POST['status'] ?? 'available');
+
+            $errors = \App\Services\Validations::validateBookCreation($_POST, $_FILES);
+
+            if (!empty($errors)) {
+                setFlash('error', implode('<br>', $errors));
+
+                $this->render('edit-book', [
+                    'title' => 'Modifier le livre',
+                    'book' => $book
+                ]);
+                return;
+            }
+
+            $book->setTitle($title);
+            $book->setAuthor($author);
+            $book->setDescription($description);
+            $book->setStatus($status);
+
+            if (isset($_FILES['image']) && $_FILES['image']['error'] !== UPLOAD_ERR_NO_FILE) {
+                $tmpName = $_FILES['image']['tmp_name'];
+                $originalName = $_FILES['image']['name'];
+                $extension = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
+
+                $imageName = uniqid('book_', true) . '.' . $extension;
+                $destination = __DIR__ . '/../../public/images/books/' . $imageName;
+
+                if (!move_uploaded_file($tmpName, $destination)) {
+                    setFlash('error', 'Impossible d’enregistrer l’image.');
+
+                    $this->render('edit-book', [
+                        'title' => 'Modifier le livre',
+                        'book' => $book
+                    ]);
+                    return;
+                }
+
+                $book->setImage($imageName);
+            }
+
+            if ($this->bookManager->update($book)) {
+                setFlash('success', 'Livre modifié avec succès.');
+                redirect('/compte');
+                return;
+            }
+
+            setFlash('error', 'Erreur lors de la modification.');
+
+            $this->render('edit-book', [
+                'title' => 'Modifier le livre',
+                'book' => $book
+            ]);
             return;
         }
 

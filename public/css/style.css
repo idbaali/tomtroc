@@ -1410,154 +1410,212 @@ div .Team {
 /* =========================
    PAGE EDIT BOOK
 ========================= */
-/* FOND GÉNÉRAL */
+/* =========================
+   PAGE EDITION LIVRE
+========================= */
+
 .edit-book-principal {
-    background: #FAF9F7;
-    padding-bottom: 120px;
-    /* espace avant footer */
+    background: #f6f3ef;
+    padding: 28px 0 120px;
+    min-height: 100vh;
 }
 
-
-/* CARTE BLANCHE */
+.bread-retour,
+.bread-title,
 .edit-book-page {
-    max-width: 1140px;
-    /* margin: 40px auto 0; */
-    margin-left: 45px;
-    padding: 60px 40px;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, .05);
+    max-width: 1120px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
-.edit-book-principal nav.bread-retour a,
-.edit-book-principal .bread-title {
-    padding-left: 45px;
-
-}
-
-/* RETOUR */
 .bread-retour {
-    margin-bottom: 10px;
-    padding-top: 10px;
-
+    margin-bottom: 18px;
 }
 
 .bread-retour a {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 5px;
-    color: #00AC66;
-    /* color: #F5F3EF; */
-    font-size: 0.875em;
+    gap: 6px;
+    color: #b0aaa2;
+    font-size: 15px;
     text-decoration: none;
 }
 
-/* TITRE H2 et label Titre */
-.edit-book-header {
+.bread-retour a:hover {
+    text-decoration: underline;
+}
+
+.bread-title {
+    margin-top: 0;
+    margin-bottom: 34px;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 1.2;
+    color: #1f1f1f;
+}
+
+.edit-book-card {
     display: flex;
-    align-items: flex-end;
-    gap: 40px;
-    margin-bottom: 5px;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 72px;
+    background: #ffffff;
+    border-radius: 22px;
+    padding: 46px 46px 42px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
 }
 
-.edit-book-header h2 {
-    width: 40%;
-    font-weight: bold;
-    font-size: 1.0625em;
-    margin: 0;
+/* COLONNE GAUCHE */
+.edit-book-photo {
+    flex: 0 0 48%;
+    max-width: 48%;
 }
 
-.edit-book-header label {
-    width: 60%;
-    font-weight: bold;
-    font-size: 1.0625em;
-    margin: 0;
+.edit-book-photo h2 {
+    margin: 0 0 12px;
+    font-size: 15px;
+    font-weight: 400;
+    color: #a8a29a;
 }
 
-/* .edit-book-principal .edit-book-page .edit-book-photo h2 {
-    margin-top: 15px; Même valeur que la marge haute de tes labels de formulaire
-    margin-bottom: 15px
-} */
-
-/* LAYOUT */
-.edit-book-detail {
-    display: flex;
-    /* align-items: center;  */
-    justify-content: center;
-    gap: 40px;
-}
-
-/* PHOTO : forcer structure verticale */
-/* text-align: left; */
-
-
-
-/* IMAGE = BLOC */
 .edit-book-photo img {
     display: block;
-    /* ✅ TRÈS IMPORTANT */
-    width: 400px;
-    /* max-width: 420px; */
-    height: 424px;
-    /* height: auto; */
-    margin-bottom: 15px;
+    width: 100%;
+    max-width: 470px;
+    height: 470px;
     object-fit: cover;
+    margin-bottom: 18px;
 }
 
-/* LIEN sous l'image */
-.edit-book-photo a {
-    /* display: inline-block; */
-    margin-top: 5px;
-    color: #00AC66;
-    font-size: 0.875em;
-    position: relative;
-    float: right;
-}
-
-
-/* FORMULAIRE */
-.edit-book-form {
-    width: 30%;
-}
-
-.edit-book-detail .edit-book-photo h2,
-.edit-book-form label {
+.btn-photo {
     display: block;
-    font-weight: bold;
-    margin-top: 15px;
-    font-size: 1.0625em;
+    width: fit-content;
+    margin-left: auto;
+    color: #4e4a45;
+    font-size: 14px;
+    text-decoration: underline;
+    cursor: pointer;
+    background: none;
+    border: none;
 }
 
-.edit-book-form input:nth-child(1) {
-    margin-top: 0px;
+/* COLONNE DROITE */
+.edit-book-form {
+    flex: 0 0 42%;
+    max-width: 42%;
+}
 
+.form-group {
+    margin-bottom: 26px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 15px;
+    font-weight: 400;
+    color: #a8a29a;
 }
 
 .edit-book-form input,
 .edit-book-form textarea,
 .edit-book-form select {
     width: 100%;
-    /* height: 400px; */
-    padding: 10px;
-    margin-top: 5px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-}
-
-textarea {
-    width: 100%;
-    height: 300px;
-}
-
-.btn-edit {
-    margin-top: 25px;
-    padding: 12px 40px;
-    background: #00AC66;
-    color: #fff;
     border: none;
-    border-radius: 6px;
-    cursor: pointer;
+    border-radius: 8px;
+    background: #eef1f5;
+    box-sizing: border-box;
+    padding: 16px 18px;
+    font-size: 15px;
+    color: #2b2b2b;
+    font-family: inherit;
+}
 
+.edit-book-form input,
+.edit-book-form select {
+    height: 52px;
+}
+
+.edit-book-form textarea {
+    min-height: 290px;
+    resize: vertical;
+    line-height: 1.45;
+}
+
+.edit-book-form input:focus,
+.edit-book-form textarea:focus,
+.edit-book-form select:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 172, 102, 0.12);
+}
+
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 310px;
+    height: 58px;
+    margin-top: 16px;
+    border: none;
+    border-radius: 12px;
+    background: #08b266;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-primary:hover {
+    background: #06985a;
+}
+
+@media (max-width: 992px) {
+    .edit-book-card {
+        gap: 40px;
+        padding: 32px;
+    }
+
+    .edit-book-photo img {
+        height: 380px;
+    }
+}
+
+@media (max-width: 768px) {
+    .edit-book-principal {
+        padding-top: 20px;
+    }
+
+    .bread-title {
+        font-size: 24px;
+        margin-bottom: 24px;
+    }
+
+    .edit-book-card {
+        flex-direction: column;
+        gap: 30px;
+        border-radius: 16px;
+        padding: 24px 20px;
+    }
+
+    .edit-book-photo,
+    .edit-book-form {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .edit-book-photo img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .btn-primary {
+        width: 100%;
+    }
 }
 
 

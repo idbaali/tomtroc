@@ -110,24 +110,26 @@ class BookManager extends BaseManager
     }
 
     /**
-     * Mettre à jour
+     * Mettre à jour un livre
      */
     public function update(Book $book): bool
     {
         $stmt = $this->db->prepare("
-            UPDATE books
-            SET title = :title,
-                author = :author,
-                description = :description,
-                image = :image
-            WHERE id = :id
-        ");
+        UPDATE books
+        SET title = :title,
+            author = :author,
+            description = :description,
+            image = :image,
+            status = :status
+        WHERE id = :id
+    ");
 
         return $stmt->execute([
             'title' => $book->getTitle(),
             'author' => $book->getAuthor(),
             'description' => $book->getDescription(),
             'image' => $book->getImage(),
+            'status' => $book->getStatus(),
             'id' => $book->getId()
         ]);
     }

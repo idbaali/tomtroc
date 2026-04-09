@@ -44,6 +44,7 @@ class Book
     public function getCreatedAt(): string { return $this->created_at; }
     public function getStatus(): ?string { return $this->status; }
     public function getSeller(): ?string { return $this->seller; }
+    
 
     // SETTERS
     public function setTitle(string $title): void { $this->title = $title; }

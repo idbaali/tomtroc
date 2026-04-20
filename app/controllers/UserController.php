@@ -76,13 +76,12 @@ class UserController extends Controller
         }
 
         // On récupère les objets
-        $user = $result['user'];
         /**
          * Envoi à la vue
          */
         $this->render('profile', [
-            'title' => 'Profil de ' . $user->getUsername(),
-            'user' => $user
+            'title' => 'Profil de ' . $result->getUsername(),
+            'user' => $result
         ]);
     }
 }

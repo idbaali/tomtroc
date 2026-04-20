@@ -27,11 +27,11 @@
 
         <!-- Lien vers messagerie -->
         <?php if (isset($_SESSION['user'])): ?>
-            <a href="/messagerie?user=<?= $user->getId() ?>" class="btn-primary-profile">
+            <a href="/messagerie?user=<?= $user->getId() ?>" class="btn-profile">
                 Écrire un message
             </a>
         <?php else: ?>
-            <a href="/connexion" class="btn-primary-profile">
+            <a href="/connexion" class="btn-profile">
                 Ecrivez un message
             </a>
         <?php endif; ?>
@@ -58,12 +58,15 @@
                     <article class="library-book">
 
                         <div class="library-photo">
-                            <img src="/images/books/<?= e($book->getImage() ?? 'default-book.png') ?>"
-                                alt="<?= e($book->getTitle()) ?>">
+                            <a href="/livre/<?= e($book->getSlug()) ?>" class="book-public-link">
+                                <img src="/images/books/<?= e($book->getImage() ?? 'default.png') ?>" alt="<?= e($book->getTitle()) ?>">
+                            </a>
                         </div>
 
                         <div class="library-title">
-                            <?= e($book->getTitle()) ?>
+                            <a href="/livre/<?= e($book->getSlug()) ?>" class="book-public-link">
+                                <?= e($book->getTitle()) ?>
+                            </a>
                         </div>
 
                         <div class="library-author">
@@ -71,9 +74,8 @@
                         </div>
 
                         <div class="library-description">
-                            <?= e($book->getDescription()) /* Affiche la description complète */ ?>
+                            <?= e($book->getDescription()) ?>
                         </div>
-
                     </article>
                 <?php endforeach; ?>
 

@@ -76,7 +76,7 @@
                         </select>
                     </div>
 
-                    <button type="submit" class="btn-primary">Valider</button>
+                    <button type="submit" class="btn-edit">Valider</button>
                 </form>
             </div>
 

@@ -67,12 +67,13 @@ function getAvatarPath(?string $avatar): string
                             <img
                                 src="<?= htmlspecialchars($avatarPath); ?>"
                                 alt="Photo de profil de <?= htmlspecialchars($other->getUsername()); ?>"
-                                class="conversation-avatar"
-                            >
+                                class="conversation-avatar">
 
                             <div class="conversation-content">
                                 <div class="conversation-top">
-                                    <h2 class="conversation-name"><?= htmlspecialchars($other->getUsername()); ?></h2>
+                                    <h2 class="conversation-name">
+                                        <?= htmlspecialchars($other->getUsername()); ?>
+                                    </h2>
                                     <span class="conversation-time">
                                         <?= date('H:i', strtotime($conversation->getCreatedAt())); ?>
                                     </span>
@@ -98,11 +99,14 @@ function getAvatarPath(?string $avatar): string
                     <img
                         src="<?= htmlspecialchars($headerAvatarPath); ?>"
                         alt="Photo de profil de <?= htmlspecialchars($otherUser->getUsername()); ?>"
-                        class="chat-header-avatar"
-                    >
+                        class="chat-header-avatar">
 
                     <div class="chat-header-info">
-                        <h2 class="chat-header-name"><?= htmlspecialchars($otherUser->getUsername()); ?></h2>
+                        <h2 class="chat-header-name">
+                            <a href="/compte-public/<?= $otherUser->getId(); ?>">
+                                <?= htmlspecialchars($otherUser->getUsername()); ?>
+                            </a>
+                        </h2>
                         <p class="chat-header-status">Conversation ouverte</p>
                     </div>
                 <?php else: ?>
@@ -153,8 +157,7 @@ function getAvatarPath(?string $avatar): string
                             name="content"
                             class="chat-input"
                             placeholder="Tapez votre message ici"
-                            required
-                        >
+                            required>
 
                         <button type="submit" class="chat-submit">Envoyer</button>
                     </form>

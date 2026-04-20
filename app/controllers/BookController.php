@@ -7,6 +7,8 @@ use App\Managers\BookManager;
 use App\Models\Book;
 use App\Models\User;
 use App\Services\Validations;
+use App\Services\Authorizations;
+use App\Services\FileUploader;
 
 /**
  * Contrôleur des livres
@@ -179,19 +181,19 @@ class BookController extends Controller
 
         $imageName = 'default.png';
 
-        if (isset($_FILES['image']) && $_FILES['image']['error'] !== UPLOAD_ERR_NO_FILE) {
-            $tmpName = $_FILES['image']['tmp_name'];
-            $originalName = $_FILES['image']['name'];
-            $extension = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
+        if (
+            isset($_FILES['image']) &&
+            ($_FILES['image']['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_NO_FILE
+        ) {
+            $uploadedImage = FileUploader::uploadBookImage($_FILES['image']);
 
-            $imageName = uniqid('book_', true) . '.' . $extension;
-            $destination = __DIR__ . '/../../public/images/books/' . $imageName;
-
-            if (!move_uploaded_file($tmpName, $destination)) {
+            if ($uploadedImage === null) {
                 setFlash('error', 'Impossible d’enregistrer l’image.');
                 redirect('/creation-livre');
                 return;
             }
+
+            $imageName = $uploadedImage;
         }
 
         $book = new Book([
@@ -231,28 +233,34 @@ class BookController extends Controller
 
         if (!$id) {
             http_response_code(404);
-            echo "Livre introuvable";
+            echo 'Livre introuvable';
             return;
         }
 
         $book = $this->bookManager->getById($id);
 
-        if (!$book || $book->getOwnerId() !== $user->getId()) {
+        if (!Authorizations::canManageBook($user, $book)) {
             setFlash('error', 'Action non autorisée.');
             redirect('/compte');
             return;
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
             $title = trim($_POST['title'] ?? '');
             $author = trim($_POST['author'] ?? '');
             $description = trim($_POST['description'] ?? '');
             $status = trim($_POST['status'] ?? 'available');
 
-            $errors = \App\Services\Validations::validateBookCreation($_POST, $_FILES);
+            $errors = Validations::validateBookCreation($_POST, $_FILES);
 
             if (!empty($errors)) {
                 setFlash('error', implode('<br>', $errors));
+
+                $book->setTitle($title);
+                $book->setAuthor($author);
+                $book->setDescription($description);
+                $book->setStatus($status);
 
                 $this->render('edit-book', [
                     'title' => 'Modifier le livre',
@@ -266,15 +274,13 @@ class BookController extends Controller
             $book->setDescription($description);
             $book->setStatus($status);
 
-            if (isset($_FILES['image']) && $_FILES['image']['error'] !== UPLOAD_ERR_NO_FILE) {
-                $tmpName = $_FILES['image']['tmp_name'];
-                $originalName = $_FILES['image']['name'];
-                $extension = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
+            if (
+                isset($_FILES['image']) &&
+                ($_FILES['image']['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_NO_FILE
+            ) {
+                $uploadedImage = FileUploader::uploadBookImage($_FILES['image']);
 
-                $imageName = uniqid('book_', true) . '.' . $extension;
-                $destination = __DIR__ . '/../../public/images/books/' . $imageName;
-
-                if (!move_uploaded_file($tmpName, $destination)) {
+                if ($uploadedImage === null) {
                     setFlash('error', 'Impossible d’enregistrer l’image.');
 
                     $this->render('edit-book', [
@@ -284,22 +290,16 @@ class BookController extends Controller
                     return;
                 }
 
-                $book->setImage($imageName);
+                $book->setImage($uploadedImage);
             }
 
             if ($this->bookManager->update($book)) {
-                setFlash('success', 'Livre modifié avec succès.');
+                setFlash('success', 'Livre mis à jour avec succès.');
                 redirect('/compte');
                 return;
             }
 
-            setFlash('error', 'Erreur lors de la modification.');
-
-            $this->render('edit-book', [
-                'title' => 'Modifier le livre',
-                'book' => $book
-            ]);
-            return;
+            setFlash('error', 'Erreur lors de la mise à jour.');
         }
 
         $this->render('edit-book', [
@@ -308,38 +308,6 @@ class BookController extends Controller
         ]);
     }
 
-    /**
-     * Mise à jour d'un livre
-     */
-    public function update(int $id): void
-    {
-        $user = $_SESSION['user'] ?? null;
-        if (!$user) {
-            setFlash('error', 'Vous devez être connecté.');
-            redirect('/connexion');
-            return;
-        }
-
-        $book = $this->bookManager->getById($id);
-        if (!$book || $book->getOwnerId() !== $user->getId()) {
-            setFlash('error', 'Action non autorisée.');
-            redirect('/compte');
-            return;
-        }
-
-        $book->setTitle($_POST['title'] ?? $book->getTitle());
-        $book->setAuthor($_POST['author'] ?? $book->getAuthor());
-        $book->setDescription($_POST['description'] ?? $book->getDescription());
-        $book->setImage($_POST['image'] ?? $book->getImage());
-
-        if ($this->bookManager->update($book)) {
-            setFlash('success', 'Livre mis à jour avec succès.');
-        } else {
-            setFlash('error', 'Erreur lors de la mise à jour.');
-        }
-
-        redirect('/compte');
-    }
 
     /**
      * Supprimer un livre
@@ -356,7 +324,7 @@ class BookController extends Controller
 
         $book = $this->bookManager->getById($id);
 
-        if (!$book || $book->getOwnerId() !== $user->getId()) {
+        if (!Authorizations::canManageBook($user, $book)) {
             setFlash('error', 'Accès interdit.');
             redirect('/compte');
             return;

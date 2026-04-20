@@ -35,8 +35,11 @@ class MessageController extends Controller
         $otherUser = null;
 
         if ($otherUserId) {
+
+            // Récupérer les messages (peut être vide)
             $messages = $this->messageManager->getConversation($currentUserId, $otherUserId);
 
+            // Chercher dans les conversations existantes
             foreach ($conversations as $conversation) {
                 $sender = $conversation->getSender();
                 $receiver = $conversation->getReceiver();
@@ -47,6 +50,11 @@ class MessageController extends Controller
                     $otherUser = $candidate;
                     break;
                 }
+            }
+
+            // AJOUT IMPORTANT : fallback si aucune conversation existe
+            if (!$otherUser) {
+                $otherUser = new User(['id' => $otherUserId]);
             }
         }
 

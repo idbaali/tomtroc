@@ -51,7 +51,7 @@
                         <!-- Nom + lien vers profil -->
                         <div class="owner-info">
                             <p class="owner-name">
-                                <a href="">
+                                <a href="/compte-public/<?= $book->getOwner()->getId() ?>">
                                     <?= htmlspecialchars($book->getOwner()->getUsername() ?: 'Utilisateur inconnu') ?>
                                 </a>
                             </p>
@@ -60,7 +60,7 @@
 
                     <!-- Bouton "Envoyer un message" uniquement si l'utilisateur est connecté et n'est pas le propriétaire -->
                     <?php if (user() && user()->getId() !== $book->getOwner()->getId()) : ?>
-                        <a href="/messages/nouveau/<?= $book->getOwner()->getId() ?>" class="btn btn-book">
+                        <a href="/messagerie?user=<?= $book->getOwner()->getId() ?>" class="btn btn-book">
                             Envoyer un message
                         </a>
                     <?php endif; ?>

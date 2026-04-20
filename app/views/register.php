@@ -32,7 +32,7 @@
             <!-- Jamais pré-remplir un mot de passe -->
             <input id="password" type="password" name="password" required>
 
-            <button class="btn-primary" type="submit">
+            <button class="btn-regist" type="submit">
                 S’inscrire
             </button>
 

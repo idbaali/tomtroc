@@ -89,8 +89,8 @@ $old = $_SESSION['old_create_book'] ?? [
 
                 <!-- ACTIONS -->
                 <div class="form-actions">
-                    <a href="/compte" class="btn-secondary">Annuler</a>
-                    <button type="submit" class="btn-primary">Ajouter le livre</button>
+                    <a href="/compte" class="btn-creat1">Annuler</a>
+                    <button type="submit" class="btn-creat2">Ajouter le livre</button>
                 </div>
 
             </form>

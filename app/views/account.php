@@ -29,7 +29,10 @@
 
             <div class="info-group">
                 <div class="label">BIBLIOTHÈQUE</div>
-                <div class="value profile-value"><?= count($books ?? []) ?> livres</div>
+                <div class="value profile-value books-count">
+                    <img src="/images/icons/vector.svg" alt="" class="icon-books">
+                    <?= count($books ?? []) ?> livres
+                </div>
             </div>
 
             <div class="account-actions">
@@ -102,13 +105,17 @@
                 <div class="table-row">
 
                     <div class="table-cell">
-                        <img src="/images/books/<?= e($book->getImage() ?? 'default.png') ?>"
-                            alt="<?= e($book->getTitle()) ?>"
-                            class="book-img">
+                        <a href="/livre/<?= e($book->getSlug()) ?>">
+                            <img src="/images/books/<?= e($book->getImage() ?? 'default.png') ?>"
+                                alt="<?= e($book->getTitle()) ?>"
+                                class="book-img">
+                        </a>
                     </div>
 
                     <div class="table-cell">
-                        <?= e($book->getTitle()) ?>
+                        <a href="/livre/<?= e($book->getSlug()) ?>" class="book-link">
+                            <?= e($book->getTitle()) ?>
+                        </a>
                     </div>
 
                     <div class="table-cell">

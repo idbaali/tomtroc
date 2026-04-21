@@ -7,7 +7,7 @@
 // Sécurisation + fallback
 $title  = htmlspecialchars($book->getTitle() ?? 'Titre inconnu');
 $author = htmlspecialchars($book->getAuthor() ?? 'Auteur inconnu');
-$seller = htmlspecialchars($book->getSeller() ?? 'Utilisateur');
+$seller = htmlspecialchars($book->getOwner() ? $book->getOwner()->getUsername() : 'Utilisateur');
 
 $image  = $book->getImage()
     ? htmlspecialchars($book->getImage())

@@ -43,7 +43,7 @@ class BookController extends Controller
             'books' => $books
         ]);
     }
-
+// DANS LE SERVICE-----
     private function generateSlug(string $title): string
     {
         $slug = strtolower(trim($title));

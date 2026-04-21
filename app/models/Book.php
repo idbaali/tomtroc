@@ -28,7 +28,6 @@ class Book
             $this->slug = $data['slug'] ?? '';
             $this->created_at = $data['created_at'] ?? '';
             $this->status = $data['status'] ?? null;
-            $this->seller = $data['seller'] ?? null;
         }
     }
 
@@ -43,7 +42,6 @@ class Book
     public function getSlug(): string { return $this->slug; }
     public function getCreatedAt(): string { return $this->created_at; }
     public function getStatus(): ?string { return $this->status; }
-    public function getSeller(): ?string { return $this->seller; }
     
 
     // SETTERS
@@ -54,5 +52,4 @@ class Book
     public function setOwner(User $owner): void { $this->owner = $owner; }
     public function setSlug(string $slug): void { $this->slug = $slug; }
     public function setStatus(?string $status): void { $this->status = $status; }
-    public function setSeller(?string $seller): void { $this->seller = $seller; }
 }

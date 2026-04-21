@@ -6,15 +6,17 @@ use Core\Controller;
 use App\Managers\MessageManager;
 use App\Models\Message;
 use App\Models\User;
+use App\Managers\UserManager;
 
 class MessageController extends Controller
 {
     private MessageManager $messageManager;
-
+    private UserManager $userManager;
     public function __construct()
     {
         parent::__construct();
         $this->messageManager = new MessageManager();
+        $this->userManager = new UserManager();
     }
 
     public function index(): void
@@ -40,22 +42,7 @@ class MessageController extends Controller
             $messages = $this->messageManager->getConversation($currentUserId, $otherUserId);
 
             // Chercher dans les conversations existantes
-            foreach ($conversations as $conversation) {
-                $sender = $conversation->getSender();
-                $receiver = $conversation->getReceiver();
-
-                $candidate = ($sender->getId() === $currentUserId) ? $receiver : $sender;
-
-                if ($candidate && $candidate->getId() === $otherUserId) {
-                    $otherUser = $candidate;
-                    break;
-                }
-            }
-
-            // AJOUT IMPORTANT : fallback si aucune conversation existe
-            if (!$otherUser) {
-                $otherUser = new User(['id' => $otherUserId]);
-            }
+            $otherUser = $this->userManager->getById($otherUserId); 
         }
 
         $this->render('messagerie', [

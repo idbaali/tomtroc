@@ -1,12 +1,17 @@
 <?php require __DIR__ . '/layout/header.php'; ?>
 
 <?php
+/** @var int $currentUserId */
+/** @var array $messages */
+/** @var array $conversations */
+/** @var int|null $otherUserId */
+/** @var \App\Models\User|null $otherUser */
+?>
+
+<?php
 $otherUserId = $otherUserId ?? null;
 $otherUser = $otherUser ?? null;
 
-/**
- * Retourne un chemin d'avatar valide pour l'affichage
- */
 function getAvatarPath(?string $avatar): string
 {
     $default = '/images/profiles/default-user.png';
@@ -15,21 +20,7 @@ function getAvatarPath(?string $avatar): string
         return $default;
     }
 
-    $avatar = trim($avatar);
-
-    // Si la valeur contient déjà le chemin complet public
-    if (str_starts_with($avatar, '/images/profiles/')) {
-        $filename = basename($avatar);
-    }
-    // Si la valeur contient "profiles/nomfichier"
-    elseif (str_starts_with($avatar, 'profiles/')) {
-        $filename = basename($avatar);
-    }
-    // Si la valeur contient juste le nom du fichier
-    else {
-        $filename = basename($avatar);
-    }
-
+    $filename = basename(trim($avatar));
     $fullPath = __DIR__ . '/../../public/images/profiles/' . $filename;
 
     if (!file_exists($fullPath) || !is_file($fullPath)) {
@@ -52,7 +43,6 @@ function getAvatarPath(?string $avatar): string
                         <?php
                         $sender = $conversation->getSender();
                         $receiver = $conversation->getReceiver();
-
                         $other = ($sender->getId() === $currentUserId) ? $receiver : $sender;
 
                         if (!$other) {
@@ -63,17 +53,19 @@ function getAvatarPath(?string $avatar): string
                         $avatarPath = getAvatarPath($other->getAvatar());
                         ?>
 
-                        <a href="/messagerie?user=<?= $other->getId(); ?>" class="conversation-item <?= $isActive; ?>">
+                        <a href="/messagerie/<?= $other->getId(); ?>" class="conversation-item <?= $isActive; ?>">
                             <img
-                                src="<?= htmlspecialchars($avatarPath); ?>"
+                                src="/images/profiles/<?= htmlspecialchars($other->getAvatar() ?? 'default-user.png'); ?>"
                                 alt="Photo de profil de <?= htmlspecialchars($other->getUsername()); ?>"
-                                class="conversation-avatar">
+                                class="conversation-avatar"
+                                onerror="this.src='/images/profiles/default-user.png';">
 
                             <div class="conversation-content">
                                 <div class="conversation-top">
                                     <h2 class="conversation-name">
                                         <?= htmlspecialchars($other->getUsername()); ?>
                                     </h2>
+
                                     <span class="conversation-time">
                                         <?= date('H:i', strtotime($conversation->getCreatedAt())); ?>
                                     </span>
@@ -98,13 +90,13 @@ function getAvatarPath(?string $avatar): string
 
                     <img
                         src="<?= htmlspecialchars($headerAvatarPath); ?>"
-                        alt="Photo de profil de <?= htmlspecialchars($otherUser->getUsername()); ?>"
+                        alt="Photo de profil de <?= htmlspecialchars($otherUser->getUsername() ?? 'Utilisateur'); ?>"
                         class="chat-header-avatar">
 
                     <div class="chat-header-info">
                         <h2 class="chat-header-name">
                             <a href="/compte-public/<?= $otherUser->getId(); ?>">
-                                <?= htmlspecialchars($otherUser->getUsername()); ?>
+                                <?= htmlspecialchars($otherUser->getUsername() ?? 'Utilisateur'); ?>
                             </a>
                         </h2>
                         <p class="chat-header-status">Conversation ouverte</p>
@@ -118,27 +110,29 @@ function getAvatarPath(?string $avatar): string
             </header>
 
             <div class="chat-messages">
-                <?php if ($otherUserId && !empty($messages)): ?>
-                    <?php foreach ($messages as $message): ?>
-                        <?php
-                        $sender = $message->getSender();
-                        $isMine = ($sender->getId() === $currentUserId);
-                        $class = $isMine ? 'sent' : 'received';
-                        ?>
+                <?php if ($otherUserId): ?>
 
-                        <article class="message-row <?= $class; ?>">
-                            <span class="message-time">
-                                <?= date('H:i', strtotime($message->getCreatedAt())); ?>
-                            </span>
+                    <?php if (!empty($messages)): ?>
+                        <?php foreach ($messages as $message): ?>
+                            <?php
+                            $sender = $message->getSender();
+                            $isMine = ($sender->getId() === $currentUserId);
+                            $class = $isMine ? 'sent' : 'received';
+                            ?>
 
-                            <div class="message-bubble">
-                                <?= htmlspecialchars($message->getContent()); ?>
-                            </div>
-                        </article>
-                    <?php endforeach; ?>
+                            <article class="message-row <?= $class; ?>">
+                                <span class="message-time">
+                                    <?= date('H:i', strtotime($message->getCreatedAt())); ?>
+                                </span>
 
-                <?php elseif ($otherUserId): ?>
-                    <p>Aucun message pour le moment.</p>
+                                <div class="message-bubble">
+                                    <?= htmlspecialchars($message->getContent()); ?>
+                                </div>
+                            </article>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p>Aucun message pour le moment.</p>
+                    <?php endif; ?>
 
                 <?php else: ?>
                     <p>Sélectionnez une conversation pour afficher les messages.</p>
@@ -164,6 +158,7 @@ function getAvatarPath(?string $avatar): string
                 </div>
             <?php endif; ?>
         </section>
+
     </div>
 </section>
 

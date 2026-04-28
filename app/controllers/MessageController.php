@@ -4,14 +4,15 @@ namespace App\Controllers;
 
 use Core\Controller;
 use App\Managers\MessageManager;
+use App\Managers\UserManager;
 use App\Models\Message;
 use App\Models\User;
-use App\Managers\UserManager;
 
 class MessageController extends Controller
 {
     private MessageManager $messageManager;
     private UserManager $userManager;
+
     public function __construct()
     {
         parent::__construct();
@@ -19,7 +20,7 @@ class MessageController extends Controller
         $this->userManager = new UserManager();
     }
 
-    public function index(): void
+    public function index(?int $otherUserId = null): void
     {
         $user = $_SESSION['user'] ?? null;
 
@@ -27,22 +28,30 @@ class MessageController extends Controller
             setFlash('error', 'Vous devez être connecté.');
             redirect('/connexion');
             return;
+            
         }
 
         $currentUserId = $user->getId();
-        $otherUserId = isset($_GET['user']) ? (int) $_GET['user'] : null;
+
+        if ($otherUserId === $currentUserId) {
+            redirect('/messagerie');
+            return;
+        }
 
         $messages = [];
         $conversations = $this->messageManager->getUserConversations($currentUserId);
         $otherUser = null;
 
         if ($otherUserId) {
+            $otherUser = $this->userManager->getById($otherUserId);
 
-            // Récupérer les messages (peut être vide)
+            if (!$otherUser) {
+                setFlash('error', 'Utilisateur introuvable.');
+                redirect('/messagerie');
+                return;
+            }
+
             $messages = $this->messageManager->getConversation($currentUserId, $otherUserId);
-
-            // Chercher dans les conversations existantes
-            $otherUser = $this->userManager->getById($otherUserId); 
         }
 
         $this->render('messagerie', [
@@ -74,8 +83,21 @@ class MessageController extends Controller
             return;
         }
 
+        if ($receiverId === $user->getId()) {
+            setFlash('error', 'Action invalide.');
+            redirect('/messagerie');
+            return;
+        }
+
+        $receiver = $this->userManager->getById($receiverId);
+
+        if (!$receiver) {
+            setFlash('error', 'Utilisateur introuvable.');
+            redirect('/messagerie');
+            return;
+        }
+
         $sender = new User(['id' => $user->getId()]);
-        $receiver = new User(['id' => $receiverId]);
 
         $message = new Message([
             'content' => $content,
@@ -83,8 +105,12 @@ class MessageController extends Controller
             'receiver' => $receiver
         ]);
 
-        $this->messageManager->send($message);
+        if (!$this->messageManager->send($message)) {
+            setFlash('error', 'Erreur lors de l’envoi du message.');
+            redirect('/messagerie/' . $receiverId);
+            return;
+        }
 
-        redirect('/messagerie?user=' . $receiverId);
+        redirect('/messagerie/' . $receiverId);
     }
 }

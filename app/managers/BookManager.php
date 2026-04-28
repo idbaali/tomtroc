@@ -71,14 +71,22 @@ class BookManager extends BaseManager
     public function getBySlug(string $slug): ?Book
     {
         $stmt = $this->db->prepare("
-            SELECT b.*, u.id AS owner_id, u.username AS owner_name, u.avatar AS owner_avatar
-            FROM books b
-            JOIN users u ON u.id = b.owner_id
-            WHERE b.slug = :slug
-            LIMIT 1
-        ");
+        SELECT b.*, 
+               u.id AS owner_id,
+               u.username AS owner_username,
+               u.email AS owner_email,
+               u.password AS owner_password,
+               u.avatar AS owner_avatar,
+               u.created_at AS owner_created_at
+        FROM books b
+        JOIN users u ON u.id = b.owner_id
+        WHERE b.slug = :slug
+        LIMIT 1
+    ");
 
-        $stmt->execute(['slug' => $slug]);
+        $stmt->execute([
+            'slug' => $slug
+        ]);
 
         $data = $stmt->fetch(\PDO::FETCH_ASSOC);
 
@@ -86,9 +94,27 @@ class BookManager extends BaseManager
             return null;
         }
 
-        return $this->createBook($data);
-    }
+        $owner = new User([
+            'id' => $data['owner_id'],
+            'username' => $data['owner_username'],
+            'email' => $data['owner_email'],
+            'password' => $data['owner_password'],
+            'avatar' => $data['owner_avatar'],
+            'created_at' => $data['owner_created_at']
+        ]);
 
+        return new Book([
+            'id' => $data['id'],
+            'title' => $data['title'],
+            'author' => $data['author'],
+            'description' => $data['description'],
+            'image' => $data['image'],
+            'slug' => $data['slug'],
+            'status' => $data['status'] ?? null,
+            'created_at' => $data['created_at'],
+            'owner' => $owner
+        ]);
+    }
     /**
      * Créer un livre
      */

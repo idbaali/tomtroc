@@ -1,19 +1,17 @@
 <?php
-/**
- * Composant : carte d’un livre
- * Dépend uniquement de la variable $book (objet Book)
- */
+/** @var \App\Models\Book $book */
 
-// Sécurisation + fallback
 $title  = htmlspecialchars($book->getTitle() ?? 'Titre inconnu');
 $author = htmlspecialchars($book->getAuthor() ?? 'Auteur inconnu');
-$seller = htmlspecialchars($book->getOwner() ? $book->getOwner()->getUsername() : 'Utilisateur');
 
-$image  = $book->getImage()
+$owner = $book->getOwner();
+$seller = htmlspecialchars($owner ? $owner->getUsername() : 'Utilisateur');
+
+$image = $book->getImage()
     ? htmlspecialchars($book->getImage())
     : 'default.png';
 
-$slug = htmlspecialchars($book->getSlug() ?? '#');
+$slug = htmlspecialchars($book->getSlug());
 ?>
 
 <a href="/livre/<?= $slug ?>" class="exchange-card">

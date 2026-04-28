@@ -1,4 +1,8 @@
 <?php require __DIR__ . '/layout/header.php'; ?>
+<?php
+/** @var \App\Models\User $user */
+/** @var \App\Models\Book[] $books */
+?>
 
 <h1 class="page-title">Mon compte</h1>
 

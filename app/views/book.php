@@ -42,6 +42,7 @@
 
                     <div class="owner-box">
                         <!-- Avatar du propriétaire -->
+                         <a href="/compte-public/<?= $book->getOwner()->getId() ?>" class="owner-link">
                         <img
                             src="/images/avatars/<?= htmlspecialchars($book->getOwner()->getAvatar() ?: 'default-user.png') ?>"
                             alt="Photo de <?= htmlspecialchars($book->getOwner()->getUsername() ?: 'Utilisateur inconnu') ?>"

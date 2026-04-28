@@ -125,7 +125,7 @@ class Router
                     $controller->send();
                 } else {
                     // Affichage messagerie
-                    $controller->index();
+                    $controller->index($param ? (int) $param : null);
                 }
                 break;
 

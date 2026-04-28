@@ -5,16 +5,11 @@ namespace App\Controllers;
 use Core\Controller;
 use App\Managers\BookManager;
 use App\Models\Book;
-use App\Models\User;
 use App\Services\Validations;
 use App\Services\Authorizations;
 use App\Services\FileUploader;
+use App\Services\Slugger;
 
-/**
- * Contrôleur des livres
- * ----------------------
- * Liste, affiche et enregistre les livres.
- */
 class BookController extends Controller
 {
     private BookManager $bookManager;
@@ -32,110 +27,44 @@ class BookController extends Controller
     {
         $books = $this->bookManager->getAll();
 
-        // Vérification si aucun livre
-        if (empty($books)) {
-            echo "Aucun livre trouvé !";
-            exit;
-        }
-
         $this->render('books', [
             'title' => 'Nos livres à l’échange',
             'books' => $books
         ]);
     }
-// DANS LE SERVICE-----
-    private function generateSlug(string $title): string
-    {
-        $slug = strtolower(trim($title));
-        $slug = preg_replace('/[^a-z0-9-]+/', '-', $slug);
-        $slug = preg_replace('/-+/', '-', $slug);
-
-        return trim($slug, '-');
-    }
 
     /**
-     * Affiche un livre par ID ou slug
+     * Affiche un livre uniquement par slug
      */
-    public function show($param): void
+    public function show(?string $slug): void
     {
-        if (!$param) {
+        if (!$slug) {
             http_response_code(404);
-            echo "Livre introuvable";
+            echo 'Livre introuvable';
             return;
         }
 
-        if (ctype_digit($param)) {
-            $book = $this->bookManager->getById((int)$param);
-        } else {
-            $book = $this->bookManager->getBySlug($param);
-        }
+        $book = $this->bookManager->getBySlug($slug);
 
         if (!$book) {
             http_response_code(404);
-            echo "Livre introuvable";
+            echo 'Livre introuvable';
             return;
         }
 
         $this->render('book', [
             'title' => $book->getTitle(),
-            'book'  => $book
+            'book' => $book
         ]);
     }
-
-    /**
-     * Enregistre un nouveau livre
-     */
-    public function store(): void
-    {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            http_response_code(405);
-            return;
-        }
-
-        $data = $_POST;
-        $data['slug'] = $this->generateSlug($data['title']);
-
-        $user = $_SESSION['user'] ?? null;
-
-        if (!$user) {
-            setFlash('error', 'Vous devez être connecté.');
-            redirect('/connexion');
-            return;
-        }
-
-        $owner = new User([
-            'id' => $user['id'] ?? null,
-            'username' => $user['username'] ?? '',
-            'avatar' => $user['avatar'] ?? null
-        ]);
-
-        $book = new Book([
-            'title' => $data['title'],
-            'author' => $data['author'],
-            'description' => $data['description'] ?? '',
-            'image' => $data['image'] ?? '',
-            'owner' => $owner,
-            'slug' => $data['slug']
-        ]);
-
-        if ($this->bookManager->create($book)) {
-            setFlash('success', 'Livre créé avec succès.');
-        } else {
-            setFlash('error', 'Erreur lors de la création.');
-        }
-
-        redirect('/livres');
-    }
-
-
 
     /**
      * Formulaire de création d'un livre
      */
     public function form(): void
     {
-        // Vérifie que l'utilisateur est connecté
         $user = $_SESSION['user'] ?? null;
+
         if (!$user) {
             setFlash('error', 'Vous devez être connecté.');
             redirect('/connexion');
@@ -148,9 +77,9 @@ class BookController extends Controller
         ]);
     }
 
-
-    // Creation d'un livre
-
+    /**
+     * Création d'un livre
+     */
     public function create(): void
     {
         $user = $_SESSION['user'] ?? null;
@@ -202,7 +131,7 @@ class BookController extends Controller
             'description' => $description,
             'image' => $imageName,
             'owner' => $user,
-            'slug' => generateSlug($title)
+            'slug' => Slugger::generate($title)
         ]);
 
         if (!$this->bookManager->create($book)) {
@@ -217,9 +146,8 @@ class BookController extends Controller
         redirect('/compte');
     }
 
-
     /**
-     * Formulaire d'édition d'un livre
+     * Formulaire d'édition + traitement de modification
      */
     public function edit(?int $id): void
     {
@@ -246,7 +174,6 @@ class BookController extends Controller
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
             $title = trim($_POST['title'] ?? '');
             $author = trim($_POST['author'] ?? '');
             $description = trim($_POST['description'] ?? '');
@@ -307,7 +234,6 @@ class BookController extends Controller
             'book' => $book
         ]);
     }
-
 
     /**
      * Supprimer un livre

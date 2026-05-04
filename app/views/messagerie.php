@@ -6,9 +6,7 @@
 /** @var array $conversations */
 /** @var int|null $otherUserId */
 /** @var \App\Models\User|null $otherUser */
-?>
 
-<?php
 $otherUserId = $otherUserId ?? null;
 $otherUser = $otherUser ?? null;
 
@@ -50,12 +48,11 @@ function getAvatarPath(?string $avatar): string
                         }
 
                         $isActive = ($otherUserId == $other->getId()) ? 'active' : '';
-                        $avatarPath = getAvatarPath($other->getAvatar());
                         ?>
 
                         <a href="/messagerie/<?= $other->getId(); ?>" class="conversation-item <?= $isActive; ?>">
                             <img
-                                src="/images/profiles/<?= htmlspecialchars($other->getAvatar() ?? 'default-user.png'); ?>"
+                                src="/images/profiles/<?= htmlspecialchars($other->getAvatar() ?: 'default-user.png'); ?>"
                                 alt="Photo de profil de <?= htmlspecialchars($other->getUsername()); ?>"
                                 class="conversation-avatar"
                                 onerror="this.src='/images/profiles/default-user.png';">
@@ -86,21 +83,20 @@ function getAvatarPath(?string $avatar): string
         <section class="messaging-chat" aria-label="Zone de discussion">
             <header class="chat-header">
                 <?php if ($otherUser): ?>
-                    <?php $headerAvatarPath = getAvatarPath($otherUser->getAvatar()); ?>
+                    <a href="/compte-public/<?= $otherUser->getId(); ?>" class="chat-user-link">
+                        <img
+                            src="/images/profiles/<?= htmlspecialchars($otherUser->getAvatar() ?: 'default-user.png'); ?>"
+                            alt="Photo de profil de <?= htmlspecialchars($otherUser->getUsername() ?? 'Utilisateur'); ?>"
+                            class="chat-header-avatar"
+                            onerror="this.src='/images/profiles/default-user.png';">
 
-                    <img
-                        src="<?= htmlspecialchars($headerAvatarPath); ?>"
-                        alt="Photo de profil de <?= htmlspecialchars($otherUser->getUsername() ?? 'Utilisateur'); ?>"
-                        class="chat-header-avatar">
-
-                    <div class="chat-header-info">
-                        <h2 class="chat-header-name">
-                            <a href="/compte-public/<?= $otherUser->getId(); ?>">
+                        <div class="chat-header-info">
+                            <h2 class="chat-header-name">
                                 <?= htmlspecialchars($otherUser->getUsername() ?? 'Utilisateur'); ?>
-                            </a>
-                        </h2>
-                        <p class="chat-header-status">Conversation ouverte</p>
-                    </div>
+                            </h2>
+                            <p class="chat-header-status">Conversation ouverte</p>
+                        </div>
+                    </a>
                 <?php else: ?>
                     <div class="chat-header-info">
                         <h2 class="chat-header-name">Messagerie</h2>

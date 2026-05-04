@@ -149,7 +149,7 @@ class BookController extends Controller
     /**
      * Formulaire d'édition + traitement de modification
      */
-    public function edit(?int $id): void
+    public function edit(?string $slug): void
     {
         $user = $_SESSION['user'] ?? null;
 
@@ -159,13 +159,13 @@ class BookController extends Controller
             return;
         }
 
-        if (!$id) {
+        if (!$slug) {
             http_response_code(404);
             echo 'Livre introuvable';
             return;
         }
 
-        $book = $this->bookManager->getById($id);
+        $book = $this->bookManager->getBySlug($slug);
 
         if (!Authorizations::canManageBook($user, $book)) {
             setFlash('error', 'Action non autorisée.');
@@ -200,6 +200,7 @@ class BookController extends Controller
             $book->setAuthor($author);
             $book->setDescription($description);
             $book->setStatus($status);
+            $book->setSlug(Slugger::generate($title));
 
             if (
                 isset($_FILES['image']) &&
@@ -234,11 +235,11 @@ class BookController extends Controller
             'book' => $book
         ]);
     }
-
     /**
-     * Supprimer un livre
+     * Supprimer un livre par slug
      */
-    public function delete(int $id): void
+
+    public function delete(?string $slug): void
     {
         $user = $_SESSION['user'] ?? null;
 
@@ -248,7 +249,13 @@ class BookController extends Controller
             return;
         }
 
-        $book = $this->bookManager->getById($id);
+        if (!$slug) {
+            http_response_code(404);
+            echo 'Livre introuvable';
+            return;
+        }
+
+        $book = $this->bookManager->getBySlug($slug);
 
         if (!Authorizations::canManageBook($user, $book)) {
             setFlash('error', 'Accès interdit.');
@@ -256,7 +263,7 @@ class BookController extends Controller
             return;
         }
 
-        if ($this->bookManager->delete($id)) {
+        if ($this->bookManager->deleteBySlug($slug)) {
             setFlash('success', 'Livre supprimé avec succès.');
         } else {
             setFlash('error', 'Erreur lors de la suppression.');

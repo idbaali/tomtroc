@@ -16,6 +16,6 @@ class Authorizations
             return false;
         }
 
-        return $book->getOwnerId() === $user->getId();
+        return (int) $book->getOwnerId() === (int) $user->getId();
     }
 }

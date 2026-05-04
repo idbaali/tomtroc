@@ -1,21 +1,23 @@
 <?php require __DIR__ . '/layout/header.php'; ?>
 
+<?php
+/** @var \App\Models\User $user */
+?>
+
 <main class="profile-page">
 
-    <!-- ===========================
-         COLONNE GAUCHE
-    ============================ -->
     <aside class="profile-left">
 
         <div class="avatar-wrapper">
-            <img src="/images/avatars/<?= e($user->getAvatar() ?? 'default-user.png') ?>"
-                alt="Photo de <?= e($user->getUsername() ?? 'Utilisateur inconnu') ?>">
+            <img src="/images/profiles/<?= e($user->getAvatar() ?? 'default-user.png') ?>"
+                alt="Photo de <?= e($user->getUsername() ?? 'Utilisateur inconnu') ?>"
+                onerror="this.src='/images/profiles/default-user.png';">
         </div>
 
         <h2 class="username"><?= e($user->getUsername() ?? 'Utilisateur inconnu') ?></h2>
 
         <p class="member-since">
-            Membre depuis <?= date('d/m/Y', strtotime($user->getCreatedAt())) ?>
+            Membre depuis <?= $user->getCreatedAt() ? date('d/m/Y', strtotime($user->getCreatedAt())) : '' ?>
         </p>
 
         <div class="library-summary">
@@ -25,22 +27,18 @@
             </p>
         </div>
 
-        <!-- Lien vers messagerie -->
-        <?php if (isset($_SESSION['user'])): ?>
-            <a href="/messagerie?user=<?= $user->getId() ?>" class="btn-profile">
+        <?php if (isset($_SESSION['user']) && $_SESSION['user']->getId() !== $user->getId()): ?>
+            <a href="/messagerie/<?= $user->getId() ?>" class="btn-profile">
                 Écrire un message
             </a>
-        <?php else: ?>
+        <?php elseif (!isset($_SESSION['user'])): ?>
             <a href="/connexion" class="btn-profile">
-                Ecrivez un message
+                Écrire un message
             </a>
         <?php endif; ?>
 
     </aside>
 
-    <!-- ===========================
-         COLONNE DROITE
-    ============================ -->
     <section class="profile-right">
 
         <div class="library-books">
@@ -59,7 +57,8 @@
 
                         <div class="library-photo">
                             <a href="/livre/<?= e($book->getSlug()) ?>" class="book-public-link">
-                                <img src="/images/books/<?= e($book->getImage() ?? 'default.png') ?>" alt="<?= e($book->getTitle()) ?>">
+                                <img src="/images/books/<?= e($book->getImage() ?? 'default.png') ?>"
+                                    alt="<?= e($book->getTitle()) ?>">
                             </a>
                         </div>
 
@@ -76,6 +75,7 @@
                         <div class="library-description">
                             <?= e($book->getDescription()) ?>
                         </div>
+
                     </article>
                 <?php endforeach; ?>
 

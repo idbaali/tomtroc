@@ -74,13 +74,13 @@ class Router
                 }
                 break;
 
-            // Modification d’un livre → /edition-livre/12
+            // Modification d’un livre 
             case 'edition-livre':
                 $controller = new BookController();
                 $controller->edit($param);
                 break;
 
-            // Suppression d’un livre → /supprimer-livre/12
+            // Suppression d’un livre 
             case 'supprimer-livre':
                 $controller = new BookController();
                 $controller->delete($param);

@@ -1,5 +1,9 @@
 <?php require_once __DIR__ . '/layout/header.php'; ?>
 
+<?php
+/** @var \App\Models\Book $book */
+?>
+
 <main class="edit-book-principal">
 
     <nav class="bread-retour" aria-label="Fil d’ariane">
@@ -15,13 +19,12 @@
 
         <div class="edit-book-card">
 
-            <!-- BLOC GAUCHE : PHOTO -->
             <div class="edit-book-photo">
                 <h2>Photo</h2>
 
                 <img
-                    src="/images/books/<?= htmlspecialchars($book->getImage() ?? 'default.png') ?>"
-                    alt="Couverture du livre <?= htmlspecialchars($book->getTitle() ?? 'Livre') ?>"
+                    src="/images/books/<?= e($book->getImage() ?? 'default.png') ?>"
+                    alt="Couverture du livre <?= e($book->getTitle() ?? 'Livre') ?>"
                     onerror="this.src='/images/books/default.png';">
 
                 <label class="btn-photo" for="book-image">
@@ -29,9 +32,8 @@
                 </label>
             </div>
 
-            <!-- BLOC DROIT : FORMULAIRE -->
             <div class="edit-book-form">
-                <form method="POST" action="/edition-livre/<?= $book->getId() ?>" enctype="multipart/form-data">
+                <form method="POST" action="/edition-livre/<?= e($book->getOriginalSlug()) ?>" enctype="multipart/form-data">
 
                     <input type="file" id="book-image" name="image" hidden>
 
@@ -41,7 +43,7 @@
                             type="text"
                             id="title"
                             name="title"
-                            value="<?= htmlspecialchars($book->getTitle() ?? '') ?>"
+                            value="<?= e($book->getTitle() ?? '') ?>"
                             required>
                     </div>
 
@@ -51,7 +53,7 @@
                             type="text"
                             id="author"
                             name="author"
-                            value="<?= htmlspecialchars($book->getAuthor() ?? '') ?>"
+                            value="<?= e($book->getAuthor() ?? '') ?>"
                             required>
                     </div>
 
@@ -61,7 +63,7 @@
                             id="description"
                             name="description"
                             rows="10"
-                            required><?= htmlspecialchars($book->getDescription() ?? '') ?></textarea>
+                            required><?= e($book->getDescription() ?? '') ?></textarea>
                     </div>
 
                     <div class="form-group">

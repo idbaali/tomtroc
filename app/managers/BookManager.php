@@ -8,13 +8,14 @@ use Core\BaseManager;
 
 class BookManager extends BaseManager
 {
-    /**
-     * Tous les livres
-     */
     public function getAll(): array
     {
         $stmt = $this->db->query("
-            SELECT b.*, u.id AS owner_id, u.username AS owner_name, u.avatar AS owner_avatar
+            SELECT 
+                b.*,
+                u.id AS owner_id,
+                u.username AS owner_name,
+                u.avatar AS owner_avatar
             FROM books b
             JOIN users u ON u.id = b.owner_id
             ORDER BY b.created_at DESC
@@ -23,66 +24,40 @@ class BookManager extends BaseManager
         return $this->createBookList($stmt);
     }
 
-    /**
-     * Livres d’un utilisateur
-     */
     public function getByUserId(int $userId): array
     {
         $stmt = $this->db->prepare("
-            SELECT b.*, u.id AS owner_id, u.username AS owner_name, u.avatar AS owner_avatar
+            SELECT 
+                b.*,
+                u.id AS owner_id,
+                u.username AS owner_name,
+                u.avatar AS owner_avatar
             FROM books b
             JOIN users u ON u.id = b.owner_id
             WHERE b.owner_id = :userId
             ORDER BY b.created_at DESC
         ");
 
-        $stmt->execute(['userId' => $userId]);
+        $stmt->execute([
+            'userId' => $userId
+        ]);
 
         return $this->createBookList($stmt);
     }
 
-    /**
-     * Livre par ID
-     */
-    public function getById(int $id): ?Book
-    {
-        $stmt = $this->db->prepare("
-            SELECT b.*, u.id AS owner_id, u.username AS owner_name, u.avatar AS owner_avatar
-            FROM books b
-            JOIN users u ON u.id = b.owner_id
-            WHERE b.id = :id
-            LIMIT 1
-        ");
-
-        $stmt->execute(['id' => $id]);
-
-        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
-
-        if (!$data) {
-            return null;
-        }
-
-        return $this->createBook($data);
-    }
-
-    /**
-     * Livre par slug
-     */
     public function getBySlug(string $slug): ?Book
     {
         $stmt = $this->db->prepare("
-        SELECT b.*, 
-               u.id AS owner_id,
-               u.username AS owner_username,
-               u.email AS owner_email,
-               u.password AS owner_password,
-               u.avatar AS owner_avatar,
-               u.created_at AS owner_created_at
-        FROM books b
-        JOIN users u ON u.id = b.owner_id
-        WHERE b.slug = :slug
-        LIMIT 1
-    ");
+            SELECT 
+                b.*,
+                u.id AS owner_id,
+                u.username AS owner_name,
+                u.avatar AS owner_avatar
+            FROM books b
+            JOIN users u ON u.id = b.owner_id
+            WHERE b.slug = :slug
+            LIMIT 1
+        ");
 
         $stmt->execute([
             'slug' => $slug
@@ -94,30 +69,9 @@ class BookManager extends BaseManager
             return null;
         }
 
-        $owner = new User([
-            'id' => $data['owner_id'],
-            'username' => $data['owner_username'],
-            'email' => $data['owner_email'],
-            'password' => $data['owner_password'],
-            'avatar' => $data['owner_avatar'],
-            'created_at' => $data['owner_created_at']
-        ]);
-
-        return new Book([
-            'id' => $data['id'],
-            'title' => $data['title'],
-            'author' => $data['author'],
-            'description' => $data['description'],
-            'image' => $data['image'],
-            'slug' => $data['slug'],
-            'status' => $data['status'] ?? null,
-            'created_at' => $data['created_at'],
-            'owner' => $owner
-        ]);
+        return $this->createBook($data);
     }
-    /**
-     * Créer un livre
-     */
+
     public function create(Book $book): bool
     {
         $stmt = $this->db->prepare("
@@ -135,20 +89,18 @@ class BookManager extends BaseManager
         ]);
     }
 
-    /**
-     * Mettre à jour un livre
-     */
     public function update(Book $book): bool
     {
         $stmt = $this->db->prepare("
-        UPDATE books
-        SET title = :title,
-            author = :author,
-            description = :description,
-            image = :image,
-            status = :status
-        WHERE id = :id
-    ");
+            UPDATE books
+            SET title = :title,
+                author = :author,
+                description = :description,
+                image = :image,
+                status = :status,
+                slug = :slug
+            WHERE slug = :original_slug
+        ");
 
         return $stmt->execute([
             'title' => $book->getTitle(),
@@ -156,29 +108,31 @@ class BookManager extends BaseManager
             'description' => $book->getDescription(),
             'image' => $book->getImage(),
             'status' => $book->getStatus(),
-            'id' => $book->getId()
+            'slug' => $book->getSlug(),
+            'original_slug' => $book->getOriginalSlug()
         ]);
     }
 
-    /**
-     * Supprimer
-     */
-    public function delete(int $id): bool
+    public function deleteBySlug(string $slug): bool
     {
         $stmt = $this->db->prepare("
-            DELETE FROM books WHERE id = :id
+            DELETE FROM books
+            WHERE slug = :slug
         ");
 
-        return $stmt->execute(['id' => $id]);
+        return $stmt->execute([
+            'slug' => $slug
+        ]);
     }
 
-    /**
-     * Derniers livres
-     */
     public function getLatest(int $limit = 4): array
     {
         $stmt = $this->db->prepare("
-            SELECT b.*, u.id AS owner_id, u.username AS owner_name, u.avatar AS owner_avatar
+            SELECT 
+                b.*,
+                u.id AS owner_id,
+                u.username AS owner_name,
+                u.avatar AS owner_avatar
             FROM books b
             JOIN users u ON u.id = b.owner_id
             ORDER BY b.created_at DESC
@@ -191,9 +145,6 @@ class BookManager extends BaseManager
         return $this->createBookList($stmt);
     }
 
-    /**
-     * Créer une liste de livres
-     */
     private function createBookList(\PDOStatement $stmt): array
     {
         $books = [];
@@ -205,9 +156,6 @@ class BookManager extends BaseManager
         return $books;
     }
 
-    /**
-     * Créer un objet Book
-     */
     private function createBook(array $data): Book
     {
         $owner = new User([
@@ -223,6 +171,7 @@ class BookManager extends BaseManager
             'description' => $data['description'],
             'image' => $data['image'],
             'slug' => $data['slug'] ?? '',
+            'original_slug' => $data['slug'] ?? '',
             'status' => $data['status'] ?? null,
             'created_at' => $data['created_at'],
             'owner' => $owner

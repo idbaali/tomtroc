@@ -11,11 +11,11 @@ class Book
     private ?string $image;
     private ?User $owner;
     private string $slug;
+    private ?string $original_slug = null;
     private string $created_at;
     private ?string $status = null;
     private ?string $seller = null;
 
-    // Constructeur
     public function __construct(array $data = [])
     {
         if (!empty($data)) {
@@ -26,12 +26,13 @@ class Book
             $this->image = $data['image'] ?? null;
             $this->owner = $data['owner'] ?? null;
             $this->slug = $data['slug'] ?? '';
+            $this->original_slug = $data['original_slug'] ?? $this->slug;
             $this->created_at = $data['created_at'] ?? '';
             $this->status = $data['status'] ?? null;
+            $this->seller = $data['seller'] ?? null;
         }
     }
 
-    // GETTERS
     public function getId(): int { return $this->id; }
     public function getTitle(): string { return $this->title; }
     public function getAuthor(): string { return $this->author; }
@@ -40,11 +41,11 @@ class Book
     public function getOwner(): ?User { return $this->owner; }
     public function getOwnerId(): ?int { return $this->owner ? $this->owner->getId() : null; }
     public function getSlug(): string { return $this->slug; }
+    public function getOriginalSlug(): ?string { return $this->original_slug; }
     public function getCreatedAt(): string { return $this->created_at; }
     public function getStatus(): ?string { return $this->status; }
-    
+    public function getSeller(): ?string { return $this->seller; }
 
-    // SETTERS
     public function setTitle(string $title): void { $this->title = $title; }
     public function setAuthor(string $author): void { $this->author = $author; }
     public function setDescription(?string $description): void { $this->description = $description; }
@@ -52,4 +53,5 @@ class Book
     public function setOwner(User $owner): void { $this->owner = $owner; }
     public function setSlug(string $slug): void { $this->slug = $slug; }
     public function setStatus(?string $status): void { $this->status = $status; }
+    public function setSeller(?string $seller): void { $this->seller = $seller; }
 }

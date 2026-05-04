@@ -139,10 +139,10 @@
                     </div>
 
                     <div class="table-cell actions">
-                        <a class="edit" href="/edition-livre/<?= $book->getId() ?>">Éditer</a>
+                        <a class="edit" href="/edition-livre/<?= e($book->getSlug()) ?>">Éditer</a>
 
                         <a class="delete"
-                            href="/supprimer-livre/<?= $book->getId() ?>"
+                            href="/supprimer-livre/<?= e($book->getSlug()) ?>"
                             onclick="return confirm('Voulez-vous vraiment supprimer ce livre ?');">
                             Supprimer
                         </a>

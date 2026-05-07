@@ -23,13 +23,23 @@ class BookController extends Controller
     /**
      * Liste tous les livres
      */
+    /**
+     * Liste tous les livres + recherche
+     */
     public function index(): void
     {
-        $books = $this->bookManager->getAll();
+        $search = trim($_GET['search'] ?? '');
+
+        if ($search !== '') {
+            $books = $this->bookManager->searchBooks($search);
+        } else {
+            $books = $this->bookManager->getAll();
+        }
 
         $this->render('books', [
             'title' => 'Nos livres à l’échange',
-            'books' => $books
+            'books' => $books,
+            'search' => $search
         ]);
     }
 

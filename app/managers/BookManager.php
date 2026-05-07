@@ -177,4 +177,32 @@ class BookManager extends BaseManager
             'owner' => $owner
         ]);
     }
+/**
+ * Rechercher des livres par titre ou auteur
+ */
+public function searchBooks(string $search): array
+{
+    $stmt = $this->db->prepare("
+        SELECT 
+            b.*,
+            u.id AS owner_id,
+            u.username AS owner_name,
+            u.avatar AS owner_avatar
+        FROM books b
+        JOIN users u ON u.id = b.owner_id
+        WHERE b.title LIKE :searchTitle
+           OR b.author LIKE :searchAuthor
+        ORDER BY b.created_at DESC
+    ");
+
+    $searchValue = '%' . $search . '%';
+
+    $stmt->execute([
+        'searchTitle' => $searchValue,
+        'searchAuthor' => $searchValue
+    ]);
+
+    return $this->createBookList($stmt);
+}
+    
 }

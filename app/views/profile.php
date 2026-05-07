@@ -16,15 +16,36 @@
 
         <h2 class="username"><?= e($user->getUsername() ?? 'Utilisateur inconnu') ?></h2>
 
-        <p class="member-since">
-            Membre depuis <?= $user->getCreatedAt() ? date('d/m/Y', strtotime($user->getCreatedAt())) : '' ?>
-        </p>
+        <?php
+        $createdAt = new DateTime($user->getCreatedAt());
+        $now = new DateTime();
+
+        $interval = $createdAt->diff($now);
+
+        if ($interval->y > 0) {
+            $memberSince = $interval->y . ' an' . ($interval->y > 1 ? 's' : '');
+        } elseif ($interval->m > 0) {
+            $memberSince = $interval->m . ' mois';
+        } else {
+            $memberSince = $interval->d . ' jour' . ($interval->d > 1 ? 's' : '');
+        }
+        ?>
+
+        <div class="member-since">
+            Membre depuis <?= $memberSince ?>
+        </div>
 
         <div class="library-summary">
             <h6>BIBLIOTHÈQUE</h6>
-            <p class="book-count">
+
+            <div class="book-count">
+                <img
+                    src="/images/icons/vector.svg"
+                    alt=""
+                    class="icon-books">
+
                 <?= count($user->getBooks()) ?> livre<?= count($user->getBooks()) > 1 ? 's' : '' ?>
-            </p>
+            </div>
         </div>
 
         <?php if (isset($_SESSION['user']) && $_SESSION['user']->getId() !== $user->getId()): ?>

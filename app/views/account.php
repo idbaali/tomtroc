@@ -24,18 +24,30 @@
                 <?= e($user->getUsername() ?? 'Utilisateur') ?>
             </div>
 
-            <div class="info-group">
-                <div class="value profile-value">
-                    Membre depuis
-                    <?= $user->getCreatedAt() ? date('d/m/Y', strtotime($user->getCreatedAt())) : '1 an' ?>
-                </div>
-            </div>
+            <?php
+            $createdAt = new DateTime($user->getCreatedAt());
+            $now = new DateTime();
+            $interval = $createdAt->diff($now);
 
-            <div class="info-group">
-                <div class="label">BIBLIOTHÈQUE</div>
-                <div class="value profile-value books-count">
+            if ($interval->y > 0) {
+                $memberSince = $interval->y . ' an' . ($interval->y > 1 ? 's' : '');
+            } elseif ($interval->m > 0) {
+                $memberSince = $interval->m . ' mois';
+            } else {
+                $memberSince = $interval->d . ' jour' . ($interval->d > 1 ? 's' : '');
+            }
+            ?>
+
+            <p class="member-since account-member-since">
+                Membre depuis <?= $memberSince ?>
+            </p>
+
+            <div class="library-summary account-library-summary">
+                <h6>BIBLIOTHÈQUE</h6>
+
+                <div class="book-count account-book-count">
                     <img src="/images/icons/vector.svg" alt="" class="icon-books">
-                    <?= count($books ?? []) ?> livres
+                    <?= count($books ?? []) ?> livre<?= count($books ?? []) > 1 ? 's' : '' ?>
                 </div>
             </div>
 
@@ -44,7 +56,6 @@
             </div>
 
         </div>
-
 
         <!-- DROITE : Informations personnelles -->
         <div class="info-card">
@@ -106,7 +117,8 @@
         <?php if (!empty($books)): ?>
 
             <?php foreach ($books as $book): ?>
-                <div class="table-row">
+
+                <div class="table-row <?= $book->getStatus() === 'unavailable' ? 'unavailable-row' : '' ?>">
 
                     <div class="table-cell">
                         <a href="/livre/<?= e($book->getSlug()) ?>">
@@ -149,6 +161,7 @@
                     </div>
 
                 </div>
+
             <?php endforeach; ?>
 
         <?php else: ?>

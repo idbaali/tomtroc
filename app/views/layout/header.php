@@ -1,3 +1,6 @@
+<?php
+$currentPath = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
+?>
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -5,6 +8,7 @@
     <meta charset="UTF-8">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 
     <title><?= $title ?? 'TomTroc' ?></title>
 
@@ -27,24 +31,35 @@
 
                 <div class="nav-left">
                     <ul class="nav-list">
-                        <li><a href="/">Accueil</a></li>
-                        <li><a href="/livres">Nos livres à l’échange</a></li>
+                        <li>
+                            <a href="/" class="<?= $currentPath === '' ? 'active' : '' ?>">
+                                Accueil
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="/livres" class="<?= $currentPath === 'livres' ? 'active' : '' ?>">
+                                Nos livres à l’échange
+                            </a>
+                        </li>
                     </ul>
                 </div>
+
             </div>
 
             <div class="nav-right">
                 <ul class="nav-list">
                     <?php if (isLogged()): ?>
                         <li>
-                            <a href="/messagerie" class="nav-icon-link">
-                                <i class="fa-regular fa-message" aria-hidden="true"></i>
+                            <a href="/messagerie" class="nav-icon-link <?= str_starts_with($currentPath, 'messagerie') ? 'active' : '' ?>">
+                                <i class="fa-regular fa-comment" aria-hidden="true"></i>
                                 <span>Messagerie</span>
+                                <span class="message-badge">1</span>
                             </a>
                         </li>
 
                         <li>
-                            <a href="/compte" class="nav-icon-link">
+                            <a href="/compte" class="nav-icon-link <?= $currentPath === 'compte' ? 'active' : '' ?>">
                                 <i class="fa-regular fa-user" aria-hidden="true"></i>
                                 <span>Mon compte</span>
                             </a>
@@ -62,6 +77,7 @@
             </div>
 
         </nav>
+
 
         <?php showFlash(); ?>
     </header>

@@ -5,19 +5,36 @@
     <!-- =========================
          HEADER DE LA PAGE LIVRES
     ========================= -->
+    <!-- =========================
+     HEADER DE LA PAGE LIVRES
+========================= -->
+
     <div class="books-header">
+
         <h1 class="visually-hidden">
             <?= htmlspecialchars($title ?? 'Nos livres à l’échange') ?>
         </h1>
-        <h2 class="books-title">Nos livres à l’échange</h2>
 
-        <!-- Barre de recherche accessible -->
-        <input type="search"
-            placeholder="Rechercher un livre"
-            class="books-search"
-            aria-label="Rechercher un livre">
+        <h2 class="books-title">
+            Nos livres à l’échange
+        </h2>
+
+        <!-- Recherche -->
+        <form method="GET" action="/livres" class="books-search-wrapper">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            <input
+                type="search"
+                name="search"
+                value="<?= htmlspecialchars($_GET['search'] ?? '') ?>"
+                placeholder="Rechercher un livre"
+                class="books-search"
+                aria-label="Rechercher un livre">
+
+        </form>
+
     </div>
-
     <!-- =========================
          LISTE DES LIVRES
     ========================= -->

@@ -42,21 +42,20 @@
 
                     <div class="owner-box">
                         <!-- Avatar du propriétaire -->
-                         <a href="/compte-public/<?= $book->getOwner()->getId() ?>" class="owner-link">
-                        <img
-                            src="/images/avatars/<?= htmlspecialchars($book->getOwner()->getAvatar() ?: 'default-user.png') ?>"
-                            alt="Photo de <?= htmlspecialchars($book->getOwner()->getUsername() ?: 'Utilisateur inconnu') ?>"
-                            class="owner-avatar"
-                            loading="lazy">
+                        <a href="/compte-public/<?= $book->getOwner()->getId() ?>" class="owner-link">
+                            <img
+                                src="/images/avatars/<?= htmlspecialchars($book->getOwner()->getAvatar() ?? 'default-user.png') ?>"
+                                alt="Photo de <?= htmlspecialchars($book->getOwner()->getUsername() ?: 'Utilisateur inconnu') ?>"
+                                class="owner-avatar"
+                                loading="lazy">
 
-                        <!-- Nom + lien vers profil -->
-                        <div class="owner-info">
-                            <p class="owner-name">
-                                <a href="/compte-public/<?= $book->getOwner()->getId() ?>">
+                            <!-- Nom + lien vers profil -->
+                            <div class="owner-info">
+                                <p class="owner-name">
                                     <?= htmlspecialchars($book->getOwner()->getUsername() ?: 'Utilisateur inconnu') ?>
-                                </a>
-                            </p>
-                        </div>
+                                </p>
+                            </div>
+                        </a>
                     </div>
 
                     <!-- Bouton "Envoyer un message" uniquement si l'utilisateur est connecté et n'est pas le propriétaire -->

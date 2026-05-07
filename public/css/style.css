@@ -1,16 +1,50 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
 
 /* =========================
-   BASE & ACCESSIBILITÉ
+   DESIGN SYSTEM
 ========================= */
 
-* {
-    box-sizing: border-box;
+:root {
+    --color-bg: #F5F3EF;
+    --color-bg-light: #FAF9F7;
+    --color-bg-alt: #F7F7F7;
+
+    --color-primary: #00AC66;
+    --color-primary-hover: #008f56;
+
+    --color-text: #292929;
+    --color-text-dark: #1F1F1F;
+    --color-muted: #A6A6A6;
+
+    --color-border: #ECE7DF;
+    --color-border-light: #F0F0EB;
+
+    --color-white: #FFFFFF;
+    --color-black: #000000;
+
+    --color-success: #5FBF8E;
+    --color-error: #CF6A72;
+
+    --font-primary: 'Inter', sans-serif;
+    --font-title: 'Playfair Display', serif;
+
+    --space-xs: 5px;
+    --space-sm: 10px;
+    --space-md: 20px;
+    --space-lg: 40px;
+    --space-xl: 80px;
+
+    --container-width: 1180px;
+    --account-width: 1140px;
+
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 18px;
 }
 
-/* =======================
-   1. RESET
-======================= */
+/* =========================
+   RESET
+========================= */
 
 * {
     margin: 0;
@@ -18,14 +52,15 @@
     box-sizing: border-box;
 }
 
-/* =======================
-   2. TYPOGRAPHIE GLOBALE
-======================= */
+/* =========================
+   TYPOGRAPHIE GLOBALE
+========================= */
 
 body {
-    font-family: 'Inter', sans-serif;
-    color: #333;
-    line-height: 1.6;
+    font-family: var(--font-primary);
+    color: var(--color-text);
+    line-height: 1.5;
+    background: var(--color-bg);
 }
 
 h1,
@@ -34,19 +69,14 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-title);
     line-height: 1.2;
+    font-weight: 400;
 }
 
 h2 {
     font-size: 2em;
 }
-
-/* ------------------------H2 em */
-
-/* =======================
-   3. ELEMENTS GLOBAUX
-======================= */
 
 a {
     text-decoration: none;
@@ -57,42 +87,106 @@ ul {
     list-style: none;
 }
 
-/* Base bouton */
+/* =========================
+   UTILITAIRES
+========================= */
+
+.page-container {
+    max-width: var(--container-width);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--space-md);
+    padding-right: var(--space-md);
+}
+
+.text-light {
+    font-weight: 300;
+}
+
+.text-regular {
+    font-weight: 400;
+}
+
+.text-medium {
+    font-weight: 500;
+}
+
+.text-bold {
+    font-weight: 600;
+}
+
+.visually-hidden,
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* =========================
+   BOUTONS COMMUNS
+========================= */
 
 .btn {
     display: inline-flex;
     justify-content: center;
     align-items: center;
     padding: 12px 1.5em;
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
     font-weight: 600;
     font-size: 1em;
     transition: all 0.3s ease;
 }
 
-/* --------------------------- */
+.btn-primary,
+.btn-secondary {
+    background: var(--color-primary);
+    color: var(--color-white);
+}
 
+.btn-primary:hover,
+.btn-secondary:hover {
+    background: var(--color-primary-hover);
+    color: var(--color-white);
+}
+
+.btn-third {
+    background: var(--color-bg);
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary);
+}
+
+.btn-third:hover {
+    background: var(--color-primary);
+    color: var(--color-white);
+}
+
+/* =========================
+   FLASH
+========================= */
 
 .flash {
     padding: 10px;
-    border-radius: 5px;
+    border-radius: var(--radius-sm);
     margin: 15px 0;
-    font-weight: bold;
+    font-weight: 600;
 }
 
-/* Rouge = erreur */
 .flash.error {
     background: #ffdddd;
     color: #b20000;
 }
 
-/* Vert = succès */
 .flash.success {
     background: #ddffdd;
     color: #1b6f1b;
 }
 
-/* Bleu/orange = info */
 .flash.info {
     background: #e6f2ff;
     color: #004a8f;
@@ -103,40 +197,35 @@ ul {
     transition: opacity 0.5s ease;
 }
 
-
-
-
 /* =========================
    HEADER / NAVIGATION
 ========================= */
 
 .header {
-    background: #f5f3ef;
-    /* border-bottom: 1px solid #ece7df; */
+    background: var(--color-bg);
 }
 
 .nav {
-    max-width: 1180px;
-    margin: 0 auto;
+    max-width: var(--container-width);
     min-height: 108px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--space-md);
+    padding-right: var(--space-md);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 20px;
-    box-sizing: border-box;
 }
 
 .nav-group-left {
     display: flex;
     align-items: center;
-    gap: 40px;
 }
 
 .logo-link {
     display: flex;
     align-items: center;
     flex-shrink: 0;
-    text-decoration: none;
 }
 
 .logo {
@@ -151,17 +240,20 @@ ul {
     align-items: center;
 }
 
+.nav-left {
+    padding-left: var(--space-lg);
+}
+
 .nav-list {
     display: flex;
     align-items: center;
-    gap: 34px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
+}
+
+.nav-list li+li {
+    margin-left: 34px;
 }
 
 .nav-list a {
-    text-decoration: none;
     color: #2a2a2a;
     font-size: 1rem;
     font-weight: 400;
@@ -171,95 +263,115 @@ ul {
     text-decoration: underline;
 }
 
+.nav-list a.active {
+    font-weight: 700;
+}
+
 .nav-icon-link {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+}
+
+.nav-icon-link i {
+    margin-right: 8px;
 }
 
 .btn-nav {
     font-weight: 600;
 }
 
+/* =========================
+   BADGE MESSAGERIE
+========================= */
 
+.nav-icon-link {
+    display: inline-flex;
+    align-items: center;
+}
+
+.nav-icon-link i {
+    margin-right: 6px;
+    font-size: 0.95rem;
+    color: var(--color-text);
+}
+
+.message-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+    margin-left: 3px;
+    border-radius: 50%;
+    background: #292929;
+    color: #ffffff;
+    font-size: 0.6rem;
+    font-weight: 700;
+    line-height: 1;
+}
 
 /* =========================
    HERO ACCUEIL
 ========================= */
-.visually-hidden {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-}
 
 .hero {
-    background-color: #F5F3EF;
+    background-color: var(--color-bg);
 }
 
 .hero-split {
+    max-width: var(--container-width);
+    margin-left: auto;
+    margin-right: auto;
+    padding: 50px 180px 100px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 50px 300px 100px;
 }
 
 .hero-text {
-    max-width: 280px;
-    /* color: #444; */
+    width: 320px;
 }
 
 .hero-text h2 {
     font-size: 2.25em;
     font-weight: 400;
     line-height: 1.2;
-    margin-bottom: 15px;
-    color: #000000;
+    color: var(--color-black);
 }
 
 .hero-text p {
+    margin-top: var(--space-md);
     font-weight: 300;
     font-size: 1em;
-    line-height: 100%;
-    letter-spacing: 0%;
-    color: #000000;
-    margin-top: 20px;
+    line-height: 1.35;
+    color: var(--color-black);
+}
 
+.hero-text .btn-primary {
+    margin-top: var(--space-lg);
+}
+
+.hero-image-wrapper {
+    width: 404px;
 }
 
 .hero-image {
     width: 100%;
-    max-width: 404px;
+    height: auto;
+    display: block;
     object-fit: cover;
 }
 
-/* Primary */
+/* =========================
+   DERNIERS LIVRES
+========================= */
 
-.btn-primary {
-    background: #00AC66;
-    color: #fff;
-    margin-top: 40px;
-}
-
-.btn-primary:hover {
-    background: #008f56;
-}
-
-
-/* ====================
-  LES DERNIERS LIVRES 
-===================== */
 .books {
-    padding: 60px 120px;
-    background: #f7f7f7;
+    background: var(--color-bg-alt);
+    padding: 60px 20px;
 }
 
-.section-title {
+.books .section-title {
     text-align: center;
     margin-bottom: 70px;
     font-size: 2em;
@@ -267,230 +379,30 @@ ul {
     line-height: 1.2;
 }
 
-/* Traitement des IMAGES du Home.php & Books.php */
-.exchange-card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-}
-
-.see-all-books {
-    text-align: center;
-    margin-top: 50px;
-}
-
-/* Secondary */
-
-.btn-secondary {
-    background: #00AC66;
-    color: #fff;
-    margin-top: 20px;
-}
-
-.btn-secondary:hover {
-    background: #008f56;
-    color: #fff;
-}
-
-/* =========================
-   STEPS
-========================= */
-.steps h2 {
-    display: flex;
-    justify-content: center;
-    font-weight: 400;
-    line-height: 100%;
-    letter-spacing: 0%;
-    color: #292929;
-    margin: 40px 0 30px;
-}
-
-.steps p {
-    max-width: 400px;
-    margin: 0 auto 30px;
-    text-align: center;
-    font-weight: 300;
-    font-size: 1em;
-    line-height: 100%;
-    letter-spacing: 0%;
-    text-align: center;
-    color: #292929;
-
-}
-
-
-.steps {
-    background-color: #F5F3EF;
-    padding: 30px 0 80px;
-}
-
-.steps-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    justify-content: center;
-    margin-right: 60px;
-}
-
-.steps-list li {
-    display: inline-block;
-    color: #292929;
-    background-color: #FFFFFF;
-    padding: 15px;
-    height: 130px;
-    width: 200px;
-    display: flex;
-    text-align: center;
-    align-items: center;
-    font-weight: 400;
-    font-size: 0.875em;
-    line-height: 100%;
-    letter-spacing: 0%;
-}
-
-.steps-image-wrapper {
-    width: 100%;
-    height: 230px;
-    object-fit: cover;
-    background-image: url('/images/stepHome.png');
-    background-size: cover;
-    /* équivalent de object-fit: cover */
-    background-position: center;
-    /* centre l'image */
-    background-repeat: no-repeat;
-}
-
-/* Third */
-
-.btn-third {
-    background: #F5F3EF;
-    color: #00AC66;
-    border: 1px solid #00AC66;
-}
-
-.btn-third:hover {
-    background: #00AC66;
-    color: #fff;
-}
-
-/* =========================
-   VALUES
-========================= */
-.values {
-    background: #F5F3EF;
-    width: 100%;
-    padding: 60px 40px;
-}
-
-/* TITRE */
-.values h2 {
-    max-width: 335px;
-    margin: 0 auto 25px;
-    font-weight: 400;
-    line-height: 100%;
-    letter-spacing: 0%;
-    /* text-align: center; */
-    color: #292929;
-
-}
-
-/* PARAGRAPHES */
-.values p {
-    max-width: 335px;
-    margin: 0 auto 15px;
-    font-weight: 300;
-    font-size: 1em;
-    line-height: 100%;
-    letter-spacing: 0%;
-    color: #292929;
-}
-
-
-div .Team {
-    padding-top: 25px;
-    color: #A6A6A6;
-    font-weight: 400;
-    font-style: Italic;
-    font-size: 0.75em;
-    line-height: 100%;
-    letter-spacing: 0%;
-
-}
-
-.Vector-image {
-    display: flex;
-    justify-content: flex-start;
-    margin-left: auto;
-    align-items: center;
-    height: 102px;
-    width: 120px;
-    margin-top: -40px;
-    padding-bottom: 10px;
-}
-
-
-
-/* ==========================
-   PAGE NOS LIVRES (books.php)
-=========================== */
-
-.books-page {
-    background: #f6f6f6;
-    padding-top: 50px;
-}
-
-/* HEADER */
-.books-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 900px;
-    margin: 40px auto 60px;
-    /* padding: 0 20px; */
-}
-
-.books-title {
-    font-weight: 400;
-    font-size: 2.25em;
-    line-height: 100%;
-    letter-spacing: 0%;
-    margin: 0;
-    color: #000000;
-}
-
-.books-search {
-    padding: 12px 15px;
-    font-size: 0.875em;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 280px;
-    font-weight: 400;
-    line-height: 100%;
-    letter-spacing: 0%;
-    color: #A6A6A6;
-}
-
-/* GRID */
 .exchange-list {
-    list-style: none;
-    padding: 0 0 70px 0;
-    margin: 0 auto;
     max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 50px;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 30px;
+    column-gap: 30px;
+    row-gap: 30px;
 }
 
 .exchange-card {
-    background: #fff;
+    height: 320px;
+    background: var(--color-white);
     border-radius: 8px;
-    text-align: center;
-    position: relative;
-    height: 300px;
-    /* 🔒 hauteur fixe */
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
     display: flex;
     flex-direction: column;
-    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .exchange-card:hover {
@@ -498,65 +410,238 @@ div .Team {
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
 }
 
-/* Images dans HOME.PHP */
-
-.exchange-card {
-    text-decoration: none;
-    color: inherit;
-}
-
-.exchange-card h3 {
-    font-size: 1em;
-    font-weight: 600;
-    margin: 15px 0 5px;
-    color: #000000;
-}
-
-.exchange-card .author {
-    font-size: 0.875em;
-    font-weight: 400;
-    color: #A6A6A6;
-    margin-bottom: 8px;
-}
-
-.exchange-card .seller {
-    font-size: 0.81em;
-    font-weight: 600;
-    color: #A6A6A6;
+.exchange-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
 }
 
 .exchange-card h3,
 .exchange-card p {
     text-align: left;
-    padding-left: 20px;
+    padding-left: var(--space-md);
+    padding-right: var(--space-md);
 }
 
-/* NON DISPONIBLE */
+.exchange-card h3 {
+    margin-top: 15px;
+    font-size: 1em;
+    font-weight: 600;
+    color: var(--color-black);
+}
+
+.exchange-card .author {
+    margin-top: 5px;
+    font-size: 0.875em;
+    font-weight: 400;
+    color: var(--color-muted);
+}
+
+.exchange-card .seller {
+    margin-top: 8px;
+    font-size: 0.81em;
+    font-weight: 600;
+    color: var(--color-muted);
+}
+
 .exchange-card.unavailable {
     opacity: 0.45;
     pointer-events: none;
 }
 
+.see-all-books {
+    text-align: center;
+    padding-bottom: 20px;
+}
 
+/* =========================
+   COMMENT ÇA MARCHE
+========================= */
+
+.steps {
+    background-color: var(--color-bg);
+    padding: 60px 20px 50px;
+}
+
+.steps h2 {
+    text-align: center;
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--color-text);
+}
+
+.steps p {
+    max-width: 400px;
+    margin: 30px auto;
+    text-align: center;
+    font-weight: 300;
+    font-size: 1em;
+    line-height: 1.35;
+    color: var(--color-text);
+}
+
+.steps-list {
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding-bottom: 40px;
+}
+
+.steps-list li {
+    width: 200px;
+    height: 130px;
+    padding: 15px;
+    background-color: var(--color-white);
+    color: var(--color-text);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 400;
+    font-size: 0.875em;
+    line-height: 1.25;
+}
+
+.steps-image-wrapper {
+    width: 100%;
+    height: 230px;
+    background-image: url('/images/stepHome.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* =========================
+   NOS VALEURS
+========================= */
+
+.values {
+    background: var(--color-bg);
+    padding: 60px 40px;
+}
+
+.values h2,
+.values p {
+    max-width: 390px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.values h2 {
+    margin-bottom: 25px;
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--color-text);
+}
+
+.values p {
+    margin-bottom: 15px;
+    font-weight: 300;
+    font-size: 1em;
+    line-height: 1.35;
+    color: var(--color-text);
+}
+
+.Team {
+    padding-top: 25px;
+    color: var(--color-muted);
+    font-weight: 400;
+    font-style: italic;
+    font-size: 0.75em;
+    line-height: 1.2;
+}
+
+.Vector-image {
+    display: block;
+    width: 120px;
+    height: 102px;
+    margin-left: 330px;
+    margin-right: calc(50% - 200px);
+    margin-top: -40px;
+    padding-bottom: 10px;
+}
+
+
+/* ==========================
+   PAGE NOS LIVRES
+=========================== */
+
+.books-page {
+    background: #f6f6f6;
+    padding-top: 50px;
+}
+
+.books-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 900px;
+    margin: 40px auto 60px;
+}
+
+.books-title {
+    font-weight: 400;
+    font-size: 2.25em;
+    line-height: 1.2;
+    color: var(--color-black);
+}
+
+/* SEARCH */
+
+.books-search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.books-search-wrapper i {
+    position: absolute;
+    left: 14px;
+    font-size: 0.9rem;
+    color: var(--color-muted);
+}
+
+.books-search {
+    width: 280px;
+    height: 46px;
+    padding: 0 15px 0 42px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: var(--color-white);
+    font-size: 0.875em;
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--color-text);
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.books-search:focus {
+    border-color: var(--color-primary);
+}
+
+.books-search::placeholder {
+    color: var(--color-muted);
+}
 
 
 /* =========================
-   PAGE LIVRE (book.php)
+   PAGE LIVRE
 ========================= */
 
 .breadcrumb {
-    background-color: #F5F3EF;
+    background-color: var(--color-bg);
     padding: 15px 150px;
     font-weight: 300;
     font-size: 0.625em;
-    line-height: 100%;
-    letter-spacing: 0%;
-    color: #A6A6A6;
+    line-height: 1.2;
+    color: var(--color-muted);
 }
 
 .breadcrumb a {
-    text-decoration: none;
-    /* <-- SUPPRIME SOULIGNEMENT */
     color: inherit;
 }
 
@@ -568,21 +653,15 @@ div .Team {
     min-height: 100vh;
 }
 
-/* Layout 50 / 50 */
 .book-detail {
     display: flex;
     min-height: calc(100vh - 120px);
-    padding-top: 0px;
-
 }
 
-/* GAUCHE : image plein écran */
 .book-cover {
     width: 50%;
     height: 120vh;
-    /* <-- FIXE la hauteur */
     overflow: hidden;
-
 }
 
 .book-cover img {
@@ -591,51 +670,47 @@ div .Team {
     object-fit: cover;
 }
 
-/* DROITE : contenu */
 .book-content {
     width: 50%;
-    padding: 50px 120px 50px;
+    padding: 50px 120px;
     overflow-y: auto;
-    background-color: #FAF9F7;
+    background-color: var(--color-bg-light);
 }
 
 .book-content h1 {
     font-weight: 400;
     font-size: 2.25em;
-    line-height: 100%;
-    letter-spacing: 0%;
+    line-height: 1.2;
     margin-bottom: 10px;
-    color: #000000;
+    color: var(--color-black);
 }
 
 .book-author {
-    color: #A6A6A6;
+    color: var(--color-muted);
     margin-bottom: 30px;
     font-weight: 400;
     font-size: 1em;
-    line-height: 100%;
-    letter-spacing: 0%;
+    line-height: 1.2;
 }
 
 .book-content h2 {
     margin-top: 30px;
     margin-bottom: 10px;
     font-weight: 600;
-    font-style: Semi Bold;
     font-size: 0.5em;
-    line-height: 100%;
-    letter-spacing: 8%;
-    color: #292929;
+    line-height: 1.2;
+    letter-spacing: 0.08em;
+    color: var(--color-text);
+    text-transform: uppercase;
 }
 
 .book-content .descript {
     font-weight: 400;
     font-size: 0.875em;
-    line-height: 100%;
-    letter-spacing: 0%;
-    color: #292929;
-    width: 420px;
-    height: 200px;
+    line-height: 1.45;
+    color: var(--color-text);
+    width: 470px;
+    min-height: 200px;
 }
 
 .book-owner {
@@ -643,56 +718,39 @@ div .Team {
 }
 
 .owner-box {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-top: 25px;
-}
-
-.owner-avatar {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    object-fit: cover;
-    /* border: 1px solid; */
-}
-
-.owner-box {
     width: 190px;
     height: 60px;
-    /* angle: 0 deg; */
-    opacity: 1;
-    top: 704px;
-    left: 804px;
     border-radius: 113px;
-    padding-top: 6px;
-    padding-right: 17px;
-    padding-bottom: 6px;
-    padding-left: 6px;
-    gap: 12px;
-    background-color: #FFFFFF;
+    padding: 6px 17px 6px 6px;
+    background-color: var(--color-white);
+    display: flex;
+    align-items: center;
 }
 
-/* Avatar */
+.owner-link {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    color: inherit;
+}
+
 .owner-avatar {
     width: 48px;
     height: 48px;
     border-radius: 50%;
     object-fit: cover;
+    flex-shrink: 0;
 }
 
-/* Bloc texte */
 .owner-info {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    padding-left: 12px;
 }
 
-/* Nom */
 .owner-name {
-    margin: 0;
     font-size: 0.875em;
-    color: #292929;
+    color: var(--color-text);
     font-weight: 500;
 }
 
@@ -700,25 +758,21 @@ div .Team {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #00AC66;
-    color: #FFFFFF;
+    background-color: var(--color-primary);
+    color: var(--color-white);
     width: 485px;
     height: 63px;
-    border-radius: 10px;
+    border-radius: var(--radius-md);
     padding: 0 38px;
-    text-decoration: none;
     font-weight: 600;
     margin-top: 80px;
-    /* espace avec le propriétaire */
     transition: 0.3s;
 }
 
-/* Effet moderne */
 .btn-book:hover {
-    background-color: #009a5a;
+    background-color: var(--color-primary-hover);
     transform: translateY(-2px);
 }
-
 
 
 
@@ -727,167 +781,37 @@ div .Team {
    PAGE LOGIN
 ============= */
 
-.login-page {
-    display: flex;
-    min-height: calc(100vh - 120px);
-    background: #FAF9F7;
-}
-
-/* Colonne gauche */
-.login-left {
-    width: 50%;
-    padding: 120px 110px 90px 165px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    box-sizing: border-box;
-}
-
-.login-left h2 {
-    margin: 0 0 55px;
-    font-size: 4rem;
-    font-weight: 400;
-    line-height: 1.1;
-    color: #1f1f1f;
-
-}
-
-/* Message d’erreur */
-.error {
-    margin: 0 0 20px;
-    color: #b42318;
-    font-size: 0.95rem;
-}
-
-/* Formulaire */
-.form {
-    width: 80%;
-    max-width: 470px;
-}
-
-.form label {
-    display: block;
-    margin-bottom: 12px;
-    font-size: 0.95rem;
-    font-weight: 400;
-    color: #a6a6a6;
-}
-
-.form input {
-    width: 100%;
-    height: 58px;
-    padding: 0 18px;
-    margin-bottom: 34px;
-    border: 1px solid #ececec;
-    border-radius: 8px;
-    background: #ffffff;
-    font-size: 1rem;
-    color: #222;
-    box-sizing: border-box;
-    outline: none;
-}
-
-.form input:focus {
-    border-color: #d8d8d8;
-    box-shadow: none;
-}
-
-/* Bouton */
-.login-page .btn-log {
-    width: 100%;
-    height: 64px;
-    margin-top: 8px;
-    border: none;
-    border-radius: 14px;
-    background-color: #00AC66;
-    color: #ffffff;
-    font-size: 1.15rem;
-    font-weight: 600;
-    cursor: pointer;
-    box-sizing: border-box;
-}
-
-.login-page .btn-log:hover {
-    background-color: #008f55;
-}
-
-/* Lien */
-.auth-link {
-    margin-top: 48px;
-    font-size: 1rem;
-    color: #4a4a4a;
-}
-
-.auth-link a {
-    color: #4a4a4a;
-    text-decoration: underline;
-}
-
-.auth-link a:hover {
-    text-decoration: underline;
-}
-
-/* Colonne droite */
-.login-right {
-    width: 50%;
-    min-height: 100%;
-}
-
-.login-right img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-/* Bouton third si utilisé ailleurs */
-.btn-third {
-    color: #00AC66;
-    background-color: #FFFFFF;
-}
-
-.btn-third:hover {
-    color: #00AC66;
-}
-
-
-
-/* ===========
-   REGISTER
-============ */
-
+.login-page,
 .auth-page {
     display: flex;
-    min-height: calc(100vh - 120px);
-    background: #FAF9F7;
+    min-height: calc(100vh - 108px);
+    background: var(--color-bg-light);
 }
 
-/* Colonne gauche */
+.login-left,
 .auth-left {
     width: 50%;
     padding: 120px 110px 90px 165px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    box-sizing: border-box;
 }
 
+.login-left h2,
 .auth-left h1 {
-    margin: 0 0 55px;
+    margin-bottom: 55px;
     font-size: 4rem;
     font-weight: 400;
     line-height: 1.1;
-    color: #1f1f1f;
+    color: var(--color-text-dark);
 }
 
-/* Message d'erreur */
 .error {
-    margin: 0 0 20px;
+    margin-bottom: 20px;
     color: #b42318;
     font-size: 0.95rem;
 }
 
-/* Formulaire */
 .form {
     width: 80%;
     max-width: 470px;
@@ -898,7 +822,7 @@ div .Team {
     margin-bottom: 12px;
     font-size: 0.95rem;
     font-weight: 400;
-    color: #a6a6a6;
+    color: var(--color-muted);
 }
 
 .form input {
@@ -908,34 +832,35 @@ div .Team {
     margin-bottom: 34px;
     border: 1px solid #ececec;
     border-radius: 8px;
-    background: #ffffff;
+    background: var(--color-white);
     font-size: 1rem;
     color: #222;
-    box-sizing: border-box;
     outline: none;
 }
 
 .form input:focus {
     border-color: #d8d8d8;
-    box-shadow: none;
 }
 
-/* Bouton */
+.login-page .btn-log,
 .form .btn-regist {
     width: 100%;
     height: 64px;
     margin-top: 8px;
     border: none;
     border-radius: 14px;
-    background: #08b266;
-    color: #ffffff;
+    background: var(--color-primary);
+    color: var(--color-white);
     font-size: 1.15rem;
     font-weight: 600;
     cursor: pointer;
-    box-sizing: border-box;
 }
 
-/* Lien de connexion */
+.login-page .btn-log:hover,
+.form .btn-regist:hover {
+    background: var(--color-primary-hover);
+}
+
 .auth-link {
     margin-top: 48px;
     font-size: 1rem;
@@ -947,22 +872,19 @@ div .Team {
     text-decoration: underline;
 }
 
-/* Colonne droite */
+.login-right,
 .auth-right {
     width: 50%;
     min-height: 100%;
 }
 
+.login-right img,
 .auth-right img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
-    padding: -60px;
 }
-
-
-
 
 
 /* =========================
@@ -970,26 +892,26 @@ div .Team {
 ========================= */
 
 .page-title {
-    width: 1140px;
-    max-width: 1140px;
+    width: var(--account-width);
+    max-width: 100%;
     margin: 55px auto 35px;
     padding: 0;
     font-size: 2.2rem;
     font-weight: 400;
-    color: #1f1f1f;
     line-height: 1.2;
+    color: var(--color-text-dark);
 }
 
 .container {
-    width: 1140px;
-    max-width: 1140px;
+    width: var(--account-width);
+    max-width: 100%;
     margin: 0 auto 80px;
     padding: 0;
 }
 
-/* 
+/* =========================
    TOP BLOCK
- */
+========================= */
 
 .top-block {
     display: grid;
@@ -998,30 +920,30 @@ div .Team {
     margin-bottom: 28px;
 }
 
-/* 
+/* =========================
    BLOCS PRINCIPAUX
- */
+========================= */
 
 .profile-card,
 .info-card,
 .library-table {
-    background: #ffffff;
-    border: 1px solid #f0f0eb;
-    border-radius: 18px;
+    background: var(--color-white);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-lg);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.03);
 }
 
-/* 
+/* =========================
    CARTE PROFIL
-*/
-
+========================= */
 .profile-card {
     min-height: 420px;
-    padding: 42px 30px;
+    padding: 50px 42px;
+
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    text-align: center;
 }
 
 .profile-photo {
@@ -1030,14 +952,13 @@ div .Team {
     border-radius: 50%;
     object-fit: cover;
     display: block;
-    margin-bottom: 10px;
 }
 
 .link-edit {
+    margin-top: 12px;
     font-size: 0.95rem;
     color: #7b7b7b;
     text-decoration: underline;
-    margin-bottom: 45px;
     transition: opacity 0.2s ease;
 }
 
@@ -1046,69 +967,44 @@ div .Team {
 }
 
 .profile-name {
+    margin-top: 45px;
     font-size: 2rem;
     font-weight: 400;
-    color: #222;
-    margin: 0 0 20px;
-    text-align: center;
+    line-height: 1.2;
+    color: var(--color-text-dark);
 }
 
-.profile-card .info-group {
-    margin-bottom: 18px;
-    text-align: center;
+.account-member-since {
+    margin-top: 10px;
+    font-size: 0.95em;
+    font-weight: 300;
+    color: var(--color-muted);
 }
 
-.profile-card .label {
-    font-size: 0.72rem;
+.account-library-summary {
+    margin-top: 24px;
+}
+
+.account-library-summary h6 {
+    font-family: var(--font-primary);
+    font-size: 0.65em;
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: #444;
-    margin-bottom: 6px;
+    color: var(--color-text);
 }
 
-.profile-card .value {
-    font-size: 1rem;
-    color: #1f1f1f;
-    line-height: 1.5;
-}
+.account-book-count {
+    margin-top: 8px;
 
-.profile-value {
-    text-align: center;
-}
-
-.account-actions {
-    margin-top: 18px;
-}
-
-.btn-ajouter {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 170px;
-    height: 48px;
-    padding: 0 22px;
-    border: 1.5px solid #6f9774;
-    border-radius: 12px;
-    background: #fff;
-    color: #5e8965;
-    font-size: 0.95rem;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.2s ease;
-}
-
-.btn-ajouter:hover {
-    background: #f8fcf8;
-    border-color: #5f8666;
-    color: #4f7255;
-}
-
-.books-count {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
+
+    font-size: 1em;
+    font-weight: 400;
+    color: var(--color-text);
 }
 
 .icon-books {
@@ -1116,6 +1012,35 @@ div .Team {
     height: 16px;
     object-fit: contain;
     opacity: 0.7;
+}
+
+.account-actions {
+    margin-top: 40px;
+}
+
+.btn-ajouter {
+    width: 230px;
+    height: 56px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-md);
+
+    background: var(--color-white);
+    color: var(--color-primary);
+
+    font-size: 0.95rem;
+    font-weight: 600;
+
+    transition: all 0.2s ease;
+}
+
+.btn-ajouter:hover {
+    background: var(--color-primary);
+    color: var(--color-white);
 }
 
 /* =========================
@@ -1128,11 +1053,11 @@ div .Team {
 }
 
 .info-card h2 {
-    margin: 0 0 28px;
+    margin-bottom: 28px;
     font-size: 1.9rem;
     font-weight: 400;
-    color: #222;
     line-height: 1.2;
+    color: #222;
 }
 
 .info-card form {
@@ -1155,13 +1080,12 @@ div .Team {
     height: 54px;
     border: 1px solid #edf0f2;
     background: #f4f7f8;
-    border-radius: 10px;
+    border-radius: var(--radius-md);
     padding: 0 16px;
     font-size: 1rem;
     color: #222;
     outline: none;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    box-sizing: border-box;
 }
 
 .info-card input.value:focus {
@@ -1178,7 +1102,7 @@ div .Team {
     padding: 0 28px;
     border: 1.5px solid #6f9774;
     border-radius: 12px;
-    background: #fff;
+    background: var(--color-white);
     color: #5e8965;
     font-size: 1rem;
     font-weight: 600;
@@ -1191,9 +1115,6 @@ div .Team {
     border-color: #5f8666;
     color: #4f7255;
 }
-
-
-
 
 /* =========================
    TABLE BIBLIOTHÈQUE
@@ -1210,20 +1131,19 @@ div .Team {
     align-items: center;
     column-gap: 10px;
     border-bottom: 1px solid #f3f3ef;
+    background: var(--color-white);
 }
 
-
+.table-row.unavailable-row {
+    background: #EDF2F6;
+}
 
 .table-row:last-child {
     border-bottom: none;
 }
 
 .table-row.header {
-    background: #fff;
-}
-
-.table-row:not(.header):nth-child(even) {
-    background: #EDF2F6;
+    background: var(--color-white);
 }
 
 .table-cell {
@@ -1231,6 +1151,7 @@ div .Team {
     font-size: 0.95rem;
     color: #2a2a2a;
     word-break: break-word;
+    line-height: 1.5;
 }
 
 .table-row.header .table-cell {
@@ -1241,8 +1162,7 @@ div .Team {
     color: #444;
     padding-top: 22px;
     padding-bottom: 18px;
-    border-bottom: 1px solid #f0f0eb;
-    margin-bottom: -20px;
+    border-bottom: 1px solid var(--color-border-light);
 }
 
 .description {
@@ -1261,7 +1181,7 @@ div .Team {
     width: 78px;
     height: 78px;
     object-fit: cover;
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
     display: block;
 }
 
@@ -1276,13 +1196,13 @@ div .Team {
 }
 
 .status.available {
-    background: #5fbf8e;
-    color: #fff;
+    background: var(--color-success);
+    color: var(--color-white);
 }
 
 .status.unavailable {
-    background: #cf6a72;
-    color: #fff;
+    background: var(--color-error);
+    color: var(--color-white);
 }
 
 .actions a {
@@ -1311,174 +1231,191 @@ div .Team {
     font-size: 1rem;
 }
 
-
-
-
-
-
-
-
 /* =========================
    COMPTE PUBLIC / profile.php
 ========================= */
 
-/* Layout global : séparation gauche / droite */
 .profile-page {
-    display: grid;
-    grid-template-columns: 300px 1fr;
-    /* gauche fixe, droite fluide */
-    gap: 30px;
-    max-width: 1140px;
+    max-width: var(--account-width);
     margin: 0 auto;
-    padding-top: 40px;
-    align-items: start;
+    padding: 90px 0 120px;
+
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    column-gap: 30px;
+    align-items: stretch;
 }
 
-/* COLONNE GAUCHE */
+/* =========================
+   COLONNE GAUCHE
+========================= */
+
 .profile-left {
-    width: 280px;
-    background: #FFFFFF;
-    padding-top: 30px;
-    padding-bottom: 75px;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    min-height: 620px;
+    background: var(--color-white);
+    border-radius: 18px;
+    padding: 50px 42px;
+
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
 }
 
-/* avatar */
 .avatar-wrapper img {
     width: 140px;
     height: 140px;
     border-radius: 50%;
     object-fit: cover;
-    margin-bottom: 15px;
-}
-
-/* statut en ligne */
-.status-online {
     display: block;
-    font-size: 0.75em;
-    color: #00AC66;
-    margin-top: 5px;
 }
 
-/* nom utilisateur */
-.username {
-    font-size: 1.375em;
-    font-weight: 600;
-    margin-bottom: 5px;
+.profile-left::after {
+    content: "";
+    width: 230px;
+    height: 1px;
+    background: var(--color-border-light);
+    margin-top: 70px;
 }
-
-/* membre depuis */
-.member-since {
-    font-size: 10.875em;
-    color: #292929;
-    margin-bottom: 25px;
-}
-
-/* bibliothèque */
-.library-summary h6 {
-    font-size: 0.5em;
-    letter-spacing: 1px;
-    color: #292929;
-    margin-bottom: 5px;
-}
-
-/* nombre de livres */
-.book-count {
-    font-size: 0.875em;
-    font-weight: 600;
-    margin-bottom: 20px;
-}
-
-/* bouton message */
-.btn-profile {
-    background: #F5F3EF;
-    color: #00AC66;
-    padding: 15px 18px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-size: 1em;
-    border: 1px solid #00AC66;
-}
-
-.btn-profile:hover {
-    background: #009060;
-}
-
-.profile-right {
-    margin-top: 0;
-    /* espace en haut */
-    padding-top: 0;
-    align-self: start;
-    /* top align */
-}
-
-/* En-têtes */
-.library-header {
-    display: grid;
-    grid-template-columns: 120px 200px 150px 1fr;
-    gap: 10px;
-    font-weight: bold;
-    padding: 10px 0;
-    border-bottom: 2px solid #ccc;
-    font-size: 0.5em;
-}
-
-
-/* Chaque ROW */
-.library-book {
-    display: grid;
-    grid-template-columns: 120px 200px 150px 1fr;
-    gap: 10px;
-    /* align-items: start; */
-    padding: 15px 0;
-    border-bottom: 1px solid #eee;
-}
-
-/* Image livre */
-.library-photo img {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    border-radius: 4px;
-}
-
-
 
 .username {
-    margin: 15px 0 5px;
-    font-size: 1.25em;
-    font-weight: 600;
+    margin-top: 60px;
+    font-size: 1.625em;
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--color-text-dark);
 }
 
 .member-since {
-    font-size: 0.875em;
-    color: #A6A6A6;
-    margin-bottom: 20px;
+    margin-top: 10px;
+    font-size: 0.95em;
+    font-weight: 300;
+    color: var(--color-muted);
 }
 
 .library-summary {
-    margin: 20px 0;
+    margin-top: 22px;
 }
 
 .library-summary h6 {
-    font-size: 0.875em;
-    letter-spacing: 1px;
-    color: #292929;
+    font-family: var(--font-primary);
+    font-size: 0.65em;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--color-text);
 }
 
 .book-count {
-    font-size: 1.125em;
-    font-weight: bold;
-    color: #00AC66;
-    margin-top: 5px;
+    margin-top: 8px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    font-size: 1em;
+    font-weight: 400;
+    color: var(--color-text);
 }
 
+.icon-books {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+}
 
+.btn-profile {
+    width: 230px;
+    height: 64px;
+    margin-top: 48px;
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-md);
+    background: var(--color-white);
+    color: var(--color-primary);
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 1em;
+    font-weight: 600;
+}
+
+.btn-profile:hover {
+    background: var(--color-primary);
+    color: var(--color-white);
+}
+
+/* =========================
+   COLONNE DROITE
+========================= */
+
+.profile-right {
+    background: var(--color-white);
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+.library-books {
+    width: 100%;
+}
+
+.library-header,
+.library-book {
+    display: grid;
+    grid-template-columns: 150px 190px 170px 1fr;
+    align-items: center;
+}
+
+.library-header {
+    height: 64px;
+    border-bottom: 1px solid var(--color-border-light);
+}
+
+.library-header div {
+    font-family: var(--font-primary);
+    font-size: 0.65em;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text);
+}
+
+.library-book {
+    min-height: 110px;
+    background: var(--color-white);
+}
+
+.library-book:nth-child(odd) {
+    background: #EDF2F6;
+}
+
+.library-header div,
+.library-book>div {
+    padding-left: 50px;
+    padding-right: 20px;
+}
+
+.library-photo img {
+    width: 78px;
+    height: 78px;
+    object-fit: cover;
+    display: block;
+}
+
+.library-title,
+.library-author,
+.library-description {
+    font-size: 0.95em;
+    font-weight: 400;
+    color: var(--color-text);
+    line-height: 1.4;
+}
+
+.library-description {
+    font-style: italic;
+    max-width: 260px;
+}
 
 
 
@@ -1488,97 +1425,96 @@ div .Team {
 ========================= */
 
 .edit-book-principal {
-    background: #f6f3ef;
-    padding: 28px 0 120px;
+    background: var(--color-bg-light);
+    padding: 40px 0 120px;
     min-height: 100vh;
 }
 
 .bread-retour,
 .bread-title,
 .edit-book-page {
-    max-width: 1140px;
+    max-width: var(--account-width);
     margin-left: auto;
     margin-right: auto;
-    
 }
 
 .bread-retour {
-    margin-bottom: 18px;
+    margin-bottom: 26px;
 }
 
 .bread-retour a {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    color: #b0aaa2;
-    font-size: 15px;
-    text-decoration: none;
+    color: var(--color-muted);
+    font-size: 0.95rem;
+    font-weight: 300;
 }
 
-.bread-retour a:hover {
-    text-decoration: underline;
+.bread-retour i {
+    margin-right: 6px;
 }
 
 .bread-title {
-    margin-top: 0;
-    margin-bottom: 34px;
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: 28px;
+    margin-bottom: 28px;
+    font-family: var(--font-title);
+    font-size: 2em;
     font-weight: 400;
     line-height: 1.2;
-    color: #1f1f1f;
+    color: var(--color-text-dark);
+
 }
 
+
 .edit-book-card {
+    background: var(--color-white);
+    border-radius: 22px;
+    padding: 50px 44px 70px;
+
     display: flex;
-    flex-direction: row;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 72px;
-    background: #ffffff;
-    border-radius: 22px;
-    padding: 46px 46px 42px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
 }
 
 /* COLONNE GAUCHE */
+
 .edit-book-photo {
-    flex: 0 0 48%;
-    max-width: 48%;
+    width: 470px;
 }
 
 .edit-book-photo h2 {
-    margin: 0 0 12px;
-    font-size: 15px;
-    font-weight: 400;
-    color: #a8a29a;
+    margin-bottom: 12px;
+    font-family: var(--font-primary);
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: var(--color-muted);
 }
 
 .edit-book-photo img {
     display: block;
-    width: 100%;
-    max-width: 470px;
+    width: 470px;
     height: 470px;
     object-fit: cover;
-    margin-bottom: 18px;
 }
 
 .btn-photo {
     display: block;
     width: fit-content;
+    margin-top: 16px;
     margin-left: auto;
-    color: #4e4a45;
-    font-size: 14px;
-    text-decoration: underline;
-    cursor: pointer;
+
     background: none;
     border: none;
+    cursor: pointer;
+    color: var(--color-muted);
+    font-size: 0.875rem;
+    font-weight: 400;
+    text-decoration: underline;
 }
 
 /* COLONNE DROITE */
+
 .edit-book-form {
-    flex: 0 0 42%;
-    max-width: 42%;
+    width: 430px;
 }
 
 .form-group {
@@ -1588,9 +1524,10 @@ div .Team {
 .form-group label {
     display: block;
     margin-bottom: 10px;
-    font-size: 15px;
-    font-weight: 400;
-    color: #a8a29a;
+
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: var(--color-muted);
 }
 
 .edit-book-form input,
@@ -1599,12 +1536,12 @@ div .Team {
     width: 100%;
     border: none;
     border-radius: 8px;
-    background: #eef1f5;
-    box-sizing: border-box;
+    background: #EDF2F6;
     padding: 16px 18px;
-    font-size: 15px;
-    color: #2b2b2b;
-    font-family: inherit;
+
+    font-family: var(--font-primary);
+    font-size: 0.95rem;
+    color: var(--color-text);
 }
 
 .edit-book-form input,
@@ -1613,7 +1550,7 @@ div .Team {
 }
 
 .edit-book-form textarea {
-    min-height: 290px;
+    min-height: 335px;
     resize: vertical;
     line-height: 1.45;
 }
@@ -1626,42 +1563,29 @@ div .Team {
 }
 
 .btn-edit {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
     width: 310px;
     height: 58px;
     margin-top: 16px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
     border: none;
     border-radius: 12px;
-    background: #08b266;
-    color: #ffffff;
-    font-size: 18px;
+    background: var(--color-primary);
+    color: var(--color-white);
+
+    font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: background 0.2s ease;
 }
 
 .btn-edit:hover {
-    background: #06985a;
+    background: var(--color-primary-hover);
 }
 
 
-
-/* =========================
-   ACCESSIBILITÉ
-========================= */
-.sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-}
 
 
 
@@ -1946,8 +1870,6 @@ div .Team {
 }
 
 
-
-
 /* ===========================
    PAGE CREATION LIVRE
 =========================== */
@@ -1993,7 +1915,7 @@ div .Team {
 
 .form-group label {
     font-weight: 600;
-    color: #222;
+    color: var(--color-muted);
 }
 
 .form-control {
@@ -2049,17 +1971,6 @@ textarea.form-control {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
 /* =========================
    FOOTER
 ========================= */
@@ -2109,4 +2020,294 @@ textarea.form-control {
     max-width: 20px;
     height: auto;
     vertical-align: middle;
+}
+
+
+
+/* ------------------------------------------------------- */
+
+@media (max-width: 768px) {
+
+    body {
+        background: var(--color-white);
+    }
+
+    .nav {
+        min-height: 64px;
+        padding: 0 18px;
+    }
+
+    .logo {
+        height: 38px;
+    }
+
+    .nav-left,
+    .nav-right {
+        display: none;
+    }
+
+    .nav::after {
+        content: "☰";
+        font-size: 1.6rem;
+        color: var(--color-text);
+    }
+
+    /* =========================
+       HERO
+    ========================= */
+
+    .hero-split {
+        padding: 0;
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .hero-image-wrapper {
+        width: 100%;
+    }
+
+    .hero-image {
+        width: 100%;
+        height: auto;
+    }
+
+    .hero-text {
+        width: 100%;
+        padding: 42px 20px;
+    }
+
+    .hero-text h2 {
+        font-size: 2em;
+        line-height: 1.2;
+    }
+
+    .hero-text p {
+        line-height: 1.5;
+    }
+
+    .hero-text .btn-primary {
+        width: 100%;
+    }
+
+    /* =========================
+       LIVRES
+    ========================= */
+
+    .books {
+        padding: 50px 20px;
+    }
+
+    .books .section-title {
+        margin-bottom: 40px;
+    }
+
+    .exchange-list {
+        grid-template-columns: repeat(2, 1fr);
+        column-gap: 16px;
+        row-gap: 22px;
+        padding-bottom: 40px;
+    }
+
+    .exchange-card {
+        height: auto;
+    }
+
+    .exchange-card img {
+        height: 160px;
+    }
+
+    /* =========================
+       COMMENT ÇA MARCHE
+    ========================= */
+
+    .steps {
+        padding: 60px 20px 70px;
+    }
+
+    .steps h2 {
+        margin-bottom: 20px;
+        line-height: 1.2;
+    }
+
+    .steps p {
+        margin: 0 auto 40px;
+        line-height: 1.5;
+    }
+
+    .steps-list {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .steps-list li {
+        width: 100%;
+        min-height: 120px;
+        padding: 30px 24px;
+        border-radius: 12px;
+        line-height: 1.5;
+    }
+
+    .see-all-books {
+        margin-top: 35px;
+    }
+
+    /* =========================
+       NOS VALEURS
+    ========================= */
+
+    .values {
+        padding: 50px 30px;
+    }
+
+    .values h2 {
+        margin-bottom: 25px;
+        line-height: 1.2;
+    }
+
+    .values p {
+        line-height: 1.6;
+    }
+
+    .Vector-image {
+        margin: 40px auto 0;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    .footer {
+        padding: 35px 20px;
+    }
+
+    .footer-legal ul {
+        flex-direction: column;
+        justify-content: center;
+        gap: 12px;
+    }
+
+
+
+    /* =========================
+   PAGE LIVRES RESPONSIVE
+========================= */
+
+
+
+    .books-page {
+        padding: 30px 20px 80px;
+        background: #F5F3EF;
+    }
+
+    .books-header {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 22px;
+
+        max-width: 100%;
+        margin: 0 0 35px;
+    }
+
+    .books-title {
+        font-size: 2.2rem;
+        line-height: 1.15;
+        font-weight: 400;
+    }
+
+    .books-search-wrapper {
+        width: 100%;
+        position: relative;
+    }
+
+    .books-search-wrapper i {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #A6A6A6;
+        font-size: 0.95rem;
+    }
+
+    .books-search {
+        width: 100%;
+        height: 52px;
+        padding: 0 18px 0 44px;
+
+        border: 1px solid #ECECEC;
+        border-radius: 8px;
+
+        background: var(--color-white);
+
+        font-size: 0.95rem;
+        color: #292929;
+    }
+
+    /* GRID LIVRES */
+
+    .books-grid,
+    .exchange-list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+    }
+
+    .book-card,
+    .exchange-card {
+        width: 100%;
+        min-width: 0;
+
+        background: var(--color-white);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .book-card img,
+    .exchange-card img {
+        width: 100%;
+        height: 165px;
+        object-fit: cover;
+        display: block;
+    }
+
+    .book-content,
+    .exchange-card-content {
+        padding: 12px 10px 14px;
+    }
+
+    .book-title,
+    .exchange-card h3 {
+        font-size: 0.95rem;
+        line-height: 1.35;
+        margin-bottom: 4px;
+    }
+
+    .book-author,
+    .exchange-card-author {
+        font-size: 0.82rem;
+        color: #8A8A8A;
+        margin-bottom: 10px;
+    }
+
+    .book-owner,
+    .exchange-card-owner {
+        font-size: 0.68rem;
+        color: #B0B0B0;
+        line-height: 1.4;
+    }
+
+    .book-status {
+        top: 8px;
+        right: 8px;
+
+        padding: 4px 8px;
+        font-size: 0.62rem;
+        border-radius: 30px;
+    }
+
+
+
+
+    
 }

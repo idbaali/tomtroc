@@ -1,4 +1,5 @@
 <?php
+
 /** @var \App\Models\Book $book */
 
 $title  = htmlspecialchars($book->getTitle() ?? 'Titre inconnu');
@@ -14,20 +15,20 @@ $image = $book->getImage()
 $slug = htmlspecialchars($book->getSlug());
 ?>
 
-<a href="/livre/<?= $slug ?>" class="exchange-card">
 
-    <img
-        src="/images/books/<?= $image ?>"
-        alt="Couverture du livre <?= $title ?>"
-        loading="lazy"
-    >
+<a href="/livre/<?= urlencode($book->getSlug()) ?>" class="exchange-card">
 
-    <h3><?= $title ?></h3>
+        <img
+            src="/images/books/<?= $image ?>"
+            alt="Couverture du livre <?= $title ?>"
+            loading="lazy">
 
-    <p class="author"><?= $author ?></p>
+        <h3><?= $title ?></h3>
 
-    <p class="seller">
-        Vendu par : <?= $seller ?>
-    </p>
+        <p class="author"><?= $author ?></p>
 
-</a>
+        <p class="seller">
+            Vendu par : <?= $seller ?>
+        </p>
+
+    </a>

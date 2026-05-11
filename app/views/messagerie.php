@@ -12,20 +12,20 @@ $otherUser = $otherUser ?? null;
 
 function getAvatarPath(?string $avatar): string
 {
-    $default = '/images/profiles/default-user.png';
+    $default = '/images/avatars/default-user.png';
 
     if (empty($avatar)) {
         return $default;
     }
 
     $filename = basename(trim($avatar));
-    $fullPath = __DIR__ . '/../../public/images/profiles/' . $filename;
+    $fullPath = __DIR__ . '/../../public/images/avatars/' . $filename;
 
     if (!file_exists($fullPath) || !is_file($fullPath)) {
         return $default;
     }
 
-    return '/images/profiles/' . $filename;
+    return '/images/avatars/' . $filename;
 }
 ?>
 
@@ -52,10 +52,9 @@ function getAvatarPath(?string $avatar): string
 
                         <a href="/messagerie/<?= $other->getId(); ?>" class="conversation-item <?= $isActive; ?>">
                             <img
-                                src="/images/profiles/<?= htmlspecialchars($other->getAvatar() ?: 'default-user.png'); ?>"
+                                src="<?= htmlspecialchars(getAvatarPath($other->getAvatar())); ?>"
                                 alt="Photo de profil de <?= htmlspecialchars($other->getUsername()); ?>"
-                                class="conversation-avatar"
-                                onerror="this.src='/images/profiles/default-user.png';">
+                                class="conversation-avatar">
 
                             <div class="conversation-content">
                                 <div class="conversation-top">
@@ -85,10 +84,9 @@ function getAvatarPath(?string $avatar): string
                 <?php if ($otherUser): ?>
                     <a href="/compte-public/<?= $otherUser->getId(); ?>" class="chat-user-link">
                         <img
-                            src="/images/profiles/<?= htmlspecialchars($otherUser->getAvatar() ?: 'default-user.png'); ?>"
+                            src="<?= htmlspecialchars(getAvatarPath($otherUser->getAvatar())); ?>"
                             alt="Photo de profil de <?= htmlspecialchars($otherUser->getUsername() ?? 'Utilisateur'); ?>"
-                            class="chat-header-avatar"
-                            onerror="this.src='/images/profiles/default-user.png';">
+                            class="chat-header-avatar">
 
                         <div class="chat-header-info">
                             <h2 class="chat-header-name">

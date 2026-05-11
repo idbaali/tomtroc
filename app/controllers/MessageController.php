@@ -20,6 +20,10 @@ class MessageController extends Controller
         $this->userManager = new UserManager();
     }
 
+    /**
+     * Affiche la messagerie.
+     * Si une conversation n'existe pas encore, elle s'ouvre vide.
+     */
     public function index(?int $otherUserId = null): void
     {
         $user = $_SESSION['user'] ?? null;
@@ -28,21 +32,24 @@ class MessageController extends Controller
             setFlash('error', 'Vous devez être connecté.');
             redirect('/connexion');
             return;
-            
         }
 
         $currentUserId = $user->getId();
 
+        // Empêche d'ouvrir une conversation avec soi-même
         if ($otherUserId === $currentUserId) {
             redirect('/messagerie');
             return;
         }
 
         $messages = [];
-        $conversations = $this->messageManager->getUserConversations($currentUserId);
         $otherUser = null;
 
-        if ($otherUserId) {
+        // Liste des conversations existantes
+        $conversations = $this->messageManager->getUserConversations($currentUserId);
+
+        // Si on arrive avec /messagerie/2
+        if ($otherUserId !== null) {
             $otherUser = $this->userManager->getById($otherUserId);
 
             if (!$otherUser) {
@@ -51,6 +58,9 @@ class MessageController extends Controller
                 return;
             }
 
+            // Important :
+            // même si aucun message n'existe, getConversation retourne []
+            // donc la conversation vide s'affiche quand même.
             $messages = $this->messageManager->getConversation($currentUserId, $otherUserId);
         }
 
@@ -64,6 +74,9 @@ class MessageController extends Controller
         ]);
     }
 
+    /**
+     * Envoie un message.
+     */
     public function send(): void
     {
         $user = $_SESSION['user'] ?? null;
@@ -74,16 +87,18 @@ class MessageController extends Controller
             return;
         }
 
+        $currentUserId = $user->getId();
         $receiverId = (int) ($_POST['receiver_id'] ?? 0);
         $content = trim($_POST['content'] ?? '');
 
-        if (!$receiverId || $content === '') {
+        if ($receiverId <= 0 || $content === '') {
             setFlash('error', 'Message invalide.');
             redirect('/messagerie');
             return;
         }
 
-        if ($receiverId === $user->getId()) {
+        // Empêche l'envoi à soi-même
+        if ($receiverId === $currentUserId) {
             setFlash('error', 'Action invalide.');
             redirect('/messagerie');
             return;
@@ -97,7 +112,9 @@ class MessageController extends Controller
             return;
         }
 
-        $sender = new User(['id' => $user->getId()]);
+        $sender = new User([
+            'id' => $currentUserId
+        ]);
 
         $message = new Message([
             'content' => $content,

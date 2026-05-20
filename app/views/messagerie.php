@@ -92,13 +92,11 @@ function getAvatarPath(?string $avatar): string
                             <h2 class="chat-header-name">
                                 <?= htmlspecialchars($otherUser->getUsername() ?? 'Utilisateur'); ?>
                             </h2>
-                            <p class="chat-header-status">Conversation ouverte</p>
                         </div>
                     </a>
                 <?php else: ?>
                     <div class="chat-header-info">
                         <h2 class="chat-header-name">Messagerie</h2>
-                        <p class="chat-header-status">Sélectionnez une conversation</p>
                     </div>
                 <?php endif; ?>
             </header>

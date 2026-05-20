@@ -1,109 +1,109 @@
 <?php require __DIR__ . '/layout/header.php'; ?>
 
 <?php
-// Anciennes valeurs du formulaire si erreur
 $old = $_SESSION['old_create_book'] ?? [
     'title' => '',
     'author' => '',
-    'description' => ''
+    'description' => '',
+    'status' => 'available'
 ];
 ?>
 
-<main class="create-book-page">
+<main class="create-book-principal">
 
-    <!-- ===========================
-         TITRE DE PAGE
-    ============================ -->
-    <h1 class="page-title">Ajouter un livre</h1>
+    <!-- RETOUR -->
+    <div class="bread-retour">
+        <a href="/compte">← retour</a>
+    </div>
 
-    <div class="container">
+    <!-- TITRE -->
+    <h1 class="bread-title">Ajouter un livre</h1>
 
-        <section class="form-card">
+    <section class="edit-book-page">
 
-            <!-- ===========================
-                 EN-TÊTE
-            ============================ -->
-            <div class="form-card-header">
-                <h2>Créer un nouveau livre</h2>
-                <p class="form-intro">
-                    Remplissez les informations ci-dessous pour ajouter un livre à votre bibliothèque d’échange.
-                </p>
+        <form
+            action="/creation-livre"
+            method="POST"
+            enctype="multipart/form-data"
+            class="edit-book-card"
+            novalidate>
+
+            <!-- COLONNE GAUCHE : PHOTO -->
+            <div class="edit-book-photo">
+                <h2>Photo</h2>
+
+                <img
+                    src="/images/books/default.png"
+                    alt="Image par défaut du livre"
+                    id="book-preview">
+
+                <label for="image" class="btn-photo">
+                    Ajouter une photo
+                </label>
+
+                <input
+                    type="file"
+                    id="image"
+                    name="image"
+                    accept=".jpg,.jpeg,.png,.webp"
+                    class="sr-only">
             </div>
 
-            <!-- ===========================
-                 FORMULAIRE
-            ============================ -->
-            <form action="/creation-livre" method="POST" enctype="multipart/form-data" novalidate>
+            <!-- COLONNE DROITE : FORMULAIRE -->
+            <div class="edit-book-form">
 
-                <!-- TITRE -->
                 <div class="form-group">
-                    <label for="title">Titre du livre</label>
+                    <label for="title">Titre</label>
                     <input
                         type="text"
                         id="title"
                         name="title"
-                        class="form-control"
-                        placeholder="Ex : Wabi Sabi"
                         value="<?= e($old['title'] ?? '') ?>"
                         required>
                 </div>
 
-                <!-- AUTEUR -->
                 <div class="form-group">
                     <label for="author">Auteur</label>
                     <input
                         type="text"
                         id="author"
                         name="author"
-                        class="form-control"
-                        placeholder="Ex : Beth Kempton"
                         value="<?= e($old['author'] ?? '') ?>"
                         required>
                 </div>
 
-                <!-- DESCRIPTION -->
                 <div class="form-group">
-                    <label for="description">Description</label>
+                    <label for="description">Commentaire</label>
                     <textarea
                         id="description"
                         name="description"
-                        class="form-control"
-                        rows="6"
-                        placeholder="Décrivez brièvement le livre, son contenu ou son intérêt..."
                         required><?= e($old['description'] ?? '') ?></textarea>
                 </div>
 
-                <!-- IMAGE -->
                 <div class="form-group">
-                    <label for="image">Image du livre</label>
-                    <input
-                        type="file"
-                        id="image"
-                        name="image"
-                        class="form-control"
-                        accept=".jpg,.jpeg,.png,.webp">
-                    <small class="form-help">
-                        Formats autorisés : JPG, PNG, WEBP.
-                    </small>
+                    <label for="status">Disponibilité</label>
+                    <select id="status" name="status">
+                        <option value="available" <?= ($old['status'] ?? '') === 'available' ? 'selected' : '' ?>>
+                            disponible
+                        </option>
+                        <option value="unavailable" <?= ($old['status'] ?? '') === 'unavailable' ? 'selected' : '' ?>>
+                            non disponible
+                        </option>
+                    </select>
                 </div>
 
-                <!-- ACTIONS -->
-                <div class="form-actions">
-                    <a href="/compte" class="btn-creat1">Annuler</a>
-                    <button type="submit" class="btn-creat2">Ajouter le livre</button>
-                </div>
+                <button type="submit" class="btn-edit">
+                    Ajouter le livre
+                </button>
 
-            </form>
+            </div>
 
-        </section>
+        </form>
 
-    </div>
+    </section>
 
 </main>
 
-<?php
-// On efface les anciennes valeurs après affichage
-unset($_SESSION['old_create_book']);
-?>
+<?php unset($_SESSION['old_create_book']); ?>
 
 <?php require __DIR__ . '/layout/footer.php'; ?>

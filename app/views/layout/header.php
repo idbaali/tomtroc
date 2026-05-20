@@ -52,7 +52,7 @@ $currentPath = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
                     <?php if (isLogged()): ?>
                         <li>
                             <a href="/messagerie" class="nav-icon-link <?= str_starts_with($currentPath, 'messagerie') ? 'active' : '' ?>">
-                                <i class="fa-regular fa-comment" aria-hidden="true"></i>
+                                <img src="/images/icon-messagerie.png" alt="Messagerie" class="messagerie-icon">
                                 <span>Messagerie</span>
                                 <span class="message-badge">1</span>
                             </a>
@@ -60,7 +60,7 @@ $currentPath = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
 
                         <li>
                             <a href="/compte" class="nav-icon-link <?= $currentPath === 'compte' ? 'active' : '' ?>">
-                                <i class="fa-regular fa-user" aria-hidden="true"></i>
+                                <img src="/images/icon-compte.png" alt="Mon compte" class="compte-icon">
                                 <span>Mon compte</span>
                             </a>
                         </li>

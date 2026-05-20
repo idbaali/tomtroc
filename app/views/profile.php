@@ -9,9 +9,9 @@
     <aside class="profile-left">
 
         <div class="avatar-wrapper">
-            <img src="/images/profiles/<?= e($user->getAvatar() ?? 'default-user.png') ?>"
+            <img src="/images/avatars/<?= e($user->getAvatar() ?? 'default-user.png') ?>"
                 alt="Photo de <?= e($user->getUsername() ?? 'Utilisateur inconnu') ?>"
-                onerror="this.src='/images/profiles/default-user.png';">
+                onerror="this.src='/images/avatars/default-user.png';">
         </div>
 
         <h2 class="username"><?= e($user->getUsername() ?? 'Utilisateur inconnu') ?></h2>
@@ -94,7 +94,13 @@
                         </div>
 
                         <div class="library-description">
-                            <?= e($book->getDescription()) ?>
+
+                            <?= htmlspecialchars(
+                                strlen($book->getDescription()) > 120
+                                    ? substr($book->getDescription(), 0, 120) . '...'
+                                    : $book->getDescription()
+                            ) ?>
+
                         </div>
 
                     </article>

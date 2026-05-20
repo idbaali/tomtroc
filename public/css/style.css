@@ -257,10 +257,14 @@ ul {
     color: #2a2a2a;
     font-size: 1rem;
     font-weight: 400;
+    text-decoration: none;
+    transition: all 0.3s ease;
 }
 
 .nav-list a:hover {
-    text-decoration: underline;
+    font-size: 1.08rem;
+    font-weight: 700;
+    text-decoration: none;
 }
 
 .nav-list a.active {
@@ -289,10 +293,18 @@ ul {
     align-items: center;
 }
 
-.nav-icon-link i {
-    margin-right: 6px;
-    font-size: 0.95rem;
-    color: var(--color-text);
+.messagerie-icon {
+    width: 15px;
+    height: 15px;
+    object-fit: contain;
+    margin-right: 5px;
+}
+
+.compte-icon {
+    width: 15px;
+    height: 15px;
+    object-fit: contain;
+    margin-right: 5px;
 }
 
 .message-badge {
@@ -308,7 +320,13 @@ ul {
     font-size: 0.6rem;
     font-weight: 700;
     line-height: 1;
+    
 }
+
+
+
+
+
 
 /* =========================
    HERO ACCUEIL
@@ -393,7 +411,7 @@ ul {
 .exchange-card {
     height: 310px;
     background: var(--color-white);
-    border-radius: 8px;
+    border-radius: 0 0 8px 8px;
     text-decoration: none;
     color: inherit;
     cursor: pointer;
@@ -452,7 +470,7 @@ ul {
 .exchange-card .seller {
     padding-left: 20px;
     padding-right: 20px;
-
+    margin-top: 15px;
     font-family: var(--font-primary);
     font-size: 0.75rem;
     font-weight: 300;
@@ -565,12 +583,12 @@ ul {
     color: var(--color-text);
 }
 
-.Team {
+.values .Team {
     padding-top: 25px;
     color: var(--color-muted);
     font-weight: 400;
     font-style: italic;
-    font-size: 0.75em;
+    font-size: 0.9rem;
     line-height: 1.2;
 }
 
@@ -711,6 +729,15 @@ ul {
     font-weight: 400;
     font-size: 1em;
     line-height: 1.2;
+}
+
+.book-author::after {
+    content: "";
+    display: block;
+    width: 34px;
+    height: 1px;
+    background: #A6A6A6;
+    margin-top: 34px;
 }
 
 .book-content h2 {
@@ -1016,12 +1043,10 @@ ul {
 
 .account-book-count {
     margin-top: 8px;
-
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-
     font-size: 1em;
     font-weight: 400;
     color: var(--color-text);
@@ -1045,12 +1070,11 @@ ul {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
-    border: 1px solid var(--color-primary);
-    border-radius: var(--radius-md);
-
-    background: var(--color-white);
-    color: var(--color-primary);
+    
+    border: 1.5px solid #00AC66;
+    border-radius: 12px;
+    background: #F5F3EF;
+    color: #5e8965;
 
     font-size: 0.95rem;
     font-weight: 600;
@@ -1098,8 +1122,8 @@ ul {
 .info-card input.value {
     width: 100%;
     height: 54px;
-    border: 1px solid #edf0f2;
-    background: #f4f7f8;
+    border: 1px solid #F0F0F0;
+    background: #F0F0F0;
     border-radius: var(--radius-md);
     padding: 0 16px;
     font-size: 1rem;
@@ -1109,7 +1133,7 @@ ul {
 }
 
 .info-card input.value:focus {
-    border-color: #6aa57a;
+    /* border-color: #6aa57a; */
     box-shadow: 0 0 0 3px rgba(106, 165, 122, 0.12);
 }
 
@@ -1120,9 +1144,9 @@ ul {
     min-width: 145px;
     height: 54px;
     padding: 0 28px;
-    border: 1.5px solid #6f9774;
+    border: 1.5px solid #00AC66;
     border-radius: 12px;
-    background: var(--color-white);
+    background: #F5F3EF;
     color: #5e8965;
     font-size: 1rem;
     font-weight: 600;
@@ -1132,7 +1156,7 @@ ul {
 
 .info-card button[type="submit"]:hover {
     background: #f8fcf8;
-    border-color: #5f8666;
+    /* border-color: #5f8666; */
     color: #4f7255;
 }
 
@@ -1251,6 +1275,8 @@ ul {
     font-size: 1rem;
 }
 
+
+
 /* =========================
    COMPTE PUBLIC / profile.php
 ========================= */
@@ -1350,7 +1376,7 @@ ul {
     margin-top: 48px;
     border: 1px solid var(--color-primary);
     border-radius: var(--radius-md);
-    background: var(--color-white);
+    background: var(--color-bg);
     color: var(--color-primary);
 
     display: inline-flex;
@@ -1437,7 +1463,23 @@ ul {
     max-width: 260px;
 }
 
+.library-description {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* centre horizontal */
 
+    padding-left: 20px;
+    padding-right: 20px;
+
+    text-align: left; /* IMPORTANT (comme design) */
+
+    font-size: 0.95em;
+    font-weight: 400;
+    color: var(--color-text);
+    line-height: 1.6;
+
+    max-width: 300px;
+}
 
 
 /* =========================
@@ -1607,9 +1649,6 @@ ul {
 
 
 
-
-
-
 /* =========================
    PAGE MESSAGERIE
 ========================= */
@@ -1636,8 +1675,8 @@ ul {
 ========================= */
 
 .messaging-sidebar {
-    background: #ffffff;
-    border-right: 1px solid #ece7df;
+    background: #FAF9F7;
+    /* border-right: 1px solid #ece7df; */
     display: flex;
     flex-direction: column;
     padding: 0;
@@ -1646,110 +1685,114 @@ ul {
 .messaging-title {
     margin: 0;
     padding: 42px 34px 28px;
-    font-size: 3rem;
+    font-size: 2rem;
     font-weight: 400;
     line-height: 1.1;
     color: #1f1f1f;
     font-family: Georgia, "Times New Roman", serif;
 }
 
+/* =========================
+   LISTE CONVERSATIONS
+========================= */
+
 .conversation-list {
-    display: flex;
-    flex-direction: column;
-    padding: 0;
+    width: 100%;
 }
 
+/* MESSAGE NORMAL */
 .conversation-item {
     display: flex;
     align-items: center;
-    gap: 14px;
-    padding: 16px 22px;
+    gap: 18px;
+    padding: 26px 34px;
     text-decoration: none;
-    color: inherit;
-    background: #ffffff;
-    border-bottom: 1px solid #f1ece5;
-    box-sizing: border-box;
+    transition: background 0.2s ease;
 }
 
-.conversation-item:hover,
+/* MESSAGE ACTUEL */
 .conversation-item.active {
-    background: #f8f5f1;
+    background: #FFFFFF;
 }
 
+/* HOVER */
+.conversation-item:hover {
+    background: #F8F8F8;
+}
+
+/* AVATAR */
 .conversation-avatar {
-    width: 56px;
-    height: 56px;
+    width: 72px;
+    height: 72px;
     border-radius: 50%;
     object-fit: cover;
-    display: block;
     flex-shrink: 0;
 }
 
+/* CONTENU */
 .conversation-content {
     flex: 1;
     min-width: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
 }
 
 .conversation-top {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 4px;
+
+    margin-bottom: 10px;
 }
 
+/* NOM */
 .conversation-name {
     margin: 0;
-    font-size: 1rem;
+
+    font-family: var(--font-title);
+    font-size: 1.05rem;
     font-weight: 400;
-    color: #2a2a2a;
-    line-height: 1.2;
+    color: #292929;
 }
 
-.conversation-name a {
-    color: inherit;
-    text-decoration: none;
-}
-
-.conversation-name a:hover {
-    text-decoration: underline;
-}
-
+/* HEURE */
 .conversation-time {
     font-size: 0.95rem;
-    color: #7d7d7d;
-    white-space: nowrap;
-    flex-shrink: 0;
+    color: #FAF9F7;
 }
 
+/* PREVIEW */
 .conversation-preview {
     margin: 0;
-    font-size: 0.92rem;
-    color: #a1a1a1;
-    line-height: 1.35;
-    white-space: nowrap;
+
+    font-size: 0.95rem;
+    color: #A5A5A5;
+
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-/* =========================
-   CHAT
-========================= */
+
+/* DROITE CHAT */
 .messaging-chat {
+    background: #F5F3EF;
+
     display: flex;
     flex-direction: column;
-    background-color: #ffffff;
+    min-height: 760px;
 }
 
 .chat-header {
+    padding: 45px 0 0 58px;
+    border-bottom: none;
+    background: #F5F3EF;
+}
+
+.chat-user-link {
     display: flex;
     align-items: center;
-    gap: 14px;
-    padding: 26px 30px;
-    border-bottom: 1px solid #ece8e1;
+    gap: 18px;
+    text-decoration: none;
+    color: inherit;
 }
 
 .chat-header-avatar {
@@ -1761,34 +1804,29 @@ ul {
 
 .chat-header-name {
     margin: 0;
-    font-size: 18px;
+    font-family: var(--font-primary);
+    font-size: 1rem;
     font-weight: 700;
-    color: #1f1f1f;
+    color: #292929;
 }
 
-.chat-header-status {
-    margin: 4px 0 0;
-    font-size: 13px;
-    color: #7b7b7b;
-}
-
-/* =========================
-   ZONE MESSAGES
-========================= */
+/* MESSAGES */
 .chat-messages {
     flex: 1;
-    padding: 30px;
+    padding: 300px 95px 60px 58px;
+
     display: flex;
     flex-direction: column;
-    gap: 18px;
-    background-color: #ffffff;
+    gap: 30px;
+
+    background: #F5F3EF;
     overflow-y: auto;
 }
 
 .message-row {
+    max-width: 70%;
     display: flex;
     flex-direction: column;
-    max-width: 70%;
 }
 
 .message-row.sent {
@@ -1802,91 +1840,71 @@ ul {
 }
 
 .message-time {
-    display: block;
-    margin-bottom: 6px;
-    font-size: 12px;
-    color: #9b9b9b;
+    margin-bottom: 8px;
+    font-size: 0.8rem;
+    color: #A6A6A6;
 }
 
 .message-bubble {
-    padding: 14px 18px;
-    border-radius: 16px;
-    font-size: 14px;
-    line-height: 1.5;
-    word-break: break-word;
+    padding: 13px 18px;
+    border-radius: 0;
+
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: #292929;
 }
 
 .message-row.sent .message-bubble {
-    background-color: #f3efe8;
-    color: #1f1f1f;
-    border-bottom-right-radius: 6px;
+    background: #EDF2F6;
 }
 
 .message-row.received .message-bubble {
-    background-color: #ffffff;
-    color: #1f1f1f;
-    border: 1px solid #ece8e1;
-    border-bottom-left-radius: 6px;
+    background: #FFFFFF;
+    border: none;
 }
 
-/* =========================
-   FORMULAIRE
-========================= */
+/* FORMULAIRE */
 .chat-form-wrapper {
-    border-top: 1px solid #ece8e1;
-    padding: 20px 30px;
-    background-color: #ffffff;
+    padding: 0 95px 80px 58px;
+    background: #F5F3EF;
+    border-top: none;
 }
 
 .chat-form {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 26px;
 }
 
 .chat-input {
     flex: 1;
-    height: 52px;
-    padding: 0 16px;
-    border: 1px solid #d9d4cb;
-    border-radius: 12px;
-    background-color: #fcfbf9;
-    font-size: 14px;
-    color: #1f1f1f;
-    outline: none;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
+    height: 58px;
+    padding: 0 38px;
 
-.chat-input::placeholder {
-    color: #a0a0a0;
-}
+    border: none;
+    border-radius: 6px;
+    background: #FFFFFF;
 
-.chat-input:focus {
-    border-color: #2f9e44;
-    box-shadow: 0 0 0 3px rgba(47, 158, 68, 0.12);
+    font-size: 1rem;
+    color: #292929;
 }
 
 .chat-submit {
-    height: 52px;
-    padding: 0 28px;
+    width: 150px;
+    height: 58px;
+
     border: none;
-    border-radius: 12px;
-    background-color: #2f9e44;
-    color: #ffffff;
-    font-size: 14px;
+    border-radius: 10px;
+    background: #00AC66;
+    color: #FFFFFF;
+    font-size: 1rem;
     font-weight: 700;
     cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .chat-submit:hover {
-    background-color: #25863a;
-    transform: translateY(-1px);
-}
-
-.chat-submit:focus {
-    outline: 3px solid rgba(47, 158, 68, 0.2);
-    outline-offset: 2px;
+    background: #00AC68;
+    opacity: 0.9;
 }
 
 
@@ -1894,100 +1912,171 @@ ul {
    PAGE CREATION LIVRE
 =========================== */
 
+.create-book-principal {
+    background: var(--color-bg-light);
+    padding: 40px 0 120px;
+    min-height: 100vh;
+}
+
 .create-book-page {
-    padding: 40px 20px;
+    background: var(--color-bg-light);
+    padding: 40px 0 120px;
+    min-height: 100vh;
 }
 
-.form-card {
-    max-width: 700px;
-    margin: 0 auto;
-    background: #fff;
-    border-radius: 12px;
-    padding: 32px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+/* CONTENEUR PRINCIPAL */
+.create-book-page .form-card {
+    max-width: var(--account-width);
+    margin-left: auto;
+    margin-right: auto;
+
+    background: var(--color-white);
+    border-radius: 22px;
+    padding: 50px 44px 70px;
+
+    box-shadow: none;
 }
 
+/* TITRE */
 .form-card-header {
-    margin-bottom: 24px;
+    max-width: var(--account-width);
+    margin: 0 auto 28px;
 }
 
 .form-card-header h2 {
     margin-bottom: 8px;
-    font-size: 28px;
+
+    font-family: var(--font-title);
+    font-size: 2em;
+    font-weight: 400;
+    line-height: 1.2;
+
+    color: var(--color-text-dark);
 }
 
 .form-intro {
-    color: #666;
+    color: var(--color-muted);
+    font-size: 0.95rem;
+    font-weight: 300;
     line-height: 1.5;
 }
 
+/* FORMULAIRE */
 .book-form {
+    width: 430px;
+    margin-left: auto;
+
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 0;
 }
 
-.form-group {
+/* GROUPES */
+.create-book-page .form-group {
+    margin-bottom: 26px;
+
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 0;
 }
 
-.form-group label {
-    font-weight: 600;
+/* LABELS */
+.create-book-page .form-group label {
+    display: block;
+    margin-bottom: 10px;
+
+    font-size: 0.95rem;
+    font-weight: 300;
     color: var(--color-muted);
 }
 
-.form-control {
+/* CHAMPS */
+.create-book-page .form-control {
     width: 100%;
-    padding: 14px 16px;
-    border: 1px solid #d9d9d9;
+    border: none;
     border-radius: 8px;
-    font-size: 16px;
-    background: #fff;
+    background: #EDF2F6;
+    padding: 16px 18px;
+
+    font-family: var(--font-primary);
+    font-size: 0.95rem;
+    color: var(--color-text);
 }
 
-.form-control:focus {
-    outline: none;
-    border-color: #222;
+/* INPUTS */
+.create-book-page input.form-control,
+.create-book-page select.form-control {
+    height: 52px;
 }
 
-textarea.form-control {
+/* TEXTAREA */
+.create-book-page textarea.form-control {
+    min-height: 335px;
     resize: vertical;
-    min-height: 140px;
+    line-height: 1.45;
 }
 
+/* FOCUS */
+.create-book-page .form-control:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 172, 102, 0.12);
+}
+
+/* AIDE */
 .form-help {
-    font-size: 14px;
-    color: #777;
+    margin-top: 8px;
+
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--color-muted);
 }
 
+/* ACTIONS */
 .form-actions {
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
     gap: 12px;
-    margin-top: 10px;
+    margin-top: 16px;
 }
 
+/* BOUTONS */
 .btn-creat1,
 .btn-creat2 {
-    display: inline-block;
-    padding: 12px 20px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
+    width: 310px;
+    height: 58px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
     border: none;
+    border-radius: 12px;
+
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 600;
+
     cursor: pointer;
 }
 
+/* BOUTON VALIDER */
 .btn-creat1 {
-    background: #222;
-    color: #fff;
+    background: var(--color-primary);
+    color: var(--color-white);
 }
 
+.btn-creat1:hover {
+    background: var(--color-primary-hover);
+}
+
+/* BOUTON ANNULER */
 .btn-creat2 {
-    background: #f3f3f3;
-    color: #222;
+    background: #EDF2F6;
+    color: var(--color-text);
+}
+
+.btn-creat2:hover {
+    background: #E3E9EF;
 }
 
 

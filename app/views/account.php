@@ -14,7 +14,7 @@
         <!-- GAUCHE : Profil -->
         <div class="profile-card">
 
-            <img src="/images/profiles/<?= e($user->getAvatar() ?? 'default-user.png') ?>"
+            <img src="/images/avatars/<?= e($user->getAvatar() ?? 'default-user.png') ?>"
                 alt="Profil de <?= e($user->getUsername() ?? 'Utilisateur') ?>"
                 class="profile-photo">
 
@@ -139,8 +139,8 @@
                     </div>
 
                     <div class="table-cell description">
-                        <?= e(strlen($book->getDescription()) > 180
-                            ? substr($book->getDescription(), 0, 180) . '...'
+                        <?= e(strlen($book->getDescription()) > 80
+                            ? substr($book->getDescription(), 0, 80) . '...'
                             : $book->getDescription()) ?>
                     </div>
 

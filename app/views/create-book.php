@@ -33,9 +33,14 @@ $old = $_SESSION['old_create_book'] ?? [
                 <h2>Photo</h2>
 
                 <img
-                    src="/images/books/default.png"
-                    alt="Image par défaut du livre"
+                    src=""
+                    alt=""
                     id="book-preview">
+
+
+                <p class="photo-placeholder">
+                    L'image sera affichée après l'ajout du livre
+                </p>
 
                 <label for="image" class="btn-photo">
                     Ajouter une photo
